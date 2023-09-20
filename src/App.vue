@@ -1,15 +1,12 @@
 <template>
-  <div class="home-container">
-    <HeaderVue />
-    <PostCourse />
-  </div>
+  <index />
 </template>
 
 <script>
-import HeaderVue from './components/Header/Header'
-import PostCourse from './components/PostCourses/PostCourse.vue'
+
+import index from '@/views/index.vue'
 export default {
-  components: { HeaderVue, PostCourse }
+  components: { index }
 }
 </script>
 

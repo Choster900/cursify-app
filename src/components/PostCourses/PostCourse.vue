@@ -15,7 +15,7 @@
 
 <script>
 import CourseCategory from '../Categories/CourseCategory.vue'
-import CourseOne from '../Courses/CourseOne.vue'
+import CourseOne from '../Courses/Course.vue'
 export default {
     components: { CourseCategory, CourseOne },
     setup() {
