@@ -1,18 +1,19 @@
 <template>
-    <div class="home-container">
-        <Header />
+    <TemplateBody>
         <PostCourse />
-        <TrendingCourseSection
-         />
-    </div>
+        <TrendingCourseSection />
+        <TutorCourseWrapper />
+
+    </TemplateBody>
 </template>
 
 <script>
-import Header from '@/components/Header/Header.vue'
 import PostCourse from '@/components/PostCourses/PostCourse.vue'
 import TrendingCourseSection from '@/components/Courses/TrendingCoursesSection.vue'
+import TemplateBody from './Layout/Template.vue'
+import TutorCourseWrapper from '@/components/PostCourses/TutorCourseWrapper.vue'
 export default {
-    components: { Header, PostCourse, TrendingCourseSection }
+    components: { PostCourse, TrendingCourseSection, TemplateBody, TutorCourseWrapper }
 
 }
 </script>
