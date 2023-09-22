@@ -8,6 +8,7 @@ import './assets/css/tailwind.css'
 import './assets/scss/_variables.scss'
 import './assets/scss/style.scss'
 import './assets/css/icofont.min.css'
+import './assets/css/swiper.css'
 
 const app = createApp(App)
 
