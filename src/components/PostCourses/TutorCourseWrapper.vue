@@ -17,35 +17,24 @@
                 </div>
             </div>
 
-            <div class="swiper">
-                <div class="swiper-wrapper">
-                    <SwiperSlide>Slide 1</SwiperSlide>
-                    <SwiperSlide>Slide 2</SwiperSlide>
-                    <SwiperSlide>Slide 3</SwiperSlide>
-                    <!-- ... Agrega más slides según sea necesario -->
-                </div>
-
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-scrollbar"></div>
-            </div>
-
-            <!--   <pre>
-                {{ dataTutorCourse }}
-            </pre> -->
-             <swiper :options="swiperOption" ref="swiperRef">
-                <SwiperSlide v-for="(data, i) in dataTutorCourse" :key="i" class="post swiper-slide">
+            <div class="swiper-button-next"></div>
+            <swiper :navigation="swiperNavigation" :loop="true" :speed="750" :modules="modules" class="mySwiper">
+                <swiper-slide v-for="(data, i) in dataTutorCourse" :key="i">
                     <div class="grid grid-cols-7 gap-8">
                         <div class="lg:col-span-5 md:col-span-4 col-span-7 order-last md:order-first">
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-7">
-                                {{ data }}
+                                <div v-for="curso in data.cursos" :key="curso.course_id">
+                                    <PostCourseTwo :course="curso" />
+                                </div>
                             </div>
                         </div>
+                        <div class="lg:col-span-2 md:col-span-3 col-span-7 order-first md:order-last">
+                            <UserProfile :user="data" />
+                        </div>
                     </div>
-                </SwiperSlide>
-            </swiper>
+                </swiper-slide>
 
+            </swiper>
 
 
         </div>
@@ -54,32 +43,36 @@
 <script>
 import { ref } from 'vue';
 import PostCourseTwo from './PostCourseTwo.vue';
-
+// Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Pagination, Autoplay, Navigation } from 'swiper';
 
-// Importa los estilos de Swiper
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
 
-import SwiperCore from 'swiper';
-SwiperCore.use([Pagination, Navigation]);
+//import '../../assets/css/swiper.css'
+
+// import required modules
+import { Navigation } from 'swiper/modules';
+import UserProfile from '../User/UserProfile.vue';
 
 export default {
-    components: { PostCourseTwo, Swiper, SwiperSlide },
+    components: { PostCourseTwo, UserProfile, Swiper, SwiperSlide },
     setup() {
         const users = ref([]);
         const swiperOption = {
             speed: 750,
             loop: true,
             autoHeight: true,
+            pagination: { clickable: true },
             slidesPerView: 1,
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
         };
+
+        const swiperNavigation = {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+        }
 
         const dataTutorCourse = [
             {
@@ -88,6 +81,8 @@ export default {
                 "user_lastname": "Doe",
                 "user_email": "john.doe@example.com",
                 "user_password": "password123",
+                "user_photo": "	https://secure.gravatar.com/avatar/1f3cf7702de78552591affcaff60e76c?s=96&d=mm&r=g",
+                "user_description" : "Our mission is to help you build websites faster with our VueJS templates and Nuxt JS themes",
                 "role_id": 1,
                 "created_at_user": "2023-09-18T08:00:00Z",
                 "modified_at_user": "2023-09-18T08:30:00Z",
@@ -128,11 +123,13 @@ export default {
                 ],
             },
             {
-                "user_id": 1,
+                "user_id": 2,
                 "user_name": "John",
                 "user_lastname": "Doe",
                 "user_email": "john.doe@example.com",
                 "user_password": "password123",
+                "user_photo": "	https://secure.gravatar.com/avatar/1f3cf7702de78552591affcaff60e76c?s=96&d=mm&r=g",
+                "user_description" : "Our mission is to help you build websites faster with our VueJS templates and Nuxt JS themes",
                 "role_id": 1,
                 "created_at_user": "2023-09-18T08:00:00Z",
                 "modified_at_user": "2023-09-18T08:30:00Z",
@@ -173,26 +170,11 @@ export default {
                 ],
             },
         ]
-
-        const swiper = ref(null);
-
-        // Funciones para avanzar y retroceder en los slides
-        const goNext = () => {
-            swiper.value.swiper.slideNext();
-        };
-
-        const goPrev = () => {
-            swiper.value.swiper.slidePrev();
-        };
-
         return {
             users,
-            swiper,
-            swiperOption,
             dataTutorCourse,
-            mod: [Pagination, Autoplay],
-            goNext,
-            goPrev
+            modules: [Navigation],
+            swiperNavigation
         };
     },
 };

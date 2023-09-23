@@ -1,13 +1,13 @@
 <template>
     <div class="author-profile text-center border border-[#ededed] rounded-[10px] py-7 px-3.5 relative">
         <div class="gravatar w-32 h-32 m-auto border border-[#ededed] p-2 rounded-full overflow-hidden">
-            <img class="rounded-full w-full" :src="author.node.avatar.url" :alt="author.node.name">
+            <img class="rounded-full w-full" :src="user.user_photo" :alt="user.user_name">
         </div>
         <h3 class="mb-0 text-xl font-semibold pt-6 pb-5">
-            <n-link :to="`/author/${author.node.slug}`" class="hover:text-primary">{{ author.node.name }}</n-link>
+            <router-link :to="`/author/`" class="hover:text-primary">{{ user.user_name }}</router-link>
         </h3>
-        <p>{{ author.node.description }}</p>
-        <n-link :to="`/author/${author.node.slug}`"
+        <p>{{ user.user_description }}</p>
+        <n-link :to="`/author/`"
             class=" bg-[#f4f4f4] py-3.5 px-8 rounded-lg inline-block hover:bg-primary hover:text-white mb-5">View Profile <i
                 class="icofont-long-arrow-right text-xl align-middle"></i> </n-link>
         <div class="flex justify-center space-x-2">
@@ -25,7 +25,7 @@ import SocialIcon from '../Elements/SocialIcon.vue'
 export default {
     components: { SocialIcon },
     props: {
-        author: {
+        user: {
             type: Object,
             default: () => { },
         },
