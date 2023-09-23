@@ -2,15 +2,18 @@
     <div class="home-container">
         <Header />
         <slot></slot>
+
+        <Footer />
+
     </div>
 </template>
 
 <script>
 import Header from '@/components/Header/Header.vue'
-import PostCourse from '@/components/PostCourses/PostCourse.vue'
-import TrendingCourseSection from '@/components/Courses/TrendingCoursesSection.vue'
+import Footer from '@/components/Footer/Footer.vue'
+
 export default {
-    components: { Header, PostCourse, TrendingCourseSection }
+    components: { Header, Footer }
 
 }
 </script>
