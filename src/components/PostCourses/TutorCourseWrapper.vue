@@ -16,8 +16,6 @@
                     <!-- Swiper Navigation End -->
                 </div>
             </div>
-
-            <div class="swiper-button-next"></div>
             <swiper :navigation="swiperNavigation" :loop="true" :speed="750" :modules="modules" class="mySwiper">
                 <swiper-slide v-for="(data, i) in dataTutorCourse" :key="i">
                     <div class="grid grid-cols-7 gap-8">
@@ -45,10 +43,6 @@ import { ref } from 'vue';
 import PostCourseTwo from './PostCourseTwo.vue';
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
-
-
-//import '../../assets/css/swiper.css'
-
 // import required modules
 import { Navigation } from 'swiper/modules';
 import UserProfile from '../User/UserProfile.vue';
