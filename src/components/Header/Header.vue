@@ -43,32 +43,32 @@
                     <div class="col-span-6 md:col-span-9">
                         <Navigation color-variant="text-heading-light" />
                     </div>
+
+
                     <div class="col-span-6 md:col-span-3">
                         <div class="search-box relative">
-                            <input v-model="searchInputText" type="search" placeholder="Search.."
-                                class=" text-heading-light border-1 rounded-md pl-3 pr-10 py-3 w-full focus:outline outline-primary outline-1">
-                            <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary text-xl"
-                                aria-label="Search">
-                                <i class="icofont-search"></i>
-                            </button>
+                            <DropdownProfile align="right" v-if="authIsReady" />
+                            <RegisterLogin v-else />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import HeaderTopBar from './HeaderTopBar.vue';
 import Navigation from './Navigation.vue';
+import DropdownProfile from '../Elements/DropdownProfile.vue';
+import RegisterLogin from '../Elements/RegisterLogin.vue';
+import { useStore } from 'vuex';
 export default {
-    components: { HeaderTopBar, Navigation },
+    components: { HeaderTopBar, Navigation, DropdownProfile, RegisterLogin },
     setup() {
         const isSticky = ref(false)
+        const store = useStore()
         onMounted(() => {
             window.addEventListener('scroll', () => {
                 const scroll = window.scrollY;
@@ -81,6 +81,8 @@ export default {
         });
         return {
             isSticky,
+            store,
+            authIsReady: computed(() => store.state.authIsReady)
         }
     }
 };

@@ -23,9 +23,6 @@
             </li>
         </ul>
     </nav>
-    <!-- <pre>
-            {{ menuItems }}
-        </pre> -->
 </template>
 
 <script>
