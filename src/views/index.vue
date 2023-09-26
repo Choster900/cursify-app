@@ -1,12 +1,12 @@
 <template>
-    <TemplateBody>
+    
         <PostCourse />
         <TrendingCourseSection />
         <TutorCourseWrapper />
         <div class="bg-[#fafafa] py-section">
             <TrendingCategoryCarousel />
         </div>
-    </TemplateBody>
+  
 </template>
 
 <script>
