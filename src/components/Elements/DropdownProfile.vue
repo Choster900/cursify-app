@@ -29,9 +29,9 @@
                             to="/settings/account" @click="dropdownOpen = false">Settings</router-link>
                     </li>
                     <li>
-                        <router-link
+                        <button
                             class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                            to="/signin" @click="dropdownOpen = false ; logOut()">Sign Out</router-link>
+                            to="/signin" @click="dropdownOpen = false ; logOut()">Sign Out</button>
                     </li>
                 </ul>
             </div>
@@ -42,6 +42,7 @@
 <script>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
+import '@/assets/css/utility-patterns.css'
 export default {
     name: 'DropdownProfile',
     props: ['align'],
