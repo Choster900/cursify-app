@@ -18,6 +18,15 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
   {
+    path: "/getCategory",
+    name: "getCategory",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/mostrarImage"),
+  },
+  {
     path: "/404", // Definimos una ruta para la página 404
     name: "not-found",
     component: NotFoundView, // Debes crear una vista para la página 404
