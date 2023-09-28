@@ -1,9 +1,10 @@
+import { API_URL } from "@/config/config";
 import axios from "axios";
 
 const createUser = async (email, password) => {
   return new Promise((resolve, reject) => {
     axios
-      .post("http://localhost:8080/v1/users/create", {
+      .post(`${API_URL}users/create`, {
         roleId: 1,
         userEmail: email.value,
         userLastName: "string",
