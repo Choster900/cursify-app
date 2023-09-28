@@ -122,7 +122,7 @@ export default {
         const password = ref('')
         const handleSingupSubmit = async () => {
             try {
-                await store.dispatch('singup', { email: email, password: password })
+                await store.dispatch('signup', { email: email, password: password })
             } catch (error) {
                 throw new Error("Could not complete singup action");
             }

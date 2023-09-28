@@ -2,12 +2,13 @@
     <div class="relative inline-flex">
         <button ref="trigger" class="inline-flex justify-center items-center group" aria-haspopup="true"
             @click.prevent="dropdownOpen = !dropdownOpen" :aria-expanded="dropdownOpen">
-            <img class="w-8 h-8 rounded-full" :src="UserAvatar" width="32" height="32" alt="User" />
+            <img class="w-8 h-8 rounded-full" :src="userPhoto" width="32" height="32" alt="User" />
             <div class="flex items-center truncate">
                 <span
-                    class="truncate ml-2 font-semibold group-hover:text-primary py-7 text-heading-light group-hover:text-slate-800">SERGIO
-                    ADONAY LOPEZ MEJIA.</span>
-                <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400" viewBox="0 0 12 12">
+                    style="display: inline-block; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                    class="truncate ml-2 font-semibold group-hover:text-primary py-7 text-heading-light group-hover:text-slate-800">
+                    {{ userInformations.userName }} {{ userInformations.userLastName }}</span>
+                <svg class="w-3 h-3 shrink-0 ml-2 mb-1 fill-current text-slate-400" viewBox="0 0 12 12">
                     <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
                 </svg>
             </div>
@@ -31,7 +32,7 @@
                     <li>
                         <button
                             class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                            to="/signin" @click="dropdownOpen = false ; logOut()">Sign Out</button>
+                            to="/signin" @click="dropdownOpen = false; logOut()">Sign Out</button>
                     </li>
                 </ul>
             </div>
@@ -40,7 +41,7 @@
 </template>
   
 <script>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import '@/assets/css/utility-patterns.css'
 export default {
@@ -56,13 +57,16 @@ export default {
         const dropdownOpen = ref(false)
         const trigger = ref(null)
         const dropdown = ref(null)
-
+        const userPhoto = ref(null)
         const store = useStore()
 
+        const createUserPhoto = () => {
+            let name = store.state.user.userName + store.state.user.userLastName;
+            userPhoto.value = "https://ui-avatars.com/api/?name=" + name + "&background=001b47&color=fff&size=100";
+        };
         const logOut = () => {
             store.dispatch('logout')
         }
-
         // close on click outside
         const clickHandler = ({ target }) => {
             if (!dropdownOpen.value || dropdown.value.contains(target) || trigger.value.contains(target)) return
@@ -76,6 +80,7 @@ export default {
         }
 
         onMounted(() => {
+            createUserPhoto();
             document.addEventListener('click', clickHandler)
             document.addEventListener('keydown', keyHandler)
         })
@@ -85,11 +90,15 @@ export default {
             document.removeEventListener('keydown', keyHandler)
         })
 
+
         return {
             dropdownOpen,
             trigger,
             dropdown,
             logOut,
+            userPhoto,
+            userInformations: computed(() => store.state.user),
+            createUserPhoto,
         }
     }
 }
