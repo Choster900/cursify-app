@@ -48,7 +48,7 @@ export default {
     }
 
 
-    const setImgToBack = async (e) => {
+    const setImgToBack = async () => {
       const formData = new FormData();
       formData.append("file", img.value);
       formData.append("categoryName", categoryName.value);

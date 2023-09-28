@@ -10,12 +10,13 @@
                         <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Categories ✨</h1>
                     </div>
                     <!-- Add card button -->
-                    <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white" @click="ModalIsOpen = true"
+                        @touchend="ModalIsOpen = true">
                         <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                             <path
                                 d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                         </svg>
-                        <span class="hidden xs:block ml-2" @click="ModalIsOpen = true" @touchend="ModalIsOpen = true">Add
+                        <span class="hidden xs:block ml-2">Add
                             Category</span>
                     </button>
                 </div>
@@ -43,9 +44,9 @@
 
                 <!-- Credit cards -->
                 <div class="space-y-2">
-
                     <!-- Card 1 -->
-                    <label class="relative block cursor-pointer text-left w-full">
+                    <label class="relative block cursor-pointer text-left w-full" v-for="category in categoriesObject"
+                        :key="category.categoryId">
                         <input type="radio" name="radio-buttons" class="peer sr-only" checked />
                         <div
                             class="p-4 rounded border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
@@ -55,7 +56,7 @@
                                     class="col-span-6 order-1 sm:order-none sm:col-span-3 flex items-center space-x-4 lg:sidebar-expanded:col-span-6 xl:sidebar-expanded:col-span-3">
 
                                     <div>
-                                        <div class="text-sm font-medium text-slate-800">_Metal</div>
+                                        <div class="text-sm font-medium text-slate-800">{{ category.categoryName }}</div>
                                         <div class="text-xs">**7328</div>
                                     </div>
                                 </div>
@@ -83,45 +84,6 @@
                             aria-hidden="true"></div>
                     </label>
 
-                    <!-- Card 2 -->
-                    <label class="relative block cursor-pointer text-left w-full">
-                        <input type="radio" name="radio-buttons" class="peer sr-only" />
-                        <div
-                            class="p-4 rounded border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
-                            <div class="grid grid-cols-12 items-center gap-x-2">
-                                <!-- Card -->
-                                <div
-                                    class="col-span-6 order-1 sm:order-none sm:col-span-3 flex items-center space-x-4 lg:sidebar-expanded:col-span-6 xl:sidebar-expanded:col-span-3">
-
-                                    <div>
-                                        <div class="text-sm font-medium text-slate-800">_Virtual</div>
-                                        <div class="text-xs">**7377</div>
-                                    </div>
-                                </div>
-                                <!-- Name -->
-                                <div
-                                    class="col-span-6 order-2 sm:order-none sm:col-span-3 text-left sm:text-center lg:sidebar-expanded:hidden xl:sidebar-expanded:block">
-                                    <div class="text-sm font-medium text-slate-800 truncate">Dominik Lamakani
-                                    </div>
-                                </div>
-                                <!-- Card limits -->
-                                <div
-                                    class="col-span-6 order-1 sm:order-none sm:col-span-4 text-right sm:text-center lg:sidebar-expanded:col-span-6 xl:sidebar-expanded:col-span-4">
-                                    <div class="text-sm">$0 / $20,000</div>
-                                </div>
-                                <!-- Card status -->
-                                <div
-                                    class="col-span-6 order-2 sm:order-none sm:col-span-2 text-right lg:sidebar-expanded:hidden xl:sidebar-expanded:block">
-                                    <div
-                                        class="text-xs inline-flex font-medium bg-amber-100 text-amber-600 rounded-full text-center px-2.5 py-1">
-                                        Blocked</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="absolute inset-0 border-2 border-transparent peer-checked:border-indigo-400 rounded pointer-events-none"
-                            aria-hidden="true"></div>
-                    </label>
-
                 </div>
 
             </div>
@@ -133,182 +95,13 @@
                     <div class="py-8 px-4 lg:px-8">
                         <div class="max-w-sm mx-auto lg:max-w-none">
 
-                            <div class="text-slate-800 font-semibold text-center mb-6">Physical Metal Card
-                                Summary
-                            </div>
+                            <div class="text-slate-800 font-semibold text-center mb-6">Caterogy summary</div>
 
                             <!-- Credit Card -->
                             <div
                                 class="relative aspect-[7/4] bg-gradient-to-tr from-slate-600 to-slate-800 p-5 rounded-xl shadow-lg overflow-hidden">
                                 <!-- Illustration on card -->
-                                <div class="absolute inset-0 w-full h-full" aria-hidden="true">
-                                    <svg class="w-full h-full" width="326" height="190" viewBox="0 0 326 190"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <defs>
-                                            <filter x="-59.5%" y="-73.1%" width="219%" height="246.3%"
-                                                filterUnits="objectBoundingBox" id="ccill-a">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-34.5%" y="-62.5%" width="169%" height="225.1%"
-                                                filterUnits="objectBoundingBox" id="ccill-b">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-23.3%" y="-43.5%" width="146.7%" height="186.9%"
-                                                filterUnits="objectBoundingBox" id="ccill-c">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-15.9%" y="-46.1%" width="131.7%" height="192.1%"
-                                                filterUnits="objectBoundingBox" id="ccill-d">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-21.8%" y="-58.4%" width="143.6%" height="216.8%"
-                                                filterUnits="objectBoundingBox" id="ccill-e">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-21.1%" y="-77.5%" width="142.1%" height="254.9%"
-                                                filterUnits="objectBoundingBox" id="ccill-f">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-19.1%" y="-66%" width="138.3%" height="232.1%"
-                                                filterUnits="objectBoundingBox" id="ccill-g">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-20%" y="-75.6%" width="140%" height="251.3%"
-                                                filterUnits="objectBoundingBox" id="ccill-h">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-32.1%" y="-78.2%" width="164.1%" height="256.5%"
-                                                filterUnits="objectBoundingBox" id="ccill-i">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-24.3%" y="-48.7%" width="148.6%" height="197.4%"
-                                                filterUnits="objectBoundingBox" id="ccill-j">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-29.7%" y="-67.7%" width="159.4%" height="235.4%"
-                                                filterUnits="objectBoundingBox" id="ccill-k">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-22.9%" y="-39.7%" width="145.9%" height="179.3%"
-                                                filterUnits="objectBoundingBox" id="ccill-l">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-27.4%" y="-72%" width="154.8%" height="243.9%"
-                                                filterUnits="objectBoundingBox" id="ccill-m">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-20.4%" y="-66.7%" width="140.9%" height="233.3%"
-                                                filterUnits="objectBoundingBox" id="ccill-n">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-70.1%" y="-93.6%" width="240.1%" height="287.2%"
-                                                filterUnits="objectBoundingBox" id="ccill-o">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-52.4%" y="-122.3%" width="204.7%" height="344.6%"
-                                                filterUnits="objectBoundingBox" id="ccill-p">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-38.5%" y="-87.5%" width="177%" height="275%"
-                                                filterUnits="objectBoundingBox" id="ccill-q">
-                                                <feGaussianBlur stdDeviation="7" in="SourceGraphic" />
-                                            </filter>
-                                            <filter x="-46.2%" y="-46.4%" width="192.4%" height="192.8%"
-                                                filterUnits="objectBoundingBox" id="ccill-r">
-                                                <feGaussianBlur stdDeviation="48" in="SourceGraphic" />
-                                            </filter>
-                                        </defs>
-                                        <g fill="none" fill-rule="evenodd">
-                                            <g stroke="#FFF">
-                                                <path d="m74.649 51.429 35.813-29.245" filter="url(#ccill-a)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="m95.001 48.454 61.614-34.273" style="mix-blend-mode:overlay"
-                                                    filter="url(#ccill-b)" transform="translate(23.168 10.2)" />
-                                                <path d="m102.738 59.711 90.966-49.333" filter="url(#ccill-c)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="M132.402 56.164c51.89-27.442 9.677-6.22 133.867-46.582"
-                                                    style="mix-blend-mode:overlay" filter="url(#ccill-d)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="M192.973 49.441c63.823-28.1 31.403-15.88 97.219-36.765"
-                                                    filter="url(#ccill-e)" transform="translate(23.168 10.2)" />
-                                                <path d="M174.906 63.986 275.21 36.252" filter="url(#ccill-f)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="M78.484 90.425 188.905 57.9" style="mix-blend-mode:overlay"
-                                                    filter="url(#ccill-g)" transform="translate(23.168 10.2)" />
-                                                <path d="M107.59 120.722 213.167 92.32" filter="url(#ccill-h)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="m44.001 139.184 66.091-27.432" filter="url(#ccill-i)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="m25.233 108.035 87.289-44.052" filter="url(#ccill-j)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="m0 78.862 71.407-31.693" filter="url(#ccill-k)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="M41.3 54.036 133.926 0" filter="url(#ccill-l)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="M177.385 128.372c38.41-17.811 13.059-6.784 77.387-29.83"
-                                                    style="mix-blend-mode:overlay" filter="url(#ccill-m)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="m190.745 154.661 103.507-32.222" filter="url(#ccill-n)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="m235.764 74.579 30.397-22.87" filter="url(#ccill-o)"
-                                                    transform="translate(23.168 10.2)" />
-                                                <path d="M29.686 21.19 70.172 3.645" style="mix-blend-mode:overlay"
-                                                    filter="url(#ccill-p)" transform="translate(23.168 10.2)" />
-                                                <path d="M17.977 79.61 73.04 55.091" filter="url(#ccill-q)"
-                                                    transform="translate(23.168 10.2)" />
-                                            </g>
-                                            <path fill-opacity=".24" fill="#FFF" style="mix-blend-mode:overlay"
-                                                filter="url(#ccill-r)" d="M156 .573 331.59 311H75L20 .573z"
-                                                transform="translate(0 -40)" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="relative h-full flex flex-col justify-between">
-                                    <!-- Logo on card -->
-                                    <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink">
-                                        <defs>
-                                            <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="icon1-b">
-                                                <stop stop-color="#E2E8F0" offset="0%" />
-                                                <stop stop-color="#94A3B8" offset="100%" />
-                                            </linearGradient>
-                                            <linearGradient x1="50%" y1="24.537%" x2="50%" y2="99.142%" id="icon1-c">
-                                                <stop stop-color="#334155" offset="0%" />
-                                                <stop stop-color="#334155" stop-opacity="0" offset="100%" />
-                                            </linearGradient>
-                                            <path id="icon1-a" d="M16 0l16 32-16-5-16 5z" />
-                                        </defs>
-                                        <g transform="rotate(90 16 16)" fill="none" fill-rule="evenodd">
-                                            <mask id="icon1-d" fill="#fff">
-                                                <use xlink:href="#icon1-a" />
-                                            </mask>
-                                            <use fill="url(#icon1-b)" xlink:href="#icon1-a" />
-                                            <path fill="url(#icon1-c)" mask="url(#icon1-d)" d="M16-6h20v38H16z" />
-                                        </g>
-                                    </svg>
-                                    <!-- Card number -->
-                                    <div
-                                        class="flex justify-between text-lg font-bold text-slate-200 tracking-widest drop-shadow-sm">
-                                        <span>****</span>
-                                        <span>****</span>
-                                        <span>****</span>
-                                        <span>7328</span>
-                                    </div>
-                                    <!-- Card footer -->
-                                    <div class="relative flex justify-between items-center z-10 mb-0.5">
-                                        <!-- Card expiration -->
-                                        <div
-                                            class="text-sm font-bold text-slate-200 tracking-widest drop-shadow-sm space-x-3">
-                                            <span>EXP 12/24</span>
-                                            <span>CVC ***</span>
-                                        </div>
-                                    </div>
-                                    <!-- Mastercard logo -->
-                                    <svg class="absolute bottom-0 right-0" width="48" height="28" viewBox="0 0 48 28">
-                                        <circle fill="#F59E0B" cx="34" cy="14" r="14" fill-opacity=".8" />
-                                        <circle fill="#F43F5E" cx="14" cy="14" r="14" fill-opacity=".8" />
-                                    </svg>
-                                </div>
+                                <img src="" alt="">
                             </div>
 
                             <!-- Details -->
@@ -316,8 +109,8 @@
                                 <div class="text-sm font-semibold text-slate-800 mb-1">Details</div>
                                 <ul>
                                     <li class="flex items-center justify-between py-3 border-b border-slate-200">
-                                        <div class="text-sm">Card Name</div>
-                                        <div class="text-sm font-medium text-slate-800 ml-2">Physical Metal Card
+                                        <div class="text-sm">Category Name</div>
+                                        <div class="text-sm font-medium text-slate-800 ml-2">Introduccion a la programacion
                                         </div>
                                     </li>
                                     <li class="flex items-center justify-between py-3 border-b border-slate-200">
@@ -347,22 +140,6 @@
                                 </div>
                             </div>
 
-                            <!-- Withdrawal Limits -->
-                            <div class="mt-6">
-                                <div class="text-sm font-semibold text-slate-800 mb-4">Withdrawal Limits</div>
-                                <div class="pb-4 border-b border-slate-200">
-                                    <div class="flex justify-between text-sm mb-2">
-                                        <div>Withdrawn This Month</div>
-                                        <div class="italic">$100,00 <span class="text-slate-400">/</span>
-                                            $1,500.00
-                                        </div>
-                                    </div>
-                                    <div class="relative w-full h-2 bg-slate-300">
-                                        <div class="absolute inset-0 bg-emerald-500" aria-hidden="true"
-                                            style="width: 7.5%;"></div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- Edit / Delete -->
                             <div class="flex items-center space-x-3 mt-6">
@@ -451,23 +228,28 @@
                         accept="image/gif,image/jpeg,image/png,image/jpg,image" />
                 </label>
                 <button @click="setImgToBack"
-                    class="bg-indigo-900 rounded-lg shadow text-center text-white text-base font-semibold w-full py-2 mt-4">Create category</button>
+                    class="bg-indigo-900 rounded-lg shadow text-center text-white text-base font-semibold w-full py-2 mt-4">Create
+                    category</button>
             </div>
         </div>
     </Modal>
 </template>
   
 <script>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Modal from '../Elements/Modal.vue'
 import ModalBlankVue from '../Elements/ModalBlank.vue'
 import { API_URL } from '@/config/config'
 import axios from 'axios'
+import Swal from 'sweetalert2';
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import requestHelper from '@/composables/Helpers/requestHelpers'
 export default {
     name: 'CreditCards',
     components: {
         Modal,
-        ModalBlankVue
+        ModalBlankVue,
     },
     setup() {
         const sidebarOpen = ref(false)
@@ -476,36 +258,102 @@ export default {
         const img = ref(null)
         const url = ref(null)
         const fileName = ref(null)
-
-
+        const categoriesObject = ref([])
         const fileChange = (e) => {
-            let file = e.target.files[0];
-            img.value = file; // Update the ref value using .value
-            url.value = URL.createObjectURL(file); // Update the ref value using .value
-            fileName.value = file.name;``
+
+            const file = e.target.files[0]; // Obtener el primer archivo seleccionado
+
+            if (file) {
+                // Actualizar los ref values
+                img.value = file;
+                url.value = URL.createObjectURL(file);
+                fileName.value = file.name;
+            } else {
+                // Manejar el caso en el que no se selecciona ningún archivo
+                console.error("No se seleccionó ningún archivo.");
+            }
+
+        }
+
+        const createCategoryRequest = () => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const formData = new FormData();
+                    formData.append("file", img.value);
+                    formData.append("categoryName", categoryName.value);
+                    formData.append("categoryPhoto", fileName.value);
+
+
+                    const resp = await axios.post(`${API_URL}/categories`, formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data", //sin esto no se puede envari la iamgen
+                        }
+                    })
+                    setTimeout(() => {
+                        ModalIsOpen = false
+                        categoryName.value = ''
+                        fileName.value = ''
+                        img.value = ''
+                        url.value = ''
+                        resolve(resp); // Resolvemos la promesa con la respuesta exitosa después de 3 segundos
+                        getCategories()
+                    }, 1000);
+                } catch (error) {
+                    if (error.response && error.response.status === 404 || error.response.status == 400) {
+                        // Aquí manejas el error 404
+                        console.log(error.response.status);
+                        // Puedes mostrar un mensaje al usuario o redirigirlo a una página específica
+                    } else {
+                        console.error(error);
+                    }
+
+                    setTimeout(() => {
+                        reject(error);
+                    }, 1000);
+
+                }
+            });
+        }
+        const getCategories = async () => {
+            const resp = await axios.get(`${API_URL}/categories/findAllCategories/`)
+            categoriesObject.value = resp.data; // Asigna resp.data a categoriesObject
+            console.log(resp.data);
+        }
+        const setImgToBack = async () => {
+
+            Swal.fire({
+                title: '<p class="text-[20pt] text-center">¿Esta seguro de editar los datos?</p>',
+                icon: 'question',
+                confirmButtonText: 'Si, Enviar',
+                confirmButtonColor: '#001b47',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true,
+                showCancelButton: true,
+                showCloseButton: true,
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const resolveAfter3Sec = createCategoryRequest()
+                    toast.promise(
+                        resolveAfter3Sec,
+                        {
+                            pending: 'Cargando petición',
+                            success: 'La categoria fue guardado correctamente ',
+                            error: 'La solicitud es incorrecta. Por favor, verifica los datos enviados.',
+                        },
+                    );
+                }
+            })
+
+
         }
 
 
-        const setImgToBack = async (e) => {
-            const formData = new FormData();
-            formData.append("file", img.value);
-            formData.append("categoryName", categoryName.value);
-            formData.append("categoryPhoto", fileName.value);
-
-            await axios
-                .post(`${API_URL}categories`, formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data", //sin esto no se puede envari la iamgen
-                    },
-                })
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((Error) => {
-                    console.log(Error);
-                });
-        }
-
+        onMounted(() => {
+            getCategories()
+        })
         return {
             sidebarOpen,
             ModalIsOpen,
@@ -515,6 +363,8 @@ export default {
             url,
             fileChange,
             setImgToBack,
+            createCategoryRequest,
+            categoriesObject,
         }
     },
 }

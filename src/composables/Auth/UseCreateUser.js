@@ -4,7 +4,7 @@ import axios from "axios";
 const createUser = async (email, password) => {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${API_URL}users/create`, {
+      .post(`${API_URL}/users/create`, {
         roleId: 1,
         userEmail: email.value,
         userLastName: "string",

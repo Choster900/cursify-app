@@ -5,7 +5,7 @@ const loginUser = async (email, password) => {
   //return {email:email.value, password:password.value};
   return new Promise((resolve, reject) => {
     axios
-      .post(`${API_URL}users/login`, {
+      .post(`${API_URL}/users/login`, {
         userEmail: email.value,
         userPassword: password.value,
       })
