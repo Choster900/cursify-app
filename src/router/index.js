@@ -18,13 +18,22 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/CreateCategory.vue"),
   },
   {
-    path: "/getCategory",
-    name: "getCategory",
+    path: "/courses/my-courses",
+    name: "my-courses",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/mostrarImage"),
+      import(/* webpackChunkName: "about" */ "../views/MyCourses"),
+  },
+  {
+    path: "/courses/nombre-curso",
+    name: "createCourse",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/CourseIndex"),
   },
   {
     path: "/404", // Definimos una ruta para la página 404

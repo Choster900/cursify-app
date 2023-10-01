@@ -1,7 +1,7 @@
 <template>
     <article class="post group">
         <div class="post-image overflow-hidden rounded-[10px] h-[200px] md:h-auto relative" :class="imgHeight">
-            <router-link :to="`/blog/`">
+            <router-link to="/courses/nombre-curso">
                 <img :src="course.course_photo" :alt="course.course_name"
                     class="object-cover h-full w-full group-hover:scale-110 transition-all duration-500">
                 <div

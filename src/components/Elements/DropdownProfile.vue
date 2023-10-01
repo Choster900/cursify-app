@@ -27,7 +27,12 @@
                     <li>
                         <router-link
                             class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                            to="/settings/account" @click="dropdownOpen = false">Settings</router-link>
+                            to="/courses/my-courses" @click="dropdownOpen = false">View as a tutor</router-link>
+                    </li>
+                    <li>
+                        <router-link
+                            class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
+                            to="/courses/my-courses" @click="dropdownOpen = false">My learning</router-link>
                     </li>
                     <li>
                         <button
