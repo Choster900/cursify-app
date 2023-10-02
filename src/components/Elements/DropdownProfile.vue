@@ -20,24 +20,23 @@
                 class="origin-top-right z-10 absolute top-full min-w-44 w-full bg-white border border-slate-200 py-1.5 rounded shadow-lg overflow-hidden mt-1"
                 :class="align === 'right' ? 'right-0' : 'left-0'">
                 <div class="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
-                    <div class="font-medium text-slate-800">Acme Inc.</div>
-                    <div class="text-xs text-slate-500 italic">Administrator</div>
+                    <div class="font-medium text-slate-800">Cursify v1.0.0</div>
                 </div>
                 <ul ref="dropdown" @focusin="dropdownOpen = true" @focusout="dropdownOpen = false">
                     <li>
                         <router-link
-                            class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                            to="/courses/my-courses" @click="dropdownOpen = false">View as a tutor</router-link>
+                            class="font-medium text-sm text-slate-700 hover:text-indigo-600 flex items-center py-1 px-3"
+                            to="/courses/my-courses" @click="dropdownOpen = false">Teaching Dashboard</router-link>
                     </li>
                     <li>
                         <router-link
-                            class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                            to="/courses/my-courses" @click="dropdownOpen = false">My learning</router-link>
+                            class="font-medium text-sm text-slate-700 hover:text-indigo-600 flex items-center py-1 px-3"
+                            to="/courses/my-courses" @click="dropdownOpen = false">Learning Dashboard</router-link>
                     </li>
                     <li>
                         <button
-                            class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                            to="/signin" @click="dropdownOpen = false; logOut()">Sign Out</button>
+                            class="font-medium text-sm text-slate-700 hover:text-indigo-600 flex items-center py-1 px-3"
+                            to="/signin" @click="dropdownOpen = false; logOut()">Log Out</button>
                     </li>
                 </ul>
             </div>

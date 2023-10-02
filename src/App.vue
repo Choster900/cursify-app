@@ -1,22 +1,37 @@
 <template>
-  <TemplateBody>
-    <router-view v-slot="{ Component }">
+  <div>
+    <TemplateBody v-if="!isCreateCourseRoute">
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
+    </TemplateBody>
+
+    <router-view v-else v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" />
       </keep-alive>
     </router-view>
-
-   <!--  <index /> -->
-  </TemplateBody>
+  </div>
 </template>
 
 <script>
-
-import index from '@/views/index.vue'
 import TemplateBody from './views/Layout/Template.vue'
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 export default {
-  components: { index, TemplateBody }
+  components: { TemplateBody },
+  setup() {
+    const route = useRoute();
+
+    const isCreateCourseRoute = computed(() => route.path.startsWith("/courses/create"));
+
+    return {
+      isCreateCourseRoute,
+    }
+  }
 }
 </script>
 

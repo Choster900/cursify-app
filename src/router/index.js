@@ -1,7 +1,11 @@
-import { createRouter, createWebHashHistory,createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from "vue-router";
+
 import NotFoundView from "../views/NotFound404.vue";
 import homePage from "../views/index.vue";
-
 const routes = [
   {
     path: "/",
@@ -28,12 +32,22 @@ const routes = [
   },
   {
     path: "/courses/nombre-curso",
-    name: "createCourse",
+    name: "viweCourse",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/CourseIndex"),
+  },
+  {
+    path: "/courses/create/:step",
+    name: "createCourse",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/createCoursePage.vue"),
+
   },
   {
     path: "/404", // Definimos una ruta para la página 404
@@ -48,7 +62,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  
+
   routes,
 });
 
