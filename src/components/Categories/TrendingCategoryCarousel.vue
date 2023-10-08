@@ -24,7 +24,7 @@
                         <swiper :modules="modules" :slidesPerView="4" :centeredSlides="false" :spaceBetween="20" 
                             :breakpoints="swiperBreakpoints" :speed="750" :navigation="swiperNavigation" :virtual="true" class="mySwiper"
                             @swiper="setSwiperRef">
-                            <swiper-slide v-for="(category, index) in CategoryCourses" :key="index" class="categories">
+                            <swiper-slide v-for="(category, index) in categoriesObject" :key="index" class="categories">
                                 <CategoryStyleCourse :category="category" />
                             </swiper-slide>
                         </swiper>
@@ -37,13 +37,11 @@
 
 <script>
 import { ref } from 'vue';
-import CategoryStyleCourse from './CategoryStyleCourse.vue';
-// Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from 'swiper/vue';
-// import required modules
 import { Navigation } from 'swiper/modules';
-// import Swiper core and required modules
+import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Pagination, Virtual } from 'swiper/modules';
+import CategoryStyleCourse from './CategoryStyleCourse.vue';
+import useCategory from '@/composables/Category.vue/useCategory';
 export default {
     components: { CategoryStyleCourse, Swiper, SwiperSlide },
     setup() {
@@ -53,12 +51,11 @@ export default {
         }
 
         // Create array with 500 slides
-        const slides = ref(
-            Array.from({ length: 500 }).map((_, index) => `Slide ${index + 1}`)
-        );
         let swiperRef = null;
-        let appendNumber = 500;
         let prependNumber = 1;
+        let appendNumber = 500;
+        const {categoriesObject} = useCategory()
+        const slides = ref(Array.from({ length: 500 }).map((_, index) => `Slide ${index + 1}`));
 
         const setSwiperRef = (swiper) => {
             swiperRef = swiper;
@@ -95,80 +92,6 @@ export default {
             }
         };
 
-        const CategoryCourses = [
-            {
-                "category_id": 1,
-                "category_name": "Programming",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/4-2.jpg",
-                "created_at_category": "2023-09-17T12:00:00Z",
-                "modified_at_category": "2023-09-17T12:30:00Z"
-            },
-            {
-                "category_id": 2,
-                "category_name": "Design",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/5.jpg",
-                "created_at_category": "2023-09-16T14:00:00Z",
-                "modified_at_category": "2023-09-16T14:45:00Z"
-            },
-            {
-                "category_id": 3,
-                "category_name": "Marketing",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/3.jpg",
-                "created_at_category": "2023-09-15T10:00:00Z",
-                "modified_at_category": "2023-09-15T10:20:00Z"
-            },
-            {
-                "category_id": 4,
-                "category_name": "Data Science",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/2.jpg",
-                "created_at_category": "2023-09-14T11:00:00Z",
-                "modified_at_category": "2023-09-14T11:30:00Z"
-            },
-            {
-                "category_id": 5,
-                "category_name": "Photography",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/1.jpg",
-                "created_at_category": "2023-09-13T09:00:00Z",
-                "modified_at_category": "2023-09-13T09:45:00Z"
-            },
-            {
-                "category_id": 6,
-                "category_name": "Business",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/8.jpg",
-                "created_at_category": "2023-09-12T15:00:00Z",
-                "modified_at_category": "2023-09-12T15:20:00Z"
-            },
-            {
-                "category_id": 7,
-                "category_name": "Language",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/7.jpg",
-                "created_at_category": "2023-09-11T16:00:00Z",
-                "modified_at_category": "2023-09-11T16:30:00Z"
-            },
-            {
-                "category_id": 8,
-                "category_name": "Cooking",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/10.jpg",
-                "created_at_category": "2023-09-10T17:00:00Z",
-                "modified_at_category": "2023-09-10T17:45:00Z"
-            },
-            {
-                "category_id": 9,
-                "category_name": "Fitness",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/9-1.jpg",
-                "created_at_category": "2023-09-09T18:00:00Z",
-                "modified_at_category": "2023-09-09T18:15:00Z"
-            },
-            {
-                "category_id": 10,
-                "category_name": "Music",
-                "category_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/11.jpg",
-                "created_at_category": "2023-09-08T19:00:00Z",
-                "modified_at_category": "2023-09-08T19:30:00Z"
-            }
-        ];
-
-
         const swiperBreakpoints = {
 
             '992': {
@@ -185,22 +108,21 @@ export default {
 
             }
         }
-
         // Devuelve las referencias y opciones que necesitas
         return {
-            trendingOptions,
-            swiperBreakpoints,
-            CategoryCourses,
             slides,
-            swiperRef: null,
-            appendNumber,
-            prependNumber,
-            setSwiperRef,
-            slideTo,
             append,
+            slideTo,
             prepend,
-            modules: [Pagination, Navigation, Virtual],
+            appendNumber,
+            setSwiperRef,
+            prependNumber,
+            trendingOptions,
+            swiperRef: null,
+            categoriesObject,
             swiperNavigation,
+            swiperBreakpoints,
+            modules: [Pagination, Navigation, Virtual],
         };
     }
 };
