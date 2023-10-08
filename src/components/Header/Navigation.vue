@@ -2,7 +2,7 @@
     <nav class="navigation-menu">
         <ul class="flex">
             <li v-for="(nav, i) in menuItems" :key="i" class="relative mr-12 group">
-                <router-link :to="nav.module.path" class="block font-semibold group-hover:text-primary py-7"
+                <router-link :to="nav.module.path" class="block font-semibold group-hover:text-primary py-7" v-if="true" 
                     :class="colorVariant">
                     {{ nav.module.label }}
 
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
 export default {
     props: {
         colorVariant: {
@@ -34,7 +35,7 @@ export default {
         },
     },
     setup() {
-
+        const store = useStore()
         const menuItems = [
             {
                 "module": {
@@ -62,25 +63,39 @@ export default {
             },
             {
                 "module": {
+                    "label": "Administracion",
+                    "path": "",
+                    "childItems": {
+                        "edges": [{
+                            "module": {
+                                "label": "Categories dashboard",
+                                "path": "/category/create"
+                            }
+                        },]
+                    }
+                }
+            },
+            {
+                "module": {
                     "label": "Categories",
                     "path": "/categories",
                     "childItems": {
                         "edges": [
                             {
                                 "module": {
-                                    "label": "Category 1",
+                                    "label": "Programming",
                                     "path": "/category-1"
                                 }
                             },
                             {
                                 "module": {
-                                    "label": "Category 2",
+                                    "label": "Web Development",
                                     "path": "/category-2"
                                 }
                             },
                             {
                                 "module": {
-                                    "label": "Category 3",
+                                    "label": "Analysis Databases",
                                     "path": "/category-3"
                                 }
                             }
@@ -88,15 +103,9 @@ export default {
                     }
                 }
             }
-
-
-
-
         ]
-
-
         return {
-            menuItems
+            menuItems,
         }
     }
 }

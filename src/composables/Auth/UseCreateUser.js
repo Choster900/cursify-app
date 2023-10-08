@@ -5,7 +5,7 @@ const createUser = async (email, password) => {
   return new Promise((resolve, reject) => {
     axios
       .post(`${API_URL}/users/create`, {
-        roleId: 1,
+        roleId: 2,
         userEmail: email.value,
         userLastName: "string",
         userName: "string",

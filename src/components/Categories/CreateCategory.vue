@@ -83,11 +83,8 @@
                         <div class="absolute inset-0 border-2 border-transparent peer-checked:border-indigo-400 rounded pointer-events-none"
                             aria-hidden="true"></div>
                     </label>
-
                 </div>
-
             </div>
-
             <!-- Sidebar -->
             <CategoryInfo :categoryinfor="categoryInformation" @modifiedUser="preparingToEdit" />
 
@@ -114,15 +111,11 @@
             <!-- Lado Izquierdo (Imagen) -->
             <div class="flex-shrink-0 pr-2 w-full lg:w-1/2 flex justify-center items-center">
                 <div class="text-center">
-                    <template v-if="!categoryId">
-                        <img src="../../static/image/svg/Shrug-bro.svg" alt="Imagen" class="h-48 object-cover rounded" />
-                        <h1 class="text-sm">
-                            Parece que aún no hay una imagen seleccionada
-                        </h1>
-                    </template>
-                    <template v-else>
-                        <img :src="url || `${IMAGE_PATH}${urlEdit}`" alt="Imagen" class="w-full object-cover rounded" />
-                    </template>
+                    <div class="image-container">
+                        <img v-if="url" :src="url" alt="Imagen" class="w-full object-cover rounded" />
+                        <img v-else src="../../static/image/svg/Shrug-bro.svg" alt="Imagen"
+                            class="h-48 object-cover rounded" />
+                    </div>
                 </div>
             </div>
 
@@ -172,8 +165,9 @@ import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import requestHelper from '@/composables/Helpers/requestHelpers'
 import CategoryInfo from './CategoryInfo.vue'
+
 export default {
-    name: 'Create Category',
+    name: 'CreateCategory',
     components: {
         Modal,
         ModalBlankVue,
@@ -189,116 +183,84 @@ export default {
         const urlEdit = ref(null)
         const categoriesObject = ref([])
         const categoryInformation = ref(null)
+        /**
+         * 
+         * @param {Object} e Get the picture information
+         */
         const fileChange = (e) => {
-
-            const file = e.target.files[0]; // Obtener el primer archivo seleccionado
-
+            const file = e.target.files[0]
             if (file) {
-                // Actualizar los ref values
-                img.value = file;
-                url.value = URL.createObjectURL(file);
-                categoryPhoto.value = file.name;
+                img.value = file
+                url.value = URL.createObjectURL(file)
+                categoryPhoto.value = file.name
             } else {
-                // Manejar el caso en el que no se selecciona ningún archivo
-                console.error("No se seleccionó ningún archivo.");
+                console.error("No se seleccionó ningún archivo.")
             }
-
         }
+        /**
+         * Send the information to add a new category
+         */
+        const createCategoryRequest = async () => {
+            try {
+                const formData = new FormData()
+                formData.append("file", img.value)
+                formData.append("categoryName", categoryName.value)
+                formData.append("categoryPhoto", categoryPhoto.value)
 
-        const createCategoryRequest = () => {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    const formData = new FormData();
-                    formData.append("file", img.value);
-                    formData.append("categoryName", categoryName.value);
-                    formData.append("categoryPhoto", categoryPhoto.value);
-
-
-                    const resp = await axios.post(`${API_URL}/categories`, formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data", //sin esto no se puede envari la iamgen
-                        }
-                    })
-                    setTimeout(() => {
-                        ModalIsOpen.value = false
-                        categoryName.value = ''
-                        categoryPhoto.value = ''
-                        img.value = ''
-                        url.value = ''
-                        resolve(resp); // Resolvemos la promesa con la respuesta exitosa después de 3 segundos
-                        getCategories()
-                    }, 1000);
-                } catch (error) {
-                    if (error.response && error.response.status === 404 || error.response.status == 400) {
-                        // Aquí manejas el error 404
-                        console.log(error.response.status);
-                        // Puedes mostrar un mensaje al usuario o redirigirlo a una página específica
-                    } else {
-                        console.error(error);
+                const resp = await axios.post(`${API_URL}/categories`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
                     }
+                })
 
-                    setTimeout(() => {
-                        reject(error);
-                    }, 1000);
-
-                }
-            });
+                await getCategories()
+                clearDataInForm()
+                return resp
+            } catch (error) {
+                handleError(error)
+                throw error
+            }
         }
+        /**
+         * Send a request to the server to update a category
+         */
+        const modifiedCategoryRequest = async () => {
+            try {
+                const formData = new FormData()
+                formData.append("file", img.value)
+                formData.append("categoryName", categoryName.value)
+                formData.append("categoryPhoto", categoryPhoto.value)
 
-        const modifiedCategoryRequest = () => {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    const formData = new FormData();
-                    //formData.append("id", categoryId.value);
-                    formData.append("file", img.value);
-                    formData.append("categoryName", categoryName.value);
-                    formData.append("categoryPhoto", categoryPhoto.value);
-
-
-                    const resp = await axios.put(`${API_URL}/categories/${categoryId.value}`, formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data", //sin esto no se puede envari la iamgen
-                        }
-                    })
-                    setTimeout(() => {
-                        ModalIsOpen.value = false
-                        categoryName.value = ''
-                        categoryPhoto.value = ''
-                        img.value = ''
-                        url.value = ''
-                        resolve(resp); // Resolvemos la promesa con la respuesta exitosa después de 3 segundos
-                        getCategories()
-                    }, 1000);
-                } catch (error) {
-                    console.log(error);
-                    if (error.response && error.response.status === 404 || error.response.status == 400) {
-                        // Aquí manejas el error 404
-                        console.log(error.response.status);
-                        // Puedes mostrar un mensaje al usuario o redirigirlo a una página específica
-                    } else {
-                        console.error(error);
+                const resp = await axios.put(`${API_URL}/categories/${categoryId.value}`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
                     }
+                })
 
-                    setTimeout(() => {
-                        reject(error);
-                    }, 1000);
-
-                }
-            });
+                await getCategories()
+                clearDataInForm()
+                return resp
+            } catch (error) {
+                handleError(error)
+                throw error
+            }
         }
-
-
+        /**
+         * Get a list of categories
+         */
         const getCategories = async () => {
             try {
                 const resp = await axios.get(`${API_URL}/categories/findAllCategories/`);
                 categoriesObject.value = resp.data;
             } catch (error) {
-                console.error(error);
+                handleError(error)
             }
-        };
+        }
+        /**
+         * Create a new category 
+         */
         const createCategory = async () => {
-
-            Swal.fire({
+            const confirm = await Swal.fire({
                 title: '<p class="text-[20pt] text-center">¿Esta seguro de agregar los datos?</p>',
                 icon: 'question',
                 confirmButtonText: 'Si, Enviar',
@@ -310,23 +272,24 @@ export default {
                 hideClass: {
                     popup: 'animate__animated animate__fadeOutUp'
                 }
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    const resolveAfter3Sec = createCategoryRequest()
-                    toast.promise(
-                        resolveAfter3Sec,
-                        {
-                            pending: 'Cargando petición',
-                            success: 'La categoria fue guardado correctamente ',
-                            error: 'La solicitud es incorrecta. Por favor, verifica los datos enviados.',
-                        },
-                    );
-                }
             })
-        }
-        const modifiedCategory = async () => {
 
-            Swal.fire({
+            if (confirm.isConfirmed) {
+                toast.promise(
+                    createCategoryRequest(),
+                    {
+                        pending: 'Cargando petición',
+                        success: 'La categoria fue guardado correctamente ',
+                        error: 'La solicitud es incorrecta. Por favor, verifica los datos enviados.',
+                    },
+                );
+            }
+        }
+        /**
+         * Update the category 
+         */
+        const modifiedCategory = async () => {
+            const confirm = await Swal.fire({
                 title: '<p class="text-[20pt] text-center">¿Esta seguro de editar los datos?</p>',
                 icon: 'question',
                 confirmButtonText: 'Si, Enviar',
@@ -338,32 +301,36 @@ export default {
                 hideClass: {
                     popup: 'animate__animated animate__fadeOutUp'
                 }
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    const resolveAfter3Sec = modifiedCategoryRequest()
-                    toast.promise(
-                        resolveAfter3Sec,
-                        {
-                            pending: 'Cargando petición',
-                            success: 'La categoria fue guardado correctamente ',
-                            error: 'La solicitud es incorrecta. Por favor, verifica los datos enviados.',
-                        },
-                    );
-                    categoryInformation.value = categoriesObject.value[0];
-                }
             })
-        }
-        const clearDataInForm = () => {
 
-            categoryId.value = null;
-            categoryName.value = null;
-            categoryPhoto.value = null;
+            if (confirm.isConfirmed) {
+                toast.promise(
+                    modifiedCategoryRequest(),
+                    {
+                        pending: 'Cargando petición',
+                        success: 'La categoria fue guardado correctamente ',
+                        error: 'La solicitud es incorrecta. Por favor, verifica los datos enviados.',
+                    },
+                );
+                categoryInformation.value = categoriesObject.value[0];
+            }
+        }
+        /**
+         * Cler data 
+         */
+        const clearDataInForm = () => {
+            categoryId.value = null
+            categoryName.value = null
+            categoryPhoto.value = null
             img.value = ''
             url.value = ''
             urlEdit.value = ''
         }
+        /**
+         * 
+         * @param {Object} e Get the whole information of the category 
+         */
         const preparingToEdit = (e) => {
-            console.log(e);
             categoryId.value = e.categoryId
             categoryName.value = e.categoryName
 
@@ -372,25 +339,38 @@ export default {
 
             categoryPhoto.value = partes[partes.length - 1];
 
-
+            url.value = `${IMAGE_PATH}${urlEdit.value}`;
             ModalIsOpen.value = true
+        }
+        /**
+         * 
+         * @param {Object} error Get the error message from the error object
+         */
+        const handleError = (error) => {
+            console.error(error);
+            if (error.response && (error.response.status === 404 || error.response.status == 400)) {
+                console.log(error.response.status);
+                // Puedes mostrar un mensaje al usuario o redirigirlo a una página específica
+            }
         }
 
         onMounted(async () => {
             try {
-                await getCategories(); // Suponiendo que getCategories() es una función asincrónica que obtiene las categorías
+                await getCategories();
                 categoryInformation.value = categoriesObject.value[0];
             } catch (error) {
+                handleError(error)
             }
         });
+
         watch(ModalIsOpen, (newValue, oldValue) => {
-            // Esta función se ejecutará cada vez que someData cambie
             if (!newValue) {
                 setTimeout(() => {
                     clearDataInForm()
                 }, 700);
             }
         });
+
         return {
             ModalIsOpen,
             categoryName,
@@ -403,7 +383,6 @@ export default {
             fileChange,
             categoryInformation,
             createCategory,
-            createCategoryRequest,
             categoriesObject,
             preparingToEdit,
             modifiedCategory,

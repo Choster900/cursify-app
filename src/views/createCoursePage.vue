@@ -118,7 +118,7 @@
                                     </select>
                                 </div>
                                 <div class="flex items-center justify-between space-x-6 mb-8">
-                                    <textarea
+                                    <textarea v-model="courseDescription"
                                         class="w-full h-32 px-4 py-2 border border-indigo-500 rounded-md focus:outline-none focus:border-indigo-700"
                                         placeholder="Enter your text here..."></textarea>
                                 </div>
@@ -140,66 +140,63 @@
                             <h1 class="text-3xl text-slate-800 font-bold mb-6">Company information ✨</h1>
                             <!-- Form -->
                             <div>
-                                <div class="ud-form-group">
-                                    <label for="form-group--124" class="ud-form-label ud-heading-md">Course image</label>
+                                <div v-if="!urlImageFile"
+                                    class="h-72 w-full border-[3px] border-dashed flex items-center justify-center"
+                                    @dragover.prevent="handleDragOver" @drop="handleDrop">
+                                    <div class="text-center">
+                                        <p class="font-semibold">Dragon and Drop files here</p>
+                                        <p>Or</p>
+                                        <button class="py-2 px-4 bg-red-500 text-white rounded-sm" @click="openFileInput">
 
-                                    <div
-                                        class="course-basics-form--image-upload--1BfBH udlite-in-udheavy flex items-center space-x-4">
-                                        <!-- Vista previa de la imagen -->
-                                        <div
-                                            class="ud-image-upload-preview-wrapper image-upload-preview-with-crop--preview-wrapper--3mrme">
-                                            <div class="image-upload-preview-with-crop--image-wrapper--2soBW">
-                                                <img data-purpose="image-preview"
-                                                    src="https://udemy-image-web-upload.s3.amazonaws.com:443/cropped_image_00d31720-60d1-11ee-ac45-46d0b7c1fb6b.png"
-                                                    alt="" height="422" width="750" class="" loading="lazy"
-                                                    style="max-height: 42.2rem;" />
-                                            </div>
-                                        </div>
-
-                                        <div class="">
-                                            <input accept=".gif,.jpg,.jpeg,.png" id="form-group--126" type="file"
-                                                class="sr-only" />
-
-                                            <label for="form-group--126" class="flex border">
-                                                <span class="w-28">
-                                                    <span class="file-uploader-module--fake-input-text--2n1U1"
-                                                        id="file-name">No file selected</span>
-                                                </span>
-
-                                                <span class="bg-red-500">
-                                                    <span>Upload File</span>
-                                                </span>
-                                            </label>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!--  <div class="space-y-4 mb-8">
-                                    <div class="flex items-center space-x-4">
-                                        <div class="flex-shrink-0">
-                                            <label for="file-upload"
-                                                class="cursor-pointer flex items-center space-x-2 text-indigo-500">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M12 4v16m8-8H4" />
+                                            <div class="flex justify-center gap-2">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                        stroke-linejoin="round"></g>
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
+                                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round">
+                                                        </path>
+                                                        <path
+                                                            d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+                                                            stroke="#ffffff" stroke-width="1.5" stroke-linecap="round">
+                                                        </path>
+                                                    </g>
                                                 </svg>
-                                                <span>Upload a file</span>
-                                            </label>
-                                            <input id="file-upload" type="file" class="hidden" accept="image/*"
-                                                @change="fileChange" />
-                                        </div>
-                                        <div class="flex items-center">
-                                            <span v-if="coursePhoto" class="text-gray-700">{{ coursePhoto }}</span>
-                                        </div>
+                                                <span>
+                                                    Add files
+                                                </span>
+                                            </div>
+                                        </button>
+
+                                        <p class="mt-4">64Mb max</p>
+                                        <p>JPG,JPEG,PNG</p>
+                                        <input type="file" ref="fileInput"
+                                            accept="image/gif,image/jpeg,image/png,image/jpg,image" style="display: none;"
+                                            @change="handleFileChange">
                                     </div>
-                                    <div v-if="coursePhoto" class="mt-4 border border-gray-300 p-2 rounded-md">
-                                        <img :src="fileUrl" alt="Uploaded File" class="max-w-xs rounded " />
-                                    </div>
-                                    <div v-else class="border border-gray-300 p-2 rounded-md">
-                                        <div class="text-gray-700 text-center">No image selected</div>
-                                    </div>
-                                </div> -->
+
+
+
+                                </div>
+
+                                <div v-if="urlImageFile"
+                                    class="relative h-72 w-full border-[3px] border-dashed flex items-center justify-center">
+                                    <img :src="urlImageFile" alt="" class="w-full h-full object-cover"
+                                        style="max-height: 42.2rem;" />
+                                    <span class="absolute top-0 right-0 m-2 cursor-pointer text-red-500 text-2xl"
+                                        @click="urlImageFile = ''; imagenfile = '';">
+
+                                        <svg fill="#ff0000" class="w-3 h-3" viewBox="0 0 469.404 469.404">
+
+                                            <path
+                                                d="M310.4,235.083L459.88,85.527c12.545-12.546,12.545-32.972,0-45.671L429.433,9.409c-12.547-12.546-32.971-12.546-45.67,0 L234.282,158.967L85.642,10.327c-12.546-12.546-32.972-12.546-45.67,0L9.524,40.774c-12.546,12.546-12.546,32.972,0,45.671 l148.64,148.639L9.678,383.495c-12.546,12.546-12.546,32.971,0,45.67l30.447,30.447c12.546,12.546,32.972,12.546,45.67,0 l148.487-148.41l148.792,148.793c12.547,12.546,32.973,12.546,45.67,0l30.447-30.447c12.547-12.546,12.547-32.972,0-45.671 L310.4,235.083z">
+                                            </path>
+
+                                        </svg>
+                                    </span>
+                                </div>
                                 <div class="flex items-center justify-between">
                                     <router-link class="text-sm underline hover:no-underline" to="/courses/create/2">&lt;-
                                         Back</router-link>
@@ -220,8 +217,9 @@
                                     <path class="text-emerald-500" d="m28.5 41-8-8 3-3 5 5 12-12 3 3z" />
                                 </svg>
                                 <h1 class="text-3xl text-slate-800 font-bold mb-8">Nice to have you, Acme Inc. 🙌</h1>
-                                <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white" to="/">Go To Dashboard
-                                    -&gt;</router-link>
+                                <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white"
+                                    @click="createCategoryRequest">Go To Dashboard
+                                    -&gt;</button>
                             </div>
 
                         </div>
@@ -252,55 +250,129 @@ import StepOne from '@/components/Courses/OnboardingCreateCourse/StepOne.vue';
 import StepTwo from '@/components/Courses/OnboardingCreateCourse/StepTwo.vue';
 import StepThree from '@/components/Courses/OnboardingCreateCourse/StepThree.vue';
 import StepFour from '@/components/Courses/OnboardingCreateCourse/StepFour.vue';
-
+import { API_URL } from '@/config/config';
+import axios from 'axios';
 
 export default {
     components: { StepOne, StepTwo, StepThree, StepFour },
     setup() {
         const route = useRoute()
         const step = ref(null)
+
         const courseName = ref(null)
+        const courseDescription = ref(null)
         const categoryId = ref(null)
         const coursePhoto = ref(null);
 
         const categories = ref([
             { id: 1, name: 'Category 1' },
             { id: 2, name: 'Category 2' },
-            // Agrega más categorías según sea necesario
         ])
 
-        const fileUrl = ref(null);
-        const fileInputRef = ref(null);
 
-        const fileChange = (e) => {
 
-            const file = e.target.files[0]; // Obtener el primer archivo seleccionado
+        const fileInput = ref(null);
+        const imagenfile = ref(null);
+        const urlImageFile = ref(null);
 
-            if (file) {
-                // Actualizar los ref values
-                fileInputRef.value = file;
-                fileUrl.value = URL.createObjectURL(file);
-                coursePhoto.value = file.name;
-            } else {
-                // Manejar el caso en el que no se selecciona ningún archivo
-                console.error("No se seleccionó ningún archivo.");
+        const openFileInput = () => {
+            fileInput.value.click();
+        };
+
+        const handleFileChange = () => {
+            const selectedFile = fileInput.value.files[0];
+            if (selectedFile) {
+
+                imagenfile.value = selectedFile;
+                urlImageFile.value = URL.createObjectURL(selectedFile);
+                coursePhoto.value = selectedFile.name;
+
+                console.log('Archivo seleccionado:', selectedFile.name);
+                // Aquí puedes realizar acciones con el archivo, como subirlo a un servidor, procesarlo, etc.
             }
+        };
 
+        const handleDragOver = (event) => {
+            event.preventDefault();
+        };
+
+        const handleDrop = (event) => {
+            event.preventDefault();
+            const selectedFile = event.dataTransfer.files[0];
+            if (selectedFile) {
+
+                imagenfile.value = selectedFile;
+                urlImageFile.value = URL.createObjectURL(selectedFile);
+                coursePhoto.value = selectedFile.name;
+
+                console.log('Archivo seleccionado:', selectedFile.name);
+            }
+            fileInput.value = null;
+
+        };
+
+
+        const createCategoryRequest = () => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const formData = new FormData();
+                    formData.append("categoryId", categoryId.value);
+                    formData.append("file", imagenfile.value);
+                    formData.append("courseDescription", courseDescription.value);
+                    formData.append("courseName", courseName.value);
+                    formData.append("coursePhoto", coursePhoto.value);
+                    formData.append("userId", 3); //TODO: configurar id usuario
+
+
+                    const resp = await axios.post(`${API_URL}/courses`, formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data", //sin esto no se puede envari la iamgen
+                        }
+                    })
+                    /* setTimeout(() => {
+                        ModalIsOpen.value = false
+                        categoryName.value = ''
+                        categoryPhoto.value = ''
+                        img.value = ''
+                        url.value = '' */
+                    console.log(resp);
+                    resolve(resp); // Resolvemos la promesa con la respuesta exitosa después de 3 segundos
+                    // getCategories()
+                    /*} , 1000); */
+                } catch (error) {
+                    console.log(error);
+                    reject(error);
+
+
+                }
+            });
         }
-
+        /* {
+          "categoryId": 0,
+          "courseDescription": "string",
+          "courseName": "string",
+          "coursePhoto": "string",
+          "userId": 0
+        } */
         watch(() => {
             console.log(route.params);
             step.value = route.params.step
         })
         return {
-            step,
-            courseName,
-            categoryId,
-            categories,
-            fileInputRef,
-            fileUrl,
-            fileChange,
-            coursePhoto,
+            step, // Paso en que nos encontramos
+            courseName, // Course name
+            categoryId, //Id Category
+            coursePhoto, //String de arhicov
+            categories,// Object categories
+            openFileInput,
+            handleFileChange,
+            courseDescription,
+            urlImageFile, // iMAGEN URL
+            imagenfile,
+            fileInput,
+            handleDragOver,
+            handleDrop,
+            createCategoryRequest
         }
     }
 }
