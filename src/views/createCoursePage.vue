@@ -7,41 +7,13 @@
             <div class="w-full md:w-1/2">
 
                 <div class="min-h-screen h-full flex flex-col after:flex-1">
-
                     <div class="flex-1">
-
                         <!-- Header -->
                         <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
                             <!-- Logo -->
-                            <router-link class="block" to="/">
-                                <svg width="32" height="32" viewBox="0 0 32 32">
-                                    <defs>
-                                        <linearGradient x1="28.538%" y1="20.229%" x2="100%" y2="108.156%" id="logo-a">
-                                            <stop stop-color="#A5B4FC" stop-opacity="0" offset="0%" />
-                                            <stop stop-color="#A5B4FC" offset="100%" />
-                                        </linearGradient>
-                                        <linearGradient x1="88.638%" y1="29.267%" x2="22.42%" y2="100%" id="logo-b">
-                                            <stop stop-color="#38BDF8" stop-opacity="0" offset="0%" />
-                                            <stop stop-color="#38BDF8" offset="100%" />
-                                        </linearGradient>
-                                    </defs>
-                                    <rect fill="#6366F1" width="32" height="32" rx="16" />
-                                    <path
-                                        d="M18.277.16C26.035 1.267 32 7.938 32 16c0 8.837-7.163 16-16 16a15.937 15.937 0 01-10.426-3.863L18.277.161z"
-                                        fill="#4F46E5" />
-                                    <path
-                                        d="M7.404 2.503l18.339 26.19A15.93 15.93 0 0116 32C7.163 32 0 24.837 0 16 0 10.327 2.952 5.344 7.404 2.503z"
-                                        fill="url(#logo-a)" />
-                                    <path
-                                        d="M2.223 24.14L29.777 7.86A15.926 15.926 0 0132 16c0 8.837-7.163 16-16 16-5.864 0-10.991-3.154-13.777-7.86z"
-                                        fill="url(#logo-b)" />
-                                </svg>
+                            <router-link class="block h-7" to="/">
+                                <img src="../static/image/logo/LogoOficial.png" alt="logo">
                             </router-link>
-                            <div class="text-sm">
-                                Have an account? <router-link class="font-medium text-indigo-500 hover:text-indigo-600"
-                                    to="/signin">Sign
-                                    In</router-link>
-                            </div>
                         </div>
 
                         <!-- Progress bar -->
@@ -58,22 +30,22 @@
                                                 to="/courses/create/1">1</router-link>
                                         </li>
                                         <li>
-                                            <router-link
+                                            <router-link @click="handleLinkClick"
+                                                :to="courseName ? '/courses/create/2' : ''"
                                                 :class="step == 2 ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'"
-                                                class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold "
-                                                to="/courses/create/2">2</router-link>
+                                                class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold ">2</router-link>
                                         </li>
                                         <li>
-                                            <router-link
+                                            <router-link @click="handleLinkClick"
+                                                :to="categoryId && courseDescription ? '/courses/create/3' : ''"
                                                 :class="step == 3 ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'"
-                                                class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold "
-                                                to="/courses/create/3">3</router-link>
+                                                class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold ">3</router-link>
                                         </li>
                                         <li>
-                                            <router-link
+                                            <router-link @click="handleLinkClick"
+                                                :to="urlImageFile ? '/courses/create/4' : ''"
                                                 :class="step == 4 ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'"
-                                                class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold "
-                                                to="/courses/create/4">4</router-link>
+                                                class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold ">4</router-link>
                                         </li>
                                     </ul>
                                 </div>
@@ -85,12 +57,15 @@
                         <div class="max-w-md mx-auto">
 
                             <h1 class="text-3xl text-slate-800 font-bold mb-6">Tell us what’s going to be the name</h1>
+                            <p class="text-gray-700 mb-4">Please enter the name you'd like to give to this course. This can
+                                be changed later if needed.</p>
                             <!-- Form -->
                             <div class="space-y-3 mb-8">
                                 <input type="text" v-model="courseName"
-                                    class="h-10 w-full border border-indigo-500 rounded-md px-4 py-2 focus:outline-none focus:border-indigo-700"
+                                    class="h-10 w-full border border-indigo-500 rounded-md px-4 focus:outline-none focus:border-indigo-700"
                                     placeholder="Name's course">
-
+                                <p class="text-[9pt] text-red-600" v-show="validationError.courseName">{{
+                                    validationError.courseName }}</p>
                                 <div class="flex items-center justify-between">
                                     <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto"
                                         @click="handleLinkClick" :to="courseName ? '/courses/create/2' : ''"
@@ -116,23 +91,35 @@
                                         class="h-10 w-full border border-indigo-500 rounded-md px-4 py-2 focus:outline-none focus:border-indigo-700 bg-white">
                                         <option disabled selected value="">Select a category</option>
                                         <option v-for="(cateogory, i) in categoriesObject" :value="cateogory.categoryId"
-                                            :key="i" class="text-indigo-700 uppercase">
+                                            :key="i" class="text-indigo-700">
                                             {{ cateogory.categoryName }}
                                         </option>
                                     </select>
+                                    <p class="text-[9pt] text-red-600" v-show="validationError.categoryId">{{
+                                        validationError.categoryId }}</p>
                                 </div>
                                 <div class="flex items-center justify-between space-x-6 mb-8">
                                     <textarea v-model="courseDescription"
                                         class="w-full h-32 px-4 py-2 border border-indigo-500 rounded-md focus:outline-none focus:border-indigo-700"
-                                        placeholder="Enter your text here..."></textarea>
+                                        placeholder="Enter a brief description of your course here..."></textarea>
                                 </div>
+                                <p class="text-[9pt] text-red-600" v-show="validationError.courseDescription">{{
+                                    validationError.courseDescription }}</p>
                                 <div class="flex items-center justify-between">
-                                    <router-link class="text-sm underline hover:no-underline" to="/courses/create/1">&lt;-
+                                    <router-link class="flex text-sm underline hover:no-underline" to="/courses/create/1">
+                                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" transform="rotate(180)">
+                                            <path d="M6 12H18M18 12L13 7M18 12L13 17" stroke="#000000" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
                                         Back</router-link>
                                     <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto"
                                         @click="handleLinkClick"
                                         :to="categoryId && courseDescription ? '/courses/create/3' : ''">Next Step
-                                        -&gt;</router-link>
+                                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                                            <path d="M6 12H18M18 12L13 7M18 12L13 17" stroke="#ffffff" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </router-link>
                                 </div>
                             </div>
                         </div>
@@ -144,12 +131,12 @@
 
                             <h1 class="text-3xl text-slate-800 font-bold mb-6">Image From Course ✨</h1>
                             <!-- Form -->
-                            <div>
+                            <div class="space-y-3">
                                 <div v-if="!urlImageFile"
                                     class="h-72 w-full border-[3px] border-dashed flex items-center justify-center"
                                     @dragover.prevent="handleDragOver" @drop="handleDrop">
                                     <div class="text-center">
-                                        <p class="font-semibold">Dragon and Drop files here</p>
+                                        <p class="font-semibold">Drag and Drop files here</p>
                                         <p>Or</p>
                                         <button class="py-2 px-4 bg-red-500 text-white rounded-sm" @click="openFileInput">
 
@@ -197,32 +184,52 @@
                                         </svg>
                                     </span>
                                 </div>
+                                <p class="text-[10pt] text-red-600" v-show="validationError.coursePhoto">{{
+                                    validationError.coursePhoto }}</p>
                                 <div class="flex items-center justify-between">
-                                    <router-link class="text-sm underline hover:no-underline" to="/courses/create/2">&lt;-
+                                    <router-link class="flex text-sm underline hover:no-underline" to="/courses/create/2">
+
+                                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" transform="rotate(180)">
+                                            <path d="M6 12H18M18 12L13 7M18 12L13 17" stroke="#000000" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+
                                         Back</router-link>
                                     <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto"
                                         @click="handleLinkClick" :to="urlImageFile ? '/courses/create/4' : ''"
                                         :disabled="!courseName">Next Step
-                                        -&gt;</router-link>
+                                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                                            <path d="M6 12H18M18 12L13 7M18 12L13 17" stroke="#ffffff" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </router-link>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+
                     <div class="px-4 py-8" v-show="step == 4">
                         <div class="max-w-md mx-auto">
-
                             <div class="text-center">
                                 <svg class="inline-flex w-16 h-16 fill-current mb-6" viewBox="0 0 64 64">
                                     <circle class="text-emerald-100" cx="32" cy="32" r="32" />
                                     <path class="text-emerald-500" d="m28.5 41-8-8 3-3 5 5 12-12 3 3z" />
                                 </svg>
-                                <h1 class="text-3xl text-slate-800 font-bold mb-8">Nice to have you, Acme Inc. 🙌</h1>
-                                <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white"
-                                    @click="createCategoryRequest">Go To Dashboard
-                                    -&gt;</button>
+                                <h1 class="text-3xl text-slate-800 font-bold mb-8">Your course is ready to be created! 🌟
+                                </h1>
+                                <p class="text-slate-600 text-lg mb-8">
+                                    Your knowledge has the power to inspire and transform lives. With this course, you'll be
+                                    providing people with the tools to reach their goals and dreams. Together, we'll make a
+                                    positive impact on the world! 🌍
+                                </p>
+                                <router-link to="/" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Go
+                                    To Dashboard
+                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                                        <path d="M6 12H18M18 12L13 7M18 12L13 17" stroke="#ffffff" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </router-link>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -232,7 +239,7 @@
                 <img class="object-cover object-center w-full h-full" src="../static/image/banners/dev1.jpg" width="760"
                     height="1024" alt="Onboarding" />
                 <img class="absolute top-1/4 left-0 -translate-x-1/2 ml-8 hidden lg:block"
-                    src="https://preview.cruip.com/mosaic/images/auth-decoration.png" width="218" height="224"
+                    src="../static/image/banners/course-decoration.png" width="218" height="224"
                     alt="Authentication decoration" />
             </div>
 
@@ -242,7 +249,7 @@
 </template>
 
 <script>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { onActivated, onMounted, ref, watch } from 'vue';
 import { useCourse } from '@/composables/Courses/useCourse';
 import useCategory from '@/composables/Category.vue/useCategory';
@@ -253,6 +260,8 @@ export default {
     setup() {
         const step = ref(null)
         const route = useRoute()
+        const router = useRouter()
+        const validationError = ref({})
         const {
             fileInput,
             handleDrop,
@@ -273,8 +282,6 @@ export default {
             createCategoryRequest,
         } = useCourse();
 
-
-
         const { categoriesObject } = useCategory();
 
         const validateCourseData = (data) => {
@@ -283,32 +290,34 @@ export default {
 
         const handleLinkClick = async () => {
             const courseData = {
-                courseName: courseName.value, // Accede al valor de ref usando .value
+                courseName: courseName.value,
                 categoryId: categoryId.value,
                 courseDescription: courseDescription.value,
                 coursePhoto: fileNameHandlingCoursePhoto.value,
             };
 
-            const validationError = validateCourseData(courseData);
-   
+            validationError.value = validateCourseData(courseData);
+
             courseFile.value = fileHandlingCourseFile.value;
             coursePhoto.value = fileNameHandlingCoursePhoto.value
 
-
-            if (validationError) {
-                console.log(validationError); // Puedes mostrar el error en la consola o en tu interfaz de usuario
+            if (Object.keys(validationError.value).length > 0) {
+                console.log(validationError.value);
+                setTimeout(() => {
+                    validationError.value = {};
+                }, 3000);
             } else {
                 console.log('Datos válidos, puedes enviarlos al servidor');
                 const resp = await createCategoryRequest();
+
             }
         }
 
         watch(() => {
-            console.log(route.params);
             step.value = route.params.step
         })
         return {
-            step, 
+            step,
             fileInput,
             courseFile,
             handleDrop,
@@ -319,6 +328,7 @@ export default {
             openFileInput,
             handleDragOver,
             handleLinkClick,
+            validationError,
             handleFileChange,
             categoriesObject,
             courseDescription,

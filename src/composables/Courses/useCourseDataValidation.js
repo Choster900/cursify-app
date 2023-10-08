@@ -1,22 +1,23 @@
 export function useCourseDataValidation(data) {
-  let errors = '';
+  let errors = {};
 
   if (!data.courseName) {
-      errors += 'El nombre del curso es requerido.\n';
+      errors.courseName = 'Please enter the course name.';
   }
 
   if (!data.categoryId) {
-      errors += 'La categoría es requerida.\n';
+      errors.categoryId = 'Please select a category.';
   }
 
   if (!data.courseDescription) {
-      errors += 'La descripción del curso es requerida.\n';
+      errors.courseDescription = 'Please provide a course description.';
   }
 
   if (!data.coursePhoto) {
-    errors += 'La FOTO del curso es requerida.\n';
-}
-  // Otras validaciones según tus necesidades
+    errors.coursePhoto = 'Please add a photo for the course.';
+  }
+
+  // Other validations as per your needs
   // ...
 
   return errors;

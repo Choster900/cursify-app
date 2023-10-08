@@ -6,7 +6,7 @@
                 <div class="grid grid-cols-4 items-center justify-between">
                     <div class="col-span-2 logo">
                         <router-link to="/">
-                            <img src="../../static/image/logo/logo.png" alt="logo">
+                            <img src="../../static/image/logo/LogoOficial.png" alt="logo">
                         </router-link>
                     </div>
                     <div class="col-span-2 text-right hidden lg:block rounded-lg overflow-hidden">
