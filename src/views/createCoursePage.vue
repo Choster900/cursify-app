@@ -93,8 +93,13 @@
 
                                 <div class="flex items-center justify-between">
                                     <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto"
-                                        to="/courses/create/2">Next
-                                        Step -&gt;</router-link>
+                                        @click="handleLinkClick" :to="courseName ? '/courses/create/2' : ''"
+                                        :disabled="!courseName">Next Step
+                                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                                            <path d="M6 12H18M18 12L13 7M18 12L13 17" stroke="#ffffff" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </router-link>
                                 </div>
                             </div>
 
@@ -103,7 +108,6 @@
 
                     <div class="px-4 py-8" v-show="step == 2">
                         <div class="max-w-md mx-auto">
-
                             <h1 class="text-3xl text-slate-800 font-bold mb-6">Select the category you course will be ✨</h1>
                             <!-- Form -->
                             <div>
@@ -111,9 +115,9 @@
                                     <select v-model="categoryId"
                                         class="h-10 w-full border border-indigo-500 rounded-md px-4 py-2 focus:outline-none focus:border-indigo-700 bg-white">
                                         <option disabled selected value="">Select a category</option>
-                                        <option v-for="category in categories" :value="category.id" :key="category.id"
-                                            class="text-indigo-700">
-                                            {{ category.name }}
+                                        <option v-for="(cateogory, i) in categoriesObject" :value="cateogory.categoryId"
+                                            :key="i" class="text-indigo-700 uppercase">
+                                            {{ cateogory.categoryName }}
                                         </option>
                                     </select>
                                 </div>
@@ -126,10 +130,11 @@
                                     <router-link class="text-sm underline hover:no-underline" to="/courses/create/1">&lt;-
                                         Back</router-link>
                                     <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto"
-                                        to="/courses/create/3">Next Step -&gt;</router-link>
+                                        @click="handleLinkClick"
+                                        :to="categoryId && courseDescription ? '/courses/create/3' : ''">Next Step
+                                        -&gt;</router-link>
                                 </div>
                             </div>
-
                         </div>
 
                     </div>
@@ -137,7 +142,7 @@
                     <div class="px-4 py-8" v-show="step == 3">
                         <div class="max-w-md mx-auto">
 
-                            <h1 class="text-3xl text-slate-800 font-bold mb-6">Company information ✨</h1>
+                            <h1 class="text-3xl text-slate-800 font-bold mb-6">Image From Course ✨</h1>
                             <!-- Form -->
                             <div>
                                 <div v-if="!urlImageFile"
@@ -169,18 +174,13 @@
                                                 </span>
                                             </div>
                                         </button>
-
                                         <p class="mt-4">64Mb max</p>
                                         <p>JPG,JPEG,PNG</p>
                                         <input type="file" ref="fileInput"
                                             accept="image/gif,image/jpeg,image/png,image/jpg,image" style="display: none;"
                                             @change="handleFileChange">
                                     </div>
-
-
-
                                 </div>
-
                                 <div v-if="urlImageFile"
                                     class="relative h-72 w-full border-[3px] border-dashed flex items-center justify-center">
                                     <img :src="urlImageFile" alt="" class="w-full h-full object-cover"
@@ -201,13 +201,14 @@
                                     <router-link class="text-sm underline hover:no-underline" to="/courses/create/2">&lt;-
                                         Back</router-link>
                                     <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto"
-                                        to="/courses/create/4">Next Step -&gt;</router-link>
+                                        @click="handleLinkClick" :to="urlImageFile ? '/courses/create/4' : ''"
+                                        :disabled="!courseName">Next Step
+                                        -&gt;</router-link>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-
                     <div class="px-4 py-8" v-show="step == 4">
                         <div class="max-w-md mx-auto">
 
@@ -224,11 +225,8 @@
 
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
             <!-- Image -->
             <div class="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
                 <img class="object-cover object-center w-full h-full" src="../static/image/banners/dev1.jpg" width="760"
@@ -244,135 +242,87 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router';
 import { onActivated, onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router'
-import StepOne from '@/components/Courses/OnboardingCreateCourse/StepOne.vue';
-import StepTwo from '@/components/Courses/OnboardingCreateCourse/StepTwo.vue';
-import StepThree from '@/components/Courses/OnboardingCreateCourse/StepThree.vue';
-import StepFour from '@/components/Courses/OnboardingCreateCourse/StepFour.vue';
-import { API_URL } from '@/config/config';
-import axios from 'axios';
-
+import { useCourse } from '@/composables/Courses/useCourse';
+import useCategory from '@/composables/Category.vue/useCategory';
+import { useFileHandling } from '@/composables/Courses/useFileHandling';
+import { useCourseDataValidation } from '@/composables/Courses/useCourseDataValidation';
 export default {
-    components: { StepOne, StepTwo, StepThree, StepFour },
+    components: {},
     setup() {
-        const route = useRoute()
         const step = ref(null)
+        const route = useRoute()
+        const {
+            fileInput,
+            handleDrop,
+            urlImageFile,
+            openFileInput,
+            handleDragOver,
+            handleFileChange,
+            courseFile: fileHandlingCourseFile,
+            coursePhoto: fileNameHandlingCoursePhoto,
+        } = useFileHandling();
 
-        const courseName = ref(null)
-        const courseDescription = ref(null)
-        const categoryId = ref(null)
-        const coursePhoto = ref(null);
-
-        const categories = ref([
-            { id: 1, name: 'Category 1' },
-            { id: 2, name: 'Category 2' },
-        ])
-
-
-
-        const fileInput = ref(null);
-        const imagenfile = ref(null);
-        const urlImageFile = ref(null);
-
-        const openFileInput = () => {
-            fileInput.value.click();
-        };
-
-        const handleFileChange = () => {
-            const selectedFile = fileInput.value.files[0];
-            if (selectedFile) {
-
-                imagenfile.value = selectedFile;
-                urlImageFile.value = URL.createObjectURL(selectedFile);
-                coursePhoto.value = selectedFile.name;
-
-                console.log('Archivo seleccionado:', selectedFile.name);
-                // Aquí puedes realizar acciones con el archivo, como subirlo a un servidor, procesarlo, etc.
-            }
-        };
-
-        const handleDragOver = (event) => {
-            event.preventDefault();
-        };
-
-        const handleDrop = (event) => {
-            event.preventDefault();
-            const selectedFile = event.dataTransfer.files[0];
-            if (selectedFile) {
-
-                imagenfile.value = selectedFile;
-                urlImageFile.value = URL.createObjectURL(selectedFile);
-                coursePhoto.value = selectedFile.name;
-
-                console.log('Archivo seleccionado:', selectedFile.name);
-            }
-            fileInput.value = null;
-
-        };
+        const {
+            courseName,
+            categoryId,
+            courseFile,
+            coursePhoto,
+            courseDescription,
+            createCategoryRequest,
+        } = useCourse();
 
 
-        const createCategoryRequest = () => {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    const formData = new FormData();
-                    formData.append("categoryId", categoryId.value);
-                    formData.append("file", imagenfile.value);
-                    formData.append("courseDescription", courseDescription.value);
-                    formData.append("courseName", courseName.value);
-                    formData.append("coursePhoto", coursePhoto.value);
-                    formData.append("userId", 3); //TODO: configurar id usuario
 
+        const { categoriesObject } = useCategory();
 
-                    const resp = await axios.post(`${API_URL}/courses`, formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data", //sin esto no se puede envari la iamgen
-                        }
-                    })
-                    /* setTimeout(() => {
-                        ModalIsOpen.value = false
-                        categoryName.value = ''
-                        categoryPhoto.value = ''
-                        img.value = ''
-                        url.value = '' */
-                    console.log(resp);
-                    resolve(resp); // Resolvemos la promesa con la respuesta exitosa después de 3 segundos
-                    // getCategories()
-                    /*} , 1000); */
-                } catch (error) {
-                    console.log(error);
-                    reject(error);
-
-
-                }
-            });
+        const validateCourseData = (data) => {
+            return useCourseDataValidation(data);
         }
-        /* {
-          "categoryId": 0,
-          "courseDescription": "string",
-          "courseName": "string",
-          "coursePhoto": "string",
-          "userId": 0
-        } */
+
+        const handleLinkClick = async () => {
+            const courseData = {
+                courseName: courseName.value, // Accede al valor de ref usando .value
+                categoryId: categoryId.value,
+                courseDescription: courseDescription.value,
+                coursePhoto: fileNameHandlingCoursePhoto.value,
+            };
+
+            const validationError = validateCourseData(courseData);
+   
+            courseFile.value = fileHandlingCourseFile.value;
+            coursePhoto.value = fileNameHandlingCoursePhoto.value
+
+
+            if (validationError) {
+                console.log(validationError); // Puedes mostrar el error en la consola o en tu interfaz de usuario
+            } else {
+                console.log('Datos válidos, puedes enviarlos al servidor');
+                const resp = await createCategoryRequest();
+            }
+        }
+
         watch(() => {
             console.log(route.params);
             step.value = route.params.step
         })
         return {
-            step, // Paso en que nos encontramos
-            courseName, // Course name
-            categoryId, //Id Category
-            coursePhoto, //String de arhicov
-            categories,// Object categories
-            openFileInput,
-            handleFileChange,
-            courseDescription,
-            urlImageFile, // iMAGEN URL
-            imagenfile,
+            step, 
             fileInput,
-            handleDragOver,
+            courseFile,
             handleDrop,
-            createCategoryRequest
+            courseName,
+            categoryId,
+            coursePhoto,
+            urlImageFile,
+            openFileInput,
+            handleDragOver,
+            handleLinkClick,
+            handleFileChange,
+            categoriesObject,
+            courseDescription,
+            createCategoryRequest,
         }
     }
 }
