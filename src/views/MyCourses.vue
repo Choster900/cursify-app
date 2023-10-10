@@ -1,6 +1,6 @@
 <template>
     <div class="blog-posts">
-        <Breadcrumb slug="All Post" />
+        <!-- <Breadcrumb slug="All Post" /> -->
         <div class="py-section">
             <div class="container">
                 <div class="sm:flex sm:justify-between sm:items-center mb-8"><!-- Left: Title -->
@@ -50,7 +50,7 @@
 
 <script>
 import Breadcrumb from '@/components/Elements/Breadcrumb.vue';
-import PostCourseTwo from '@/components/PostCourses/PostCourseTwo.vue';
+import PostCourseTwo from '../components/PostCourses/PostCourseTwo.vue';
 
 export default {
     name: 'MyCourses',
@@ -60,6 +60,32 @@ export default {
     setup() {
         const cursos = [
 
+            
+            {
+                "course_id": 2,
+                "user": {
+                    "user_id": 2,
+                    "user_name": "Jane",
+                    "user_lastname": "Smith",
+                    "user_email": "jane.smith@example.com",
+                    "role_id": 2,
+                    "created_at_user": "2023-09-17T10:00:00Z",
+                    "modified_at_user": "2023-09-17T10:45:00Z"
+                },
+                "category": {
+                    "category_id": 2,
+                    "category_name": "Diseño",
+                    "category_photo": "diseno.jpg",
+                    "created_at_category": "2023-09-14T09:30:00Z",
+                    "modified_at_category": "2023-09-14T10:00:00Z"
+                },
+                "course_name": "Diseño de Interfaces de Usuario",
+                "course_description": "Aprende a diseñar interfaces de usuario atractivas y funcionales.",
+                "course_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/1-2.jpg",
+                "course_published": true,
+                "created_at_course": "2023-09-16T10:45:00Z",
+                "modified_at_course": "2023-09-16T11:20:00Z"
+            },
             {
                 "course_id": 1,
                 "user": {
@@ -85,31 +111,6 @@ export default {
                 "created_at_course": "2023-09-17T14:30:00Z",
                 "modified_at_course": "2023-09-17T15:15:00Z"
             },
-            {
-                "course_id": 2,
-                "user": {
-                    "user_id": 2,
-                    "user_name": "Jane",
-                    "user_lastname": "Smith",
-                    "user_email": "jane.smith@example.com",
-                    "role_id": 2,
-                    "created_at_user": "2023-09-17T10:00:00Z",
-                    "modified_at_user": "2023-09-17T10:45:00Z"
-                },
-                "category": {
-                    "category_id": 2,
-                    "category_name": "Diseño",
-                    "category_photo": "diseno.jpg",
-                    "created_at_category": "2023-09-14T09:30:00Z",
-                    "modified_at_category": "2023-09-14T10:00:00Z"
-                },
-                "course_name": "Diseño de Interfaces de Usuario",
-                "course_description": "Aprende a diseñar interfaces de usuario atractivas y funcionales.",
-                "course_photo": "https://vue.thethemedemo.com/bunzo/wp-content/uploads/2022/04/1-2.jpg",
-                "course_published": true,
-                "created_at_course": "2023-09-16T10:45:00Z",
-                "modified_at_course": "2023-09-16T11:20:00Z"
-            }
         ]
 
         return {

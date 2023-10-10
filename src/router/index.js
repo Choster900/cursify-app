@@ -15,48 +15,58 @@ const routes = [
   {
     path: "/category/create",
     name: "createCategory",
-    // route level code-splitting 
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    // This route is used for creating and maintaining categories.
+    // It allows users to manage and add new categories to the application.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/CreateCategory.vue"),
+      import(
+        /* webpackChunkName: "CreateCategory" */ "../views/CreateCategory.vue"
+      ),
   },
   {
     path: "/courses/my-courses",
     name: "my-courses",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    // This route represents the dashboard for courses.
+    // It displays all the courses created by the user acting as a tutor.
+    // The content for this route is lazy-loaded for better performance.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/MyCourses"),
+      import(/* webpackChunkName: "MyCourses" */ "../views/MyCourses"),
   },
   {
-    path: "/courses/nombre-curso",
-    name: "viweCourse",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/courses/view/:id",
+    name: "viewCourse",
+    // This route is responsible for displaying the details of a specific course.
+    // It allows users to view and enroll in the course.
+    // The content for this route is lazy-loaded for better performance.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/CourseIndex"),
   },
   {
     path: "/courses/create/:step",
     name: "createCourse",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    // This route is responsible for creating courses.
+    // It receives a parameter 'step' which indicates the current step in the course creation process.
+    // The content for this route is lazy-loaded for better performance.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/createCoursePage.vue"),
-
   },
   {
-    path: "/404", // Definimos una ruta para la página 404
+    path: "/courses/configuration/:id",
+    name: "configurationCourse",
+    // This route is responsible for configuring a course, allowing the addition of content and other settings.
+    // The route's content is lazy-loaded for better performance.
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/CourseConfiguration.vue"
+      ),
+  },
+  {
+    path: "/404",
     name: "not-found",
-    component: NotFoundView, // Debes crear una vista para la página 404
+    component: NotFoundView, // You should create a view for the 404 page
   },
   {
-    path: "/:catchAll(.*)", // Este comodín captura todas las rutas que no coinciden
-    redirect: "/404", // Redirige a la página 404
+    path: "/:catchAll(.*)",
+    redirect: "/404", // Redirects to the 404 page
   },
 ];
 

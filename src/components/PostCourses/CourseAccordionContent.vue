@@ -50,7 +50,7 @@
 
 <script>
 import { ref } from 'vue';
-import DropdownMenu from '../Elements/DropdownMenu.vue';
+import DropdownMenu from '../Elements/DropdownMenuExtraResources.vue';
 
 export default {
     components: { DropdownMenu },
