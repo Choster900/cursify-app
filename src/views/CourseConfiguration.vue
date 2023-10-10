@@ -65,6 +65,7 @@
                                     <div class="md:py-8">
                                         <!-- Content course setting -->
                                         <ContentCourseSettings v-show="activeMenu === 'content'"/>
+                                        <GeneralCourseSettings v-show="activeMenu === 'general'"/>
                                     </div>
                                 </div>
                             </div>
@@ -81,12 +82,13 @@
 import Breadcrumb from '@/components/Elements/Breadcrumb.vue';
 import ContentCourseSettings from '@/components/Courses/SecctionsCourseSetting.vue';
 import { ref } from 'vue';
+import GeneralCourseSettings from '@/components/Courses/GeneralCourseSettings.vue';
 
 export default {
-    components: { Breadcrumb, ContentCourseSettings },
+    components: { Breadcrumb, ContentCourseSettings, GeneralCourseSettings },
     setup() {
         const activeIndex = ref(0);
-        const activeMenu = ref(null);
+        const activeMenu = ref("general");
 
         const course = ref({
             "course_id": 1,

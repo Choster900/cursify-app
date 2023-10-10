@@ -16,20 +16,13 @@
         <div class="pl-7" v-show='j === activeIndex'>
 
             <FileUploader />
-            <ul class="flex flex-wrap">
+            <ul class="flex flex-wrap py-2">
                 <li
                     class="flex items-center after:block after:content-['·'] last:after:content-[''] after:text-sm after:text-slate-400 after:px-2">
-
-                    <div class="m-1.5">
-                        <button class="btn-xs bg-indigo-500 hover:bg-indigo-600 text-white">Button</button>
-                    </div>
-                </li>
+                    <a class="text-sm font-semibold text-indigo-500 hover:text-indigo-600" href="#0">Enviar informacion</a></li>
                 <li
                     class="flex items-center after:block after:content-['·'] last:after:content-[''] after:text-sm after:text-slate-400 after:px-2">
-                    <div class="m-1.5">
-                        <button class="btn-xs bg-indigo-500 hover:bg-indigo-600 text-white">Button</button>
-                    </div>
-                </li>
+                    <a class="text-sm font-semibold text-rose-500 hover:text-rose-600" href="#0">Poner en privado</a></li>
             </ul>
         </div>
     </article>

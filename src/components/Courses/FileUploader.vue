@@ -62,28 +62,25 @@ export default {
 
             </div>
         </div>
-        <div class="faq flex" v-else>
-            <video width="590" height="332" :src="urlVideoFile" controls class="rounded-md"></video>
-            <span class=" top-0 right-0 m-2 cursor-pointer text-red-500 text-2xl"
-                @click="urlVideoFile = ''; contentFile = '';">
-                <svg fill="#bf0303" width="25px" height="25px" viewBox="0 0 24 24" 
-                    stroke="#bf0303">
-                        <path
-                            d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z">
-                        </path>
-                  
+        <div class=" flex justify-between" v-else>
+            <video width="490" height="232" :src="urlVideoFile" controls class="rounded-md object-cover"></video>
+            <button class=" border-slate-200 justify-start hover:border-slate-300" @click="urlVideoFile = ''; contentFile = '';">
+                <svg
+                    class="w-4 h-4 fill-current text-rose-500 shrink-0" viewBox="0 0 16 16">
+                    <path
+                        d="M5 7h2v6H5V7zm4 0h2v6H9V7zm3-6v2h4v2h-1v10c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1V5H0V3h4V1c0-.6.4-1 1-1h6c.6 0 1 .4 1 1zM6 2v1h4V2H6zm7 3H3v9h10V5z">
+                    </path>
                 </svg>
-            </span>
-
+            </button>
         </div>
-        <div class="w-1/2">
+        <div class="w-1/2 pt-4">
             <div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="supporting-text">Nombre del
                         contenido</label>
                     <input id="supporting-text" class="form-input w-full" type="text">
                 </div>
-                <div class="text-xs mt-1">Con este nombre tus estudiantes veran el contenido !</div>
+                <!-- <div class="text-xs mt-1">Con este nombre tus estudiantes veran el contenido !</div> -->
             </div>
         </div>
 

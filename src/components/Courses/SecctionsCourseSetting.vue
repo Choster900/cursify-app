@@ -40,17 +40,16 @@
                 <ContentSecctionSettings />
             </div>
 
-            <footer class="flex flex-wrap text-sm" v-show='i === activeIndex'>
+            <footer class="flex flex-wrap justify-end text-sm" v-show='i === activeIndex'>
                 <div
                     class="flex items-center after:block after:content-['·'] last:after:content-[''] after:text-sm after:text-slate-400 after:px-2">
-                    <a class="font-medium text-blue-800 hover:text-indigo-600 border rounded-md px-2" href="#0">
-                        <div class="flex items-center gap-2" ref_for="addSec">
-                            <lord-icon id="addSec" src="https://cdn.lordicon.com/zgogqkqu.json" trigger="hover"
-                                colors="primary:#4be1ec,secondary:#cb5eee" style="width:40px;height:40px">
-                            </lord-icon>
-                            Agregar seccion
-                        </div>
-                    </a>
+                    <button class="btn-xs bg-indigo-500 hover:bg-indigo-600 text-white">
+                        <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                            <path
+                                d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z">
+                            </path>
+                        </svg>
+                        <span class=" ml-2">Agregar seccion</span></button>
                 </div>
             </footer>
         </article>
