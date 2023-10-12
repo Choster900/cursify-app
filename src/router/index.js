@@ -32,7 +32,7 @@ const routes = [
       import(/* webpackChunkName: "MyCourses" */ "../views/MyCourses"),
   },
   {
-    path: "/courses/view/:id",
+    path: "/courses/view/:courseId",
     name: "viewCourse",
     // This route is responsible for displaying the details of a specific course.
     // It allows users to view and enroll in the course.
@@ -50,7 +50,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/createCoursePage.vue"),
   },
   {
-    path: "/courses/configuration/:id",
+    path: "/courses/configuration/:courseId",
     name: "configurationCourse",
     // This route is responsible for configuring a course, allowing the addition of content and other settings.
     // The route's content is lazy-loaded for better performance.

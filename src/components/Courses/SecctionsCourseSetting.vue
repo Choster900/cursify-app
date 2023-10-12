@@ -1,13 +1,23 @@
 <template>
     <!-- Forum entries -->
     <div class="space-y-2">
-        <article class="bg-white shadow-md rounded border border-slate-200 p-5 space-y-2" v-for="i in 3" :key="i">
+        <div class="">
+            <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                    <path
+                        d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z">
+                    </path>
+                </svg>
+                <span class="ml-2">Add new seccion</span>
+            </button>
+        </div>
+        <article class="bg-white shadow-md rounded border border-slate-200 p-5 space-y-2" v-for="(section, i) in objectCourse.sections" :key="i">
             <div class="flex flex-start space-x-4 cursor-pointer" @click='activeIndex = activeIndex === i ? null : i'>
                 <!-- Content -->
                 <div class="grow">
                     <!-- Title -->
                     <h2 class="font-semibold text-slate-800 mb-2 text-sm">
-                        <span>Seccion 1: Introducción a JavaScipt</span>
+                        <span>{{ section.sectionTitle }}</span>
                     </h2>
                     <!-- Footer -->
                     <footer class="flex flex-wrap text-sm">
@@ -49,7 +59,7 @@
                                 d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z">
                             </path>
                         </svg>
-                        <span class=" ml-2">Agregar seccion</span></button>
+                        <span class=" ml-2">Add content</span></button>
                 </div>
             </footer>
         </article>
@@ -57,9 +67,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, ref, toRefs } from 'vue';
 import ContentSecctionSettings from './ContentSecctionSettings.vue'
-
+import { useSection } from '../../composables/Courses/Section/useSection'
 export default {
     components: { ContentSecctionSettings },
     props: {
@@ -68,18 +78,24 @@ export default {
             default: () => { },
         },
     },
-    setup() {
+    setup(props) {
         const activeIndex = ref(0);
+        const { sections } = toRefs(props);
+        const { objectCourse } = useSection();
+        onMounted(() => {
+            if (sections.value) {
+              
+                objectCourse.value = sections.value;
+
+            }
+        })
         return {
             activeIndex,
+            objectCourse
         }
     }
 
 };
 </script>
 
-<style lang="scss" scoped>
-.active span {
-    @apply bg-indigo-600 text-white;
-}
-</style>
+<style lang="scss" scoped></style>

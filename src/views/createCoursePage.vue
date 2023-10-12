@@ -332,7 +332,7 @@ export default {
             handleFileChange,
             categoriesObject,
             courseDescription,
-            createCategoryRequest,
+            createCourseRequest,
         }
     }
 }
