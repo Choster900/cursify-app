@@ -2,7 +2,7 @@
     <!-- Forum entries -->
     <div class="space-y-2">
         <div class="">
-            <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+            <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white" @click="addSection">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path
                         d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z">
@@ -11,14 +11,40 @@
                 <span class="ml-2">Add new seccion</span>
             </button>
         </div>
-        <article class="bg-white shadow-md rounded border border-slate-200 p-5 space-y-2" v-for="(section, i) in objectCourse.sections" :key="i">
-            <div class="flex flex-start space-x-4 cursor-pointer" @click='activeIndex = activeIndex === i ? null : i'>
+        <article class="bg-white shadow-md rounded border border-slate-200 p-5 space-y-2"
+            v-for="(section, i) in objectSeccions" :key="i">
+            <div class="flex flex-start space-x-4 cursor-pointer">
                 <!-- Content -->
-                <div class="grow">
+                <div class="grow" @click.self='activeIndex = activeIndex === i ? null : i'>
                     <!-- Title -->
-                    <h2 class="font-semibold text-slate-800 mb-2 text-sm">
-                        <span>{{ section.sectionTitle }}</span>
-                    </h2>
+                    <div class="sm:w-2/3" v-if="!section.isEditing">
+                        <div class="flex justify-between">
+                            <h2 class="font-semibold text-slate-800 mb-2 text-sm">
+                                <span>{{ section.sectionTitle }}</span>
+                            </h2>
+                            <svg class="w-5 h-5" viewBox="0 0 32 32" @click="section.isEditing = true">
+                                <path
+                                    d="M24.336,4.8l2.859,2.859L15.3,20H12V16.7L24.336,4.8M24.362,0a1.991,1.991,0,0,0-1.411.584L8,15v9h9L31.416,9.05a2,2,0,0,0,0-2.822L25.773.585A1.988,1.988,0,0,0,24.362,0Z"
+                                    fill="#1f0066"></path>
+                                <path
+                                    d="M28,27a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4h5a2,2,0,0,0,2-2h0a2,2,0,0,0-2-2H2A2,2,0,0,0,0,2V30a2,2,0,0,0,2,2H30a2,2,0,0,0,2-2V22a2,2,0,0,0-2-2h0a2,2,0,0,0-2,2Z"
+                                    fill="#1f0066"></path>
+
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="sm:w-2/3" v-else>
+                        <div class="flex justify-between">
+                            <input v-model="section.sectionTitle" autofocus placeholder="Nuevo nombre de la seccion"
+                                class="form-input w-full h-6" type="text">
+                            <svg class="h-6 w-6  " viewBox="0 0 24 24"
+                                @click="section.isEditing = false, sectionId = section.sectionId, updateContentName()">
+                                <path
+                                    d="M12 21C16.9706 21 21 16.9706 21 12C21 10.1666 20.4518 8.46124 19.5103 7.03891L12.355 14.9893C11.6624 15.7589 10.4968 15.8726 9.66844 15.2513L6.4 12.8C5.95817 12.4686 5.86863 11.8418 6.2 11.4C6.53137 10.9582 7.15817 10.8686 7.6 11.2L10.8684 13.6513L18.214 5.48955C16.5986 3.94717 14.4099 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+                                    fill="#00a83b"></path>
+                            </svg>
+                        </div>
+                    </div>
                     <!-- Footer -->
                     <footer class="flex flex-wrap text-sm">
                         <div
@@ -80,18 +106,24 @@ export default {
     },
     setup(props) {
         const activeIndex = ref(0);
+
         const { sections } = toRefs(props);
-        const { objectCourse } = useSection();
+        const { objectSeccions, addSection, sectionId, updateContentName } = useSection();
         onMounted(() => {
             if (sections.value) {
-              
-                objectCourse.value = sections.value;
-
+                objectSeccions.value = sections.value;
+                for (const section of objectSeccions.value) {
+                    section.isEditing = false;// Agregamos una nueva llave para manejar la parte de edicion
+                }
             }
         })
+
         return {
             activeIndex,
-            objectCourse
+            updateContentName,
+            sectionId,
+            objectSeccions,
+            addSection
         }
     }
 

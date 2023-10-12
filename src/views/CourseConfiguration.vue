@@ -71,9 +71,12 @@
                                     <div class="md:py-8">
                                         <!-- Content course setting -->
                                         <div v-if="courseDetails && categoriesObject" >
+                                            
                                             <GeneralCourseSettings :class="activeMenu == 'general' ? '' : 'hidden'"
                                             :categories="categoriesObject" :curso="courseDetails" />
-                                            <ContentCourseSettings :class="activeMenu == 'content' ? '' : 'hidden'" :sections="courseDetails" />
+
+                                            
+                                            <ContentCourseSettings :class="activeMenu == 'content' ? '' : 'hidden'" :sections="courseDetails.sections" />
                                         </div>
                                     </div>
                                 </div>
