@@ -1,8 +1,5 @@
 <template>
     <div class="p-6 space-y-1">
-        <!--  <pre>
-            {{ cursoObject }}
-        </pre> -->
         <h2 class="text-2xl text-slate-800 font-bold ">General Information</h2><!-- Picture -->
         <span>Designing an Earth-positive future, together 🌿</span>
         <section>
@@ -67,7 +64,6 @@
         </section>
         <button class="btn border-slate-200 hover:border-slate-300 shadow-sm text-indigo-500"
             @click="updateQuestionCourse">Change Settings</button>
-
     </div>
 </template>
 

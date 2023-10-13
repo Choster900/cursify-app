@@ -13,36 +13,36 @@
         </div>
         <article class="bg-white shadow-md rounded border border-slate-200 p-5 space-y-2"
             v-for="(section, i) in objectSeccions" :key="i">
-            <div class="flex flex-start space-x-4 cursor-pointer">
+            <div class="flex flex-start space-x-4 ">
                 <!-- Content -->
-                <div class="grow" @click.self='activeIndex = activeIndex === i ? null : i'>
+                <div class="grow cursor-pointer" @click.self='activeIndex = activeIndex === i ? null : i'>
                     <!-- Title -->
                     <div class="sm:w-2/3" v-if="!section.isEditing">
                         <div class="flex justify-between">
                             <h2 class="font-semibold text-slate-800 mb-2 text-sm">
                                 <span>{{ section.sectionTitle }}</span>
                             </h2>
-                            <svg class="w-5 h-5" viewBox="0 0 32 32" @click="section.isEditing = true">
-                                <path
-                                    d="M24.336,4.8l2.859,2.859L15.3,20H12V16.7L24.336,4.8M24.362,0a1.991,1.991,0,0,0-1.411.584L8,15v9h9L31.416,9.05a2,2,0,0,0,0-2.822L25.773.585A1.988,1.988,0,0,0,24.362,0Z"
-                                    fill="#1f0066"></path>
-                                <path
-                                    d="M28,27a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4h5a2,2,0,0,0,2-2h0a2,2,0,0,0-2-2H2A2,2,0,0,0,0,2V30a2,2,0,0,0,2,2H30a2,2,0,0,0,2-2V22a2,2,0,0,0-2-2h0a2,2,0,0,0-2,2Z"
-                                    fill="#1f0066"></path>
-
-                            </svg>
+                            <button class=" border-slate-200 hover:border-slate-300" @click="section.isEditing = true">
+                                <svg class="w-4 h-4 fill-current text-slate-500 shrink-0" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z">
+                                    </path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
                     <div class="sm:w-2/3" v-else>
-                        <div class="flex justify-between">
+                        <div class="flex justify-between gap-2">
                             <input v-model="section.sectionTitle" autofocus placeholder="Nuevo nombre de la seccion"
                                 class="form-input w-full h-6" type="text">
-                            <svg class="h-6 w-6  " viewBox="0 0 24 24"
-                                @click="section.isEditing = false, sectionId = section.sectionId, updateContentName()">
-                                <path
-                                    d="M12 21C16.9706 21 21 16.9706 21 12C21 10.1666 20.4518 8.46124 19.5103 7.03891L12.355 14.9893C11.6624 15.7589 10.4968 15.8726 9.66844 15.2513L6.4 12.8C5.95817 12.4686 5.86863 11.8418 6.2 11.4C6.53137 10.9582 7.15817 10.8686 7.6 11.2L10.8684 13.6513L18.214 5.48955C16.5986 3.94717 14.4099 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
-                                    fill="#00a83b"></path>
-                            </svg>
+                            <button class=" border-slate-200 hover:border-slate-300"
+                                @click="section.isEditing = false, sectionId = section.sectionId, updateSectiontName()">
+                                <svg class="w-4 h-4 fill-current text-indigo-500 shrink-0" viewBox="0 0 16 16">
+                                    <path
+                                        d="M14.3 2.3L5 11.6 1.7 8.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l4 4c.2.2.4.3.7.3.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0z">
+                                    </path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
                     <!-- Footer -->
@@ -61,6 +61,7 @@
                 <!-- Upvote button -->
                 <div class="shrink-0">
                     <button :class='{ "border-indigo-400": activeIndex === i }'
+                        @click='activeIndex = activeIndex === i ? null : i'
                         class="text-xs font-semibold text-center h-8 w-8 border  rounded-sm flex flex-col justify-center items-center outline outline-2 outline-indigo-100">
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                             :transform="activeIndex === i ? 'matrix(1, 0, 0, 1, 0, 0)rotate(270)' : 'matrix(1, 0, 0, 1, 0, 0)rotate(90)'">
@@ -73,7 +74,7 @@
                 </div>
             </div>
             <div v-show='i === activeIndex'>
-                <ContentSecctionSettings />
+                <ContentSecctionSettings :contents="section.sectionContents" />
             </div>
 
             <footer class="flex flex-wrap justify-end text-sm" v-show='i === activeIndex'>
@@ -108,7 +109,7 @@ export default {
         const activeIndex = ref(0);
 
         const { sections } = toRefs(props);
-        const { objectSeccions, addSection, sectionId, updateContentName } = useSection();
+        const { objectSeccions, addSection, sectionId, updateSectiontName } = useSection();
         onMounted(() => {
             if (sections.value) {
                 objectSeccions.value = sections.value;
@@ -120,7 +121,7 @@ export default {
 
         return {
             activeIndex,
-            updateContentName,
+            updateSectiontName,
             sectionId,
             objectSeccions,
             addSection

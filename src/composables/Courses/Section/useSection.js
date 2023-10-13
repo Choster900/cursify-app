@@ -14,7 +14,7 @@ export const useSection = () => {
             sectionState: "PRIVADO",
         });
     };
-    const updateContentName = () => {
+    const updateSectiontName = () => {
         const indexSection = objectSeccions.value.findIndex(
             (index) => index.sectionId == sectionId.value
         );
@@ -41,6 +41,6 @@ export const useSection = () => {
         sectionTitle,
         sectionId,
         addSection,
-        updateContentName,
+        updateSectiontName,
     };
 };
