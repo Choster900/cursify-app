@@ -45,11 +45,12 @@
                                         </ul>
                                     </div>
                                     <div>
-                                        <div class="text-xs font-semibold text-slate-400 uppercase mb-3">Experience</div>
+                                        <div class="text-xs font-semibold text-slate-400 uppercase mb-3">Exams and Settings
+                                        </div>
                                         <ul class="flex flex-nowrap md:block mr-3 md:mr-0">
                                             <li class="mr-0.5 md:mr-0 md:mb-0.5">
                                                 <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap"
-                                                    href="/settings/feedback">
+                                                    href="#exam" @click="activeMenu = 'exam'">
                                                     <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 mr-2"
                                                         viewBox="0 0 16 16">
                                                         <path
@@ -57,8 +58,7 @@
                                                         </path>
                                                     </svg>
                                                     <span
-                                                        class="text-sm font-medium text-slate-600 hover:text-slate-700">Give
-                                                        Feedback</span>
+                                                        class="text-sm font-medium text-slate-600 hover:text-slate-700">Examenes</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -68,13 +68,15 @@
                                     <div class="md:py-8">
                                         <!-- Content course setting -->
                                         <div v-if="courseDetails && categoriesObject">
-
-                                            <GeneralCourseSettings :class="activeMenu == 'general' ? '' : 'hidden'"
-                                                :categories="categoriesObject" :curso="courseDetails" />
-
-
-                                            <ContentCourseSettings :class="activeMenu == 'content' ? '' : 'hidden'"
-                                                :sections="courseDetails.sections" />
+                                            
+                                            <GeneralCourseSettings :class="activeMenu === 'general' ? '' : 'hidden'"
+                                            :categories="categoriesObject" :curso="courseDetails" />
+                                            
+                                            
+                                            <ContentCourseSettings :class="activeMenu === 'content' ? '' : 'hidden'"
+                                            :sections="courseDetails.sections" />
+                                            
+                                            <Exam :class="activeMenu === 'exam' ? '' : 'hidden'" :exams="courseDetails.exams" />
                                         </div>
                                     </div>
                                 </div>
@@ -92,13 +94,14 @@
 <script>
 import ContentCourseSettings from '@/components/Courses/SecctionsCourseSetting.vue';
 import GeneralCourseSettings from '@/components/Courses/GeneralCourseSettings.vue';
+import Exam from '@/components/Exams/ExamList.vue';
 import { useRoute } from 'vue-router';
 import { useCourseSettings } from '../composables/Courses/useCourseSettings.js'
 import { reactive, toRefs } from 'vue';
 import useCategory from '@/composables/Category.vue/useCategory';
 
 export default {
-    components: { ContentCourseSettings, GeneralCourseSettings },
+    components: { ContentCourseSettings, GeneralCourseSettings, Exam },
     setup() {
         const route = useRoute()
         const courseId = route.params.courseId

@@ -54,7 +54,6 @@ export const useCourse = () => {
                 formData.append("courseName", courseName.value);
                 formData.append("coursePhoto", coursePhoto.value);
                 formData.append("userId", user.userId);
-                //  formData.append("courseId ", courseId.value); 
 
                 const resp = await axios.put(`${API_URL}/courses/${courseId.value}`, formData, {
                     headers: {
