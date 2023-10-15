@@ -37,7 +37,7 @@ export const useCourse = () => {
 
                 console.log(resp);
                 resolve(resp);
-                router.push('/courses/configuration/1');
+                router.push(`/courses/configuration/${resp.data.courseId}`);
             } catch (error) {
                 console.error(error);
                 reject(error);

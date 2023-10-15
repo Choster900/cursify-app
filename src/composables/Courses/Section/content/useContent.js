@@ -1,58 +1,73 @@
+import { API_URL } from "@/config/config";
 import axios from "axios";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 export const useContent = () => {
-  const objectSeccionContent = ref([]);
+    const objectSeccionContent = ref(null);
+    const objectRetunredWhenIsAdding = ref(null);
 
-  const contentFileName = ref(null);
-  const fileVideoContent = ref(null);
-  const contentName = ref(null);
-  const contentType = ref(null);
-  const sectionId = ref(null);
-  const contentId = ref(null);
-
-  const modifiedContentIntoCourseRequest = () => {
-    console.log({
-      contentName: contentName.value,
-      contentFileName: contentFileName.value,
-      fileVideoContent: fileVideoContent.value,
-      contentType: contentType.value,
-      sectionId: sectionId.value,
-      contentId: contentId.value,
-    });
-
-    /* return new Promise(async (resolve, reject) => {
+    const modifiedContentIntoCourseRequest = (rowSelected) => {
+        const { contentFileName, contentId, contentName, contentType, fileVideoContent, sectionId } = objectSeccionContent.value[rowSelected]
+        return new Promise(async (resolve, reject) => {
             try {
                 const formData = new FormData();
-                formData.append("contentFileName", contentFileName.value);
-                formData.append("file", fileVideoContent.value);
-                formData.append("contentName", contentName.value);
-                formData.append("contentType", contentType.value);
-                formData.append("sectionId", sectionId.value);
+                formData.append("contentFileName", contentFileName);
+                formData.append("fileVideoContent", fileVideoContent);
+                formData.append("contentName", contentName);
+                formData.append("contentType", contentType);
+                formData.append("sectionId", sectionId);
+                formData.append("contentId", contentId);
 
-                const resp = await axios.put(`${API_URL}/sectionContent/${contentId.value}`, formData, {
+                const resp = await axios.put(`${API_URL}/sectionContent/${contentId}`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 });
 
-                console.log(resp);
+
                 resolve(resp);
             } catch (error) {
                 console.error(error);
                 reject(error);
             }
-        }); */
-  };
+        });
+    };
 
-  return {
-    modifiedContentIntoCourseRequest,
-    objectSeccionContent,
-    contentFileName,
-    fileVideoContent,
-    contentName,
-    contentType,
-    sectionId,
-    contentId,
-  };
+    const createContentIntoCourseRequest = (rowSelected) => {
+        const { contentFileName, contentName, contentType, fileVideoContent, sectionId } = objectSeccionContent.value[rowSelected]
+        return new Promise(async (resolve, reject) => {
+            try {
+                const formData = new FormData();
+                formData.append("contentFileName", contentFileName);
+                formData.append("fileVideoContent", fileVideoContent);
+                formData.append("contentName", contentName);
+                formData.append("contentType", contentType);
+                formData.append("sectionId", sectionId);
+
+                const resp = await axios.post(`${API_URL}/sectionContent/`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+
+                // Modificar la respuesta antes de resolverla
+                const modifiedResponse = { response: resp.data, rowAffected: rowSelected };
+
+                objectRetunredWhenIsAdding.value = modifiedResponse;
+                resolve(resp);
+            } catch (error) {
+                console.error(error);
+                reject(error);
+            }
+        });
+    };
+
+
+
+    return {
+        objectSeccionContent,
+        modifiedContentIntoCourseRequest,
+        objectRetunredWhenIsAdding,
+        createContentIntoCourseRequest,
+    };
 };

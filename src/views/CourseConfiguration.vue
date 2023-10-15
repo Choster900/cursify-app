@@ -64,25 +64,23 @@
                                         </ul>
                                     </div>
                                 </div>
-                               <!--  <pre>
-                            {{ courseDetails }}
-                        </pre> -->
                                 <div class="flex-1 md:ml-8 xl:mx-4 2xl:mx-8">
                                     <div class="md:py-8">
                                         <!-- Content course setting -->
-                                        <div v-if="courseDetails && categoriesObject" >
-                                            
-                                            <GeneralCourseSettings :class="activeMenu == 'general' ? '' : 'hidden'"
-                                            :categories="categoriesObject" :curso="courseDetails" />
+                                        <div v-if="courseDetails && categoriesObject">
 
-                                            
-                                            <ContentCourseSettings :class="activeMenu == 'content' ? '' : 'hidden'" :sections="courseDetails.sections" />
+                                            <GeneralCourseSettings :class="activeMenu == 'general' ? '' : 'hidden'"
+                                                :categories="categoriesObject" :curso="courseDetails" />
+
+
+                                            <ContentCourseSettings :class="activeMenu == 'content' ? '' : 'hidden'"
+                                                :sections="courseDetails.sections" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </main>
 

@@ -1,5 +1,5 @@
 // En un archivo llamado useCourseSettings.js
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onActivated } from 'vue';
 import axios from 'axios';
 import { API_URL } from '@/config/config';
 import { useRoute } from 'vue-router';
@@ -25,7 +25,7 @@ export const useCourseSettings = (courseId) => {
     }
   };
 
-  onMounted(async () => {
+  onActivated(async () => {
     try {
       await getCourseWithDetails();
     } catch (error) {

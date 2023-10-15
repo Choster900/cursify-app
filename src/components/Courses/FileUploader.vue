@@ -1,9 +1,9 @@
 <template>
     <div>
         <input type="file" ref="fileInput" style="display: none;" @change="handleFileChange" accept="video/*" />
-
         <div class="w-1/2 h-52 border-[3px] border-dashed flex items-center justify-center  cursor-pointer"
-            v-if="urlVideoFile == ''" @dragover.prevent="handleDragOver" @drop="handleDrop" @click="openFileInput">
+            v-if="urlVideoFile == '' || !videoFile" @dragover.prevent="handleDragOver" @drop="handleDrop"
+            @click="openFileInput">
             <!-- Contenido del dropzone -->
             <div class="flex flex-col items-center justify-center text-center ">
                 <svg class="w-16" viewBox="0 0 1024 1024" fill="#000000">
@@ -23,11 +23,10 @@
 
         </div>
         <div class=" flex justify-between" v-else>
-            <video width="490" height="232" :src="urlVideoFile" controls class="rounded-md object-cover" v-if="urlVideoFile"></video>
-            <video width="490" height="232" :src="IMAGE_PATH + contentVideoName" controls class="rounded-md object-cover"
-                v-else></video>
+            <video width="490" height="232" :src="urlVideoFile || (IMAGE_PATH + contentVideoName)" controls
+                class="rounded-md object-cover"></video>
             <button class=" border-slate-200 justify-start hover:border-slate-300"
-                @click="urlVideoFile = ''; contentFile = '';">
+                @click="urlVideoFile = ''; contentFile = ''; videoFile = '',contentVideoName=''">
                 <svg class="w-4 h-4 fill-current text-rose-500 shrink-0" viewBox="0 0 16 16">
                     <path
                         d="M5 7h2v6H5V7zm4 0h2v6H9V7zm3-6v2h4v2h-1v10c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1V5H0V3h4V1c0-.6.4-1 1-1h6c.6 0 1 .4 1 1zM6 2v1h4V2H6zm7 3H3v9h10V5z">
@@ -35,7 +34,7 @@
                 </svg>
             </button>
         </div>
-        
+
 
     </div>
 </template>
@@ -49,13 +48,17 @@ export default {
         videoFile: {
             type: String,
             default: null,
+        },
+        rowFile: {
+            type: String,
+            default: null,
         }
     },
     setup(props, context) {
         const fileInput = ref(null);
         const contentFile = ref(null);
         const urlVideoFile = ref(null);
-        const { videoFile } = toRefs(props);
+        const { videoFile, rowFile } = toRefs(props);
         const contentVideoName = ref(null);
 
         const openFileInput = () => {
@@ -85,28 +88,18 @@ export default {
         onMounted(() => {
             contentVideoName.value = videoFile.value
 
-            const data = {
-                contentFile: contentFile.value,
-                urlVideoFile: urlVideoFile.value,
-                contentVideoName: contentVideoName.value
-            }
-            context.emit('file-uploaded', data);
-            
         })
         const setImageData = (selectedFile) => {
-            contentFile.value = selectedFile;
             urlVideoFile.value = URL.createObjectURL(selectedFile);
+            console.log(urlVideoFile);
+            contentFile.value = selectedFile;
             contentVideoName.value = selectedFile.name
 
             const data = {
                 contentFile: contentFile.value,
-                urlVideoFile: urlVideoFile.value,
                 contentVideoName: contentVideoName.value
             }
-            // props.dataINeed = data;
-            //    emit('file-uploaded', data); // Aquí emitimos el evento 'file-uploaded' con los datos
-            context.emit('file-uploaded', data);
-            // console.log('Archivo seleccionado:', selectedFile.name);
+            context.emit('file-uploaded', { data: data, rowFile: rowFile.value });
         };
 
         return {

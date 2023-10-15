@@ -279,7 +279,8 @@ export default {
             courseFile,
             coursePhoto,
             courseDescription,
-            createCategoryRequest,
+         //   createCategoryRequest,
+            createCourseRequest,
         } = useCourse();
 
         const { categoriesObject } = useCategory();
@@ -308,7 +309,7 @@ export default {
                 }, 3000);
             } else {
                 console.log('Datos válidos, puedes enviarlos al servidor');
-                const resp = await createCategoryRequest();
+                const resp = await createCourseRequest();
 
             }
         }

@@ -35,12 +35,21 @@
                         <div class="flex justify-between gap-2">
                             <input v-model="section.sectionTitle" autofocus placeholder="Nuevo nombre de la seccion"
                                 class="form-input w-full h-6" type="text">
-                            <button class=" border-slate-200 hover:border-slate-300"
+                            <button class=" border-slate-200 hover:border-slate-300" v-if="!section.isNew"
                                 @click="section.isEditing = false, sectionId = section.sectionId, updateSectiontName()">
                                 <svg class="w-4 h-4 fill-current text-indigo-500 shrink-0" viewBox="0 0 16 16">
                                     <path
                                         d="M14.3 2.3L5 11.6 1.7 8.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l4 4c.2.2.4.3.7.3.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0z">
                                     </path>
+                                </svg>
+                            </button>
+                            <button
+                                @click="sectionId = i, createCourseRequest(), section.isEditing = false, section.isNew = false"
+                                class=" border-slate-200 hover:border-slate-300" v-else>
+                                <svg class="w-7 h-7  shrink-0" viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M11 13L15.4564 8.5M11 13L6.38202 9.57695C5.7407 9.07229 5.94107 8.06115 6.72742 7.834L20 4L17.117 15.9189C16.9651 16.6489 16.0892 16.9637 15.5 16.5L13.5 15M11 13V18L13.5 15M11 13L13.5 15M7 20L9 18M4 19L8.5 14.5M4 15L6.5 12.5"
+                                        stroke="#16c057" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
                             </button>
                         </div>
@@ -80,7 +89,8 @@
             <footer class="flex flex-wrap justify-end text-sm" v-show='i === activeIndex'>
                 <div
                     class="flex items-center after:block after:content-['·'] last:after:content-[''] after:text-sm after:text-slate-400 after:px-2">
-                    <button class="btn-xs bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <button class="btn-xs bg-indigo-500 hover:bg-indigo-600 text-white"
+                        @click="addNewContent(i, section.sectionId)">
                         <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                             <path
                                 d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z">
@@ -97,6 +107,8 @@
 import { onMounted, ref, toRefs } from 'vue';
 import ContentSecctionSettings from './ContentSecctionSettings.vue'
 import { useSection } from '../../composables/Courses/Section/useSection'
+import { v4 as uuid, v4 } from "uuid";
+
 export default {
     components: { ContentSecctionSettings },
     props: {
@@ -109,22 +121,38 @@ export default {
         const activeIndex = ref(0);
 
         const { sections } = toRefs(props);
-        const { objectSeccions, addSection, sectionId, updateSectiontName } = useSection();
+        const { objectSeccions, addSection, sectionId, updateSectiontName, createCourseRequest } = useSection();
         onMounted(() => {
             if (sections.value) {
                 objectSeccions.value = sections.value;
                 for (const section of objectSeccions.value) {
-                    section.isEditing = false;// Agregamos una nueva llave para manejar la parte de edicion
+                    section.id = v4()
+                    section.isEditing = false
+                    section.isNew = false
                 }
             }
         })
 
+        const addNewContent = (key, sectionId) => {
+            objectSeccions.value[key].sectionContents.push({
+                contentId: '',
+                sectionId: sectionId,
+                contentName: 'TEST',
+                contentType: 'mp4',
+                contentFileName: '',
+                fileVideoContent: '',
+                isNew: true,
+            })
+        }
+
         return {
             activeIndex,
             updateSectiontName,
-            sectionId,
             objectSeccions,
-            addSection
+            addNewContent,
+            addSection,
+            createCourseRequest,
+            sectionId,
         }
     }
 
