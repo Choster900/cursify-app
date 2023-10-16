@@ -48,7 +48,7 @@ const store = createStore({
         context.commit("setUser", response.response.data);
         $cookies.set("authId", response.response.data.userId);
       } else {
-        throw new Error("Could not complete signup action");
+      //  throw new Error("Could not complete signup action");
       }
     },
     /**
@@ -61,14 +61,14 @@ const store = createStore({
       console.log("login action");
 
       const response = await loginUser(email, password);
-      console.log(response.response.data.userId);
+      console.log(response);
 
       if (response) {
         context.commit("setAuthIsReady", true);
         context.commit("setUser", response.response.data);
         $cookies.set("authId", response.response.data.userId);
       } else {
-        throw new Error("Could not complete login action");
+       // throw new Error("Could not complete login action");
       }
     },
     /**

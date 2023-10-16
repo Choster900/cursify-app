@@ -78,30 +78,37 @@
                 </div>
             </div>
             <!-- Modal content -->
-            <div class="px-5 py-4">
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-sm font-medium mb-1" for="name">Email <span
-                                class="text-rose-500">*</span></label>
-                        <input v-model="email" id="email" class="form-input w-full px-2 py-1" type="text" required />
+            <form @submit.prevent="handleLoginSubmit">
+                <div class="px-5 py-4">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1" for="name">Email <span
+                                    class="text-rose-500">*</span></label>
+                            <input v-model="email" id="email" class="form-input w-full px-2 py-1" type="text" required />
+                            <span>{{ emailIsEmpty }}</span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1" for="email">Password <span
+                                    class="text-rose-500">*</span></label>
+                            <input v-model="password" id="password" class="form-input w-full px-2 py-1" type="password"
+                                required />
+                            <span>{{ passwordIsEmpty }}</span>
+
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1" for="email">Password <span
-                                class="text-rose-500">*</span></label>
-                        <input v-model="password" id="password" class="form-input w-full px-2 py-1" type="password"
-                            required />
+                    {{ errorResponse }}
+                </div>
+                <!-- Modal footer -->
+                <div class="px-5 py-4 border-t border-slate-200">
+                    <div class="flex flex-wrap justify-end space-x-2">
+                        <button type="submit"
+                            class="btn border-slate-200 hover:border-slate-300 text-slate-600">Cancel</button>
+                        <button @click="handleLoginSubmit"
+                            class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Login</button>
                     </div>
                 </div>
-            </div>
-            <!-- Modal footer -->
-            <div class="px-5 py-4 border-t border-slate-200">
-                <div class="flex flex-wrap justify-end space-x-2">
-                    <button class="btn border-slate-200 hover:border-slate-300 text-slate-600"
-                        @click.stop="LoginModalOpen = false">Cancel</button>
-                    <button @click="handleLoginSubmit"
-                        class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Login</button>
-                </div>
-            </div>
+            </form>
+
         </ModalBlank>
         <!-- End -->
     </div>
@@ -120,20 +127,44 @@ export default {
         const store = useStore()
         const email = ref('')
         const password = ref('')
+        const emailIsEmpty = ref('')
+        const passwordIsEmpty = ref('')
+        const errorResponse = ref('')
         const handleSingupSubmit = async () => {
             try {
                 await store.dispatch('signup', { email: email, password: password })
             } catch (error) {
-                throw new Error("Could not complete singup action");
+                //    throw new Error("Could not complete singup action");
+                console.log(error);
             }
         }
         const handleLoginSubmit = async () => {
-            try {
-                await store.dispatch('login', { email: email, password: password })
-            } catch (error) {
-                throw new Error("Could not complete singup action");
+            // Reiniciamos los mensajes de error
+            emailIsEmpty.value = '';
+            passwordIsEmpty.value = '';
+
+            // Validamos que el email y password no estén vacíos
+            if (!email.value.trim()) {
+                emailIsEmpty.value = 'El email es requerido';
             }
-        }
+
+            if (!password.value.trim()) {
+                passwordIsEmpty.value = 'El password es requerido';
+            }
+
+            // Si hay algún error en los campos, no continuamos con el login
+            if (emailIsEmpty.value || passwordIsEmpty.value) {
+                return;
+            }
+
+            try {
+                await store.dispatch('login', { email: email.value, password: password.value });
+            } catch (error) {
+                console.error(error.error.response.data);
+                errorResponse.value = error.error.response.data
+            }
+        };
+
         return {
             singUpModalOpen,
             LoginModalOpen,
@@ -141,6 +172,9 @@ export default {
             password,
             handleSingupSubmit,
             handleLoginSubmit,
+            emailIsEmpty,
+            passwordIsEmpty,
+            errorResponse,
         }
     }
 }
