@@ -2,11 +2,13 @@
     <div class="blog-posts">
         <!-- <Breadcrumb slug="All Post" /> -->
         <div class="py-section">
+            
             <div class="container">
                 <div class="sm:flex sm:justify-between sm:items-center mb-8"><!-- Left: Title -->
                     <div class="mb-4 sm:mb-0">
                         <h1 class="text-lg md:text-3xl text-slate-800 font-bold">My Created Courses</h1>
-                    </div><!-- Right: Actions  -->
+                    </div>
+                    
                     <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2"><!-- Search form -->
                         <form class="relative">
                             <label for="action-search" class="sr-only">Search</label>
@@ -37,20 +39,22 @@
                 </div>
                 <h1 class=" sr-only">All Posts XD</h1>
                 <div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-[30px] gap-y-[40px]">
-                        <PostCourseTwo v-for="curso in cursos" :key="curso.course_id" :course="curso" excerpt
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-[30px] gap-y-[40px]" v-if="courseByUserCreatorIdArray">
+                        
+                        <PostCourseTwo v-for="curso in courseByUserCreatorIdArray" :key="curso.courseId" :course="curso" excerpt
                             text-variant="lg:text-2xl" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
 </template>
 
 <script>
 import Breadcrumb from '@/components/Elements/Breadcrumb.vue';
 import PostCourseTwo from '../components/PostCourses/PostCourseTwo.vue';
+import { onActivated } from 'vue';
+import { useCourse } from '@/composables/Courses/useCourse';
 
 export default {
     name: 'MyCourses',
@@ -58,9 +62,16 @@ export default {
         Breadcrumb, PostCourseTwo
     },
     setup() {
+        //const course
+        const { getCourseByUserCreatorId,courseByUserCreatorIdArray } = useCourse();
+
+        onActivated( async () => {
+            getCourseByUserCreatorId()
+            //console.log(courseByUserCreatorIdArray.value);
+        })
         const cursos = [
 
-            
+
             {
                 "course_id": 2,
                 "user": {
@@ -115,6 +126,7 @@ export default {
 
         return {
             cursos,
+            courseByUserCreatorIdArray,
         }
     }
 }

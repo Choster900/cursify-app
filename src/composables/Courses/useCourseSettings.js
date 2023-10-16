@@ -5,36 +5,48 @@ import { API_URL } from '@/config/config';
 import { useRoute } from 'vue-router';
 
 export const useCourseSettings = (courseId) => {
-  const activeMenu = ref("general");
-  const courseDetails = ref(null);
-  
-  const getCourseWithDetails = async () => {
-    try {
-      const resp = await axios.get(`${API_URL}/courses/findCourseByIdWithDetails/${courseId}`);
-      courseDetails.value = resp.data; // Guardamos los detalles del curso
-    } catch (error) {
-      handleError(error);
-    }
-  };
+    const activeMenu = ref("general");
+    const courseDetails = ref(null);
 
-  const handleError = (error) => {
-    console.error(error);
-    if (error.response && (error.response.status === 404 || error.response.status == 400)) {
-      console.log(error.response.status);
-      // Puedes mostrar un mensaje al usuario o redirigirlo a una página específica
-    }
-  };
+    const route = useRoute(); // Obtener la ruta actual
 
-  onActivated(async () => {
-    try {
-      await getCourseWithDetails();
-    } catch (error) {
-      handleError(error);
-    }
-  });
+    const getCourseWithDetails = async () => {
+        try {
+            const courseId = route.params.courseId; // Obtener el courseId de la ruta
+            console.log(courseId);
+            const resp = await axios.get(`${API_URL}/courses/findCourseByIdWithDetails/${courseId}`);
+            courseDetails.value = resp.data; // Guardar los detalles del curso
+        } catch (error) {
+            handleError(error);
+        }
+    };
 
-  return {
-    activeMenu,
-    courseDetails
-  };
+    const handleError = (error) => {
+        console.error(error);
+        if (error.response && (error.response.status === 404 || error.response.status == 400)) {
+            console.log(error.response.status);
+            // Puedes mostrar un mensaje al usuario o redirigirlo a una página específica
+        }
+    };
+
+    onActivated(async () => {
+        try {
+            await getCourseWithDetails();
+        } catch (error) {
+            handleError(error);
+        }
+    });
+
+    onMounted(async () => {
+        try {
+            await getCourseWithDetails();
+        } catch (error) {
+            handleError(error);
+        }
+    });
+    return {
+        activeMenu,
+        getCourseWithDetails,
+        courseDetails
+    };
 };

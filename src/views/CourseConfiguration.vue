@@ -13,9 +13,9 @@
                                         </div>
                                         <ul class="flex flex-nowrap md:block mr-3 md:mr-0">
                                             <li class="mr-0.5 md:mr-0 md:mb-0.5">
-                                                <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap"
+                                                <butto class="cursor-pointer flex items-center px-2.5 py-2 rounded whitespace-nowrap"
                                                     :class="activeMenu == 'general' ? 'bg-indigo-50' : ''"
-                                                    @click="activeMenu = 'general'" href="#general">
+                                                    @click="activeMenu = 'general'" href="">
                                                     <svg class="w-4 h-4 shrink-0 fill-current mr-2 "
                                                         :class="activeMenu == 'general' ? 'text-indigo-400' : 'text-slate-400'"
                                                         viewBox="0 0 16 16">
@@ -25,12 +25,12 @@
                                                     </svg>
                                                     <span class="text-sm font-medium  "
                                                         :class="activeMenu == 'general' ? 'text-indigo-500' : 'text-slate-600 hover:text-slate-700'">General</span>
-                                                </a>
+                                                </butto>
                                             </li>
                                             <li class="mr-0.5 md:mr-0 md:mb-0.5">
-                                                <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap"
+                                                <butto class="cursor-pointer flex items-center px-2.5 py-2 rounded whitespace-nowrap"
                                                     :class="activeMenu == 'content' ? 'bg-indigo-50' : ''"
-                                                    @click="activeMenu = 'content'" href="#content">
+                                                    @click="activeMenu = 'content'" href="">
                                                     <svg class="w-4 h-4 shrink-0 fill-current  mr-2"
                                                         :class="activeMenu == 'content' ? 'text-indigo-400' : 'text-slate-400'"
                                                         viewBox="0 0 16 16">
@@ -40,7 +40,7 @@
                                                     </svg>
                                                     <span class="text-sm font-medium  "
                                                         :class="activeMenu == 'content' ? 'text-indigo-500' : 'text-slate-600 hover:text-slate-700'">Content</span>
-                                                </a>
+                                                </butto>
                                             </li>
                                         </ul>
                                     </div>
@@ -49,8 +49,8 @@
                                         </div>
                                         <ul class="flex flex-nowrap md:block mr-3 md:mr-0">
                                             <li class="mr-0.5 md:mr-0 md:mb-0.5">
-                                                <a class="flex items-center px-2.5 py-2 rounded whitespace-nowrap"
-                                                    href="#exam" @click="activeMenu = 'exam'">
+                                                <butto class="cursor-pointer flex items-center px-2.5 py-2 rounded whitespace-nowrap"
+                                                    href="" @click="activeMenu = 'exam'">
                                                     <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 mr-2"
                                                         viewBox="0 0 16 16">
                                                         <path
@@ -59,7 +59,7 @@
                                                     </svg>
                                                     <span
                                                         class="text-sm font-medium text-slate-600 hover:text-slate-700">Examenes</span>
-                                                </a>
+                                                </butto>
                                             </li>
                                         </ul>
                                     </div>
@@ -68,15 +68,16 @@
                                     <div class="md:py-8">
                                         <!-- Content course setting -->
                                         <div v-if="courseDetails && categoriesObject">
-                                            
+
                                             <GeneralCourseSettings :class="activeMenu === 'general' ? '' : 'hidden'"
-                                            :categories="categoriesObject" :curso="courseDetails" />
-                                            
-                                            
+                                                :categories="categoriesObject" :curso="courseDetails" />
+
+
                                             <ContentCourseSettings :class="activeMenu === 'content' ? '' : 'hidden'"
-                                            :sections="courseDetails.sections" />
-                                            
-                                            <Exam :class="activeMenu === 'exam' ? '' : 'hidden'" :exams="courseDetails.exams" />
+                                                :sections="courseDetails.sections" />
+
+                                            <Exam :class="activeMenu === 'exam' ? '' : 'hidden'"
+                                                :exams="courseDetails.exams" />
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +98,7 @@ import GeneralCourseSettings from '@/components/Courses/GeneralCourseSettings.vu
 import Exam from '@/components/Exams/ExamList.vue';
 import { useRoute } from 'vue-router';
 import { useCourseSettings } from '../composables/Courses/useCourseSettings.js'
-import { reactive, toRefs } from 'vue';
+import { reactive, toRefs, onActivated, onMounted } from 'vue';
 import useCategory from '@/composables/Category.vue/useCategory';
 
 export default {
@@ -105,8 +106,8 @@ export default {
     setup() {
         const route = useRoute()
         const courseId = route.params.courseId
-        const { activeMenu, courseDetails } = useCourseSettings(courseId);
         const { categoriesObject } = useCategory()
+        const { activeMenu, courseDetails, getCourseWithDetails } = useCourseSettings(courseId);
         return {
             activeMenu,
             courseDetails,

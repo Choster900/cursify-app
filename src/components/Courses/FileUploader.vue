@@ -22,8 +22,9 @@
             </div>
 
         </div>
+        
         <div class=" flex justify-between" v-else>
-            <video width="490" height="232" :src="urlVideoFile || (IMAGE_PATH + contentVideoName)" controls
+            <video width="490" height="232" :src="urlVideoFile || `${IMAGE_PATH}/media/${contentVideoName}`" controls
                 class="rounded-md object-cover"></video>
             <button class=" border-slate-200 justify-start hover:border-slate-300"
                 @click="urlVideoFile = ''; contentFile = ''; videoFile = '',contentVideoName=''">
@@ -40,7 +41,7 @@
 </template>
   
 <script>
-import { defineComponent, onMounted, ref, toRefs } from 'vue';
+import { defineComponent, onActivated, onDeactivated, onMounted, ref, toRefs, watch } from 'vue';
 import { defineEmits } from 'vue'
 import { IMAGE_PATH } from '@/config/config';
 export default {
@@ -86,6 +87,19 @@ export default {
 
         };
         onMounted(() => {
+            contentVideoName.value = videoFile.value
+
+        })
+        
+        onDeactivated(() => {
+            urlVideoFile.value = null;
+
+        })
+        onActivated(() => {
+            contentVideoName.value = videoFile.value
+
+        })
+        watch(videoFile, async() => {
             contentVideoName.value = videoFile.value
 
         })

@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { onMounted, ref, toRefs, watch } from 'vue';
+import { onActivated, onMounted, ref, toRefs, watch } from 'vue';
 import FileUploader from './FileUploader.vue';
 import { useContent } from '@/composables/Courses/Section/content/useContent';
 
@@ -58,7 +58,9 @@ export default {
     components: { FileUploader },
     setup(props) {
         const activeIndex = ref(0);
-        const contents = ref(props.contents);
+        //const contents = ref(props.contents);
+        const { contents } = toRefs(props);
+
         const {
             objectSeccionContent,
             modifiedContentIntoCourseRequest,
@@ -78,7 +80,29 @@ export default {
                 });
             }
         });
-
+        onActivated(() => {
+            if (contents.value && contents.value.length > 0) {
+                contents.value.forEach((content) => {
+                    if (content.contentFileName) {
+                        content.contentFileName = content.contentFileName.split("/").pop();
+                    }
+                    content.fileVideoContent = '';
+                    content.isNew = false;
+                });
+            }
+        });
+        watch(contents, async () => {
+          //  alert("cambio")
+            if (contents.value && contents.value.length > 0) {
+                contents.value.forEach((content) => {
+                    if (content.contentFileName) {
+                        content.contentFileName = content.contentFileName.split("/").pop();
+                    }
+                    content.fileVideoContent = '';
+                    content.isNew = false;
+                });
+            }
+        })
 
         watch(objectRetunredWhenIsAdding, () => {
             console.log("Contenido actualizado:", objectRetunredWhenIsAdding.value);

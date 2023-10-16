@@ -15,7 +15,7 @@
             v-for="(section, i) in objectSeccions" :key="i">
             <div class="flex flex-start space-x-4 ">
                 <!-- Content -->
-                <div class="grow cursor-pointer" @click.self='activeIndex = activeIndex === i ? null : i'>
+                <div class="grow cursor-pointer" @click.self="section.isNew ? '' : (activeIndex = activeIndex === i ? null : i)">
                     <!-- Title -->
                     <div class="sm:w-2/3" v-if="!section.isEditing">
                         <div class="flex justify-between">
@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { onMounted, ref, toRefs } from 'vue';
+import { onActivated, onMounted, ref, toRefs, watch } from 'vue';
 import ContentSecctionSettings from './ContentSecctionSettings.vue'
 import { useSection } from '../../composables/Courses/Section/useSection'
 import { v4 as uuid, v4 } from "uuid";
@@ -123,6 +123,26 @@ export default {
         const { sections } = toRefs(props);
         const { objectSeccions, addSection, sectionId, updateSectiontName, createCourseRequest } = useSection();
         onMounted(() => {
+            if (sections.value) {
+                objectSeccions.value = sections.value;
+                for (const section of objectSeccions.value) {
+                    section.id = v4()
+                    section.isEditing = false
+                    section.isNew = false
+                }
+            }
+        })
+        onActivated(() => {
+            if (sections.value) {
+                objectSeccions.value = sections.value;
+                for (const section of objectSeccions.value) {
+                    section.id = v4()
+                    section.isEditing = false
+                    section.isNew = false
+                }
+            }
+        })
+        watch(sections, async () => {
             if (sections.value) {
                 objectSeccions.value = sections.value;
                 for (const section of objectSeccions.value) {

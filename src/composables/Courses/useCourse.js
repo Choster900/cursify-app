@@ -16,7 +16,7 @@ export const useCourse = () => {
     const courseDescription = ref(null);
     const user = store.state.user;
     const router = useRouter()
-
+    const courseByUserCreatorIdArray = ref([]);
     const createCourseRequest = () => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -97,6 +97,14 @@ export const useCourse = () => {
         }
     };
 
+    const getCourseByUserCreatorId = async () => {
+        try {
+            const resp = await axios.get(`${API_URL}/courses/findCourseByUserCreatorWithDetails/${user.userId}`);
+            courseByUserCreatorIdArray.value = resp.data; 
+        } catch (error) {
+            handleError(error);
+        }
+    };
 
     return {
         courseName,
@@ -108,5 +116,7 @@ export const useCourse = () => {
         createCourseRequest,
         updateCourseRequest,
         updateQuestionCourse,
+        getCourseByUserCreatorId,
+        courseByUserCreatorIdArray//Variable que devuelve los creador por usuarioId
     };
 };

@@ -70,7 +70,7 @@
 <script>
 import { IMAGE_PATH } from '@/config/config';
 import { useCourse } from '@/composables/Courses/useCourse';
-import { onMounted, toRefs } from 'vue';
+import { onActivated, onDeactivated, onMounted, toRefs, watch } from 'vue';
 import { useFileHandling } from '@/composables/Courses/useFileHandling';
 export default {
     props: {
@@ -95,11 +95,13 @@ export default {
             courseId,
             updateQuestionCourse,
         } = useCourse();
+
         const handleFileChange_NOCOMPOSABLE = () => {
             handleFileChange();
             coursePhoto.value = fileNameHandlingCoursePhoto.value
             courseFile.value = fileHandlingCourseFile.value
         }
+        
         const {
             fileInput,
             handleDrop,
@@ -111,7 +113,38 @@ export default {
             coursePhoto: fileNameHandlingCoursePhoto,
         } = useFileHandling();
 
-        onMounted(() => {
+        onDeactivated(() => {
+            urlImageFile.value = null
+            fileNameHandlingCoursePhoto.value = null
+        })
+        watch(curso,async () => {
+            //alert("cambio")
+            if (curso.value) {
+                const { category, courseName: name, courseDescription: description, coursePhoto: photo, courseId: id } = curso.value;
+                categoryId.value = category.categoryId;
+                courseName.value = name;
+                courseDescription.value = description;
+
+                const partes = photo.split("/");
+                coursePhoto.value = partes[partes.length - 1];
+
+                courseId.value = id;
+            }
+        })
+        onMounted(async () => {
+            if (curso.value) {
+                const { category, courseName: name, courseDescription: description, coursePhoto: photo, courseId: id } = curso.value;
+                categoryId.value = category.categoryId;
+                courseName.value = name;
+                courseDescription.value = description;
+
+                const partes = photo.split("/");
+                coursePhoto.value = partes[partes.length - 1];
+
+                courseId.value = id;
+            }
+        });
+        onActivated(async () => {
             if (curso.value) {
                 const { category, courseName: name, courseDescription: description, coursePhoto: photo, courseId: id } = curso.value;
                 categoryId.value = category.categoryId;
