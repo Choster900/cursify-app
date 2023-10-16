@@ -1,8 +1,8 @@
 // En un archivo llamado useCourseSettings.js
-import { ref, onMounted, onActivated } from 'vue';
-import axios from 'axios';
-import { API_URL } from '@/config/config';
-import { useRoute } from 'vue-router';
+import { ref, onMounted, onActivated, onDeactivated } from "vue";
+import axios from "axios";
+import { API_URL } from "@/config/config";
+import { useRoute } from "vue-router";
 
 export const useCourseSettings = (courseId) => {
     const activeMenu = ref("general");
@@ -14,7 +14,9 @@ export const useCourseSettings = (courseId) => {
         try {
             const courseId = route.params.courseId; // Obtener el courseId de la ruta
             console.log(courseId);
-            const resp = await axios.get(`${API_URL}/courses/findCourseByIdWithDetails/${courseId}`);
+            const resp = await axios.get(
+                `${API_URL}/courses/findCourseByIdWithDetails/${courseId}`
+            );
             courseDetails.value = resp.data; // Guardar los detalles del curso
         } catch (error) {
             handleError(error);
@@ -23,12 +25,19 @@ export const useCourseSettings = (courseId) => {
 
     const handleError = (error) => {
         console.error(error);
-        if (error.response && (error.response.status === 404 || error.response.status == 400)) {
+        if (
+            error.response &&
+            (error.response.status === 404 || error.response.status == 400)
+        ) {
             console.log(error.response.status);
             // Puedes mostrar un mensaje al usuario o redirigirlo a una página específica
         }
     };
 
+    onDeactivated(() => {
+        activeMenu.value = "general";
+        courseDetails.value = null;
+    });
     onActivated(async () => {
         try {
             await getCourseWithDetails();
@@ -47,6 +56,6 @@ export const useCourseSettings = (courseId) => {
     return {
         activeMenu,
         getCourseWithDetails,
-        courseDetails
+        courseDetails,
     };
 };
