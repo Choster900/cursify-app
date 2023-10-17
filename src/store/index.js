@@ -58,7 +58,7 @@ const store = createStore({
      * @param {Object} data - User data including email and password
      */
     async login(context, { email, password }) {
-      console.log("login action");
+    //  console.log("login action");
 
       const response = await loginUser(email, password);
       console.log(response);

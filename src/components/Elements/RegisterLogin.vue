@@ -158,7 +158,7 @@ export default {
             }
 
             try {
-                await store.dispatch('login', { email: email.value, password: password.value });
+                await store.dispatch('login', { email: email, password: password });
             } catch (error) {
                 console.error(error.error.response.data);
                 errorResponse.value = error.error.response.data

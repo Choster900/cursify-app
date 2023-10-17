@@ -17,13 +17,18 @@
                 </div>
             </div>
             <swiper :navigation="swiperNavigation" :loop="true" :speed="750" :modules="modules" class="mySwiper">
-                <swiper-slide v-for="(data, i) in dataTutorCourse" :key="i">
+                <swiper-slide v-for="(data, i) in allCourses" :key="i">
                     <div class="grid grid-cols-7 gap-8">
                         <div class="lg:col-span-5 md:col-span-4 col-span-7 order-last md:order-first">
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-7">
-                                <div v-for="curso in data.cursos" :key="curso.course_id">
+                                 <pre>
+
+                                    {{ data }}
+                                    {{ data.category.categoryName }}
+                                </pre>
+                               <!--  <div v-for="(curso, i) in data" :key="i">
                                     <PostCourseTwo :course="curso" />
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="lg:col-span-2 md:col-span-3 col-span-7 order-first md:order-last">
@@ -39,17 +44,20 @@
     </div>
 </template>
 <script>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import PostCourseTwo from './PostCourseTwo.vue';
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
 // import required modules
 import { Navigation } from 'swiper/modules';
 import UserProfile from '../User/UserProfile.vue';
+import { useCourse } from '@/composables/Courses/useCourse';
 
 export default {
     components: { PostCourseTwo, UserProfile, Swiper, SwiperSlide },
     setup() {
+        const { getAllCourses, allCourses } = useCourse()
+        onMounted(async () => getAllCourses())
         const users = ref([]);
         const swiperOption = {
             speed: 750,
@@ -76,7 +84,7 @@ export default {
                 "user_email": "john.doe@example.com",
                 "user_password": "password123",
                 "user_photo": "	https://secure.gravatar.com/avatar/1f3cf7702de78552591affcaff60e76c?s=96&d=mm&r=g",
-                "user_description" : "Our mission is to help you build websites faster with our VueJS templates and Nuxt JS themes",
+                "user_description": "Our mission is to help you build websites faster with our VueJS templates and Nuxt JS themes",
                 "role_id": 1,
                 "created_at_user": "2023-09-18T08:00:00Z",
                 "modified_at_user": "2023-09-18T08:30:00Z",
@@ -123,7 +131,7 @@ export default {
                 "user_email": "john.doe@example.com",
                 "user_password": "password123",
                 "user_photo": "	https://secure.gravatar.com/avatar/1f3cf7702de78552591affcaff60e76c?s=96&d=mm&r=g",
-                "user_description" : "Our mission is to help you build websites faster with our VueJS templates and Nuxt JS themes",
+                "user_description": "Our mission is to help you build websites faster with our VueJS templates and Nuxt JS themes",
                 "role_id": 1,
                 "created_at_user": "2023-09-18T08:00:00Z",
                 "modified_at_user": "2023-09-18T08:30:00Z",
@@ -167,6 +175,7 @@ export default {
         return {
             users,
             dataTutorCourse,
+            allCourses,
             modules: [Navigation],
             swiperNavigation
         };
