@@ -21,14 +21,11 @@
                     <div class="grid grid-cols-7 gap-8">
                         <div class="lg:col-span-5 md:col-span-4 col-span-7 order-last md:order-first">
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-7">
-                                 <pre>
-
-                                    {{ data }}
-                                    {{ data.category.categoryName }}
-                                </pre>
-                               <!--  <div v-for="(curso, i) in data" :key="i">
+                                
+                                <div v-for="(curso, i) in data.coursesByUser" :key="i">
                                     <PostCourseTwo :course="curso" />
-                                </div> -->
+                                    
+                                </div>
                             </div>
                         </div>
                         <div class="lg:col-span-2 md:col-span-3 col-span-7 order-first md:order-last">
@@ -44,7 +41,7 @@
     </div>
 </template>
 <script>
-import { onMounted, ref } from 'vue';
+import { onActivated, onMounted, ref } from 'vue';
 import PostCourseTwo from './PostCourseTwo.vue';
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -58,6 +55,7 @@ export default {
     setup() {
         const { getAllCourses, allCourses } = useCourse()
         onMounted(async () => getAllCourses())
+        onActivated(async () => getAllCourses())
         const users = ref([]);
         const swiperOption = {
             speed: 750,
