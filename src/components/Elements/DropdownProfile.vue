@@ -48,6 +48,7 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import '@/assets/css/utility-patterns.css'
+import { useRouter } from 'vue-router'
 export default {
     name: 'DropdownProfile',
     props: ['align'],
@@ -63,6 +64,7 @@ export default {
         const dropdown = ref(null)
         const userPhoto = ref(null)
         const store = useStore()
+        const router = useRouter();
 
         const createUserPhoto = () => {
             let name = store.state.user.userName + store.state.user.userLastName;
@@ -70,6 +72,7 @@ export default {
         };
         const logOut = () => {
             store.dispatch('logout')
+            router.push("/")
         }
         // close on click outside
         const clickHandler = ({ target }) => {

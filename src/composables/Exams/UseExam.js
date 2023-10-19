@@ -8,6 +8,7 @@ export const useExam = () => {
     const route = useRoute()
     const courseId = route.params.courseId
     const responseWhenIsCreated = ref(null);
+    
     const addNewObjectExam = () => {
 
         objectExam.value.push({
