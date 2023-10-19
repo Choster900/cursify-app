@@ -75,7 +75,8 @@
                                                 type="text" placeholder="What's the question?">
 
                                             <svg class="w-6 h-6 text-black cursor-pointer font-bold" viewBox="0 0 24 24"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000"
+                                                v-if="!question.questionId" @click="addQuestionRequest(i)" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg" stroke="#000000"
                                                 stroke-width="0.00024000000000000003">
                                                 <path
                                                     d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44771 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44772 13 7 12.5523 7 12C7 11.4477 7.44771 11 8 11H11V8Z"
@@ -87,7 +88,7 @@
                                             </svg>
 
                                             <svg class="w-6 h-6 text-black cursor-pointer font-bold" viewBox="0 0 24 24"
-                                                @click="addAnwserToQuestion(i)" fill="none"
+                                                @click="addAnwserToQuestion(i)" fill="none" v-if="question.questionId"
                                                 xmlns="http://www.w3.org/2000/svg" transform="rotate(180)">
                                                 <path d="M7 3V21M7 3L11 7M7 3L3 7M14 3H21M14 9H19M14 15H17M14 21H15"
                                                     stroke="#000000" stroke-width="2" stroke-linecap="round"
@@ -96,7 +97,7 @@
                                             </svg>
 
                                             <svg class="w-6 h-6 text-black cursor-pointer font-bold"
-                                                viewBox="0 0 24.00 24.00" fill="none">
+                                                v-if="question.questionId" viewBox="0 0 24.00 24.00" fill="none">
                                                 <path
                                                     d="M12 3.99997H6C4.89543 3.99997 4 4.8954 4 5.99997V18C4 19.1045 4.89543 20 6 20H18C19.1046 20 20 19.1045 20 18V12M18.4142 8.41417L19.5 7.32842C20.281 6.54737 20.281 5.28104 19.5 4.5C18.7189 3.71895 17.4526 3.71895 16.6715 4.50001L15.5858 5.58575M18.4142 8.41417L12.3779 14.4505C12.0987 14.7297 11.7431 14.9201 11.356 14.9975L8.41422 15.5858L9.00257 12.6441C9.08001 12.2569 9.27032 11.9013 9.54951 11.6221L15.5858 5.58575M18.4142 8.41417L15.5858 5.58575"
                                                     stroke="#000000" stroke-width="1.128" stroke-linecap="round"
@@ -104,7 +105,7 @@
                                             </svg>
 
                                             <svg class="w-6 h-6 text-black cursor-pointer font-bold" viewBox="0 0 24 24"
-                                                fill="none">
+                                                v-if="question.questionId" fill="none">
                                                 <path
                                                     d="M8 6H19C19.5523 6 20 6.44772 20 7V17C20 17.5523 19.5523 18 19 18H8L2 12L5 9M16 9L13.0001 11.9999M13.0001 11.9999L10 15M13.0001 11.9999L10.0002 9M13.0001 11.9999L16.0002 15"
                                                     stroke="#000000" stroke-width="1.152" stroke-linecap="round"
@@ -114,7 +115,7 @@
                                         </div>
                                     </div>
                                     <div class="flex justify-between items-center gap-2 ml-10 py-1"
-                                        v-for="(answe, index )  in question.answerOptionList" :key="index">
+                                        v-for="(answer, index )  in question.answerOptionList" :key="index">
                                         <div class="grow flex space-x-5">
                                             <button
                                                 class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-slate-700">
@@ -124,28 +125,47 @@
                                             <div class="grow">
                                                 <label for="status-input" class="sr-only">What's the posible
                                                     response?</label>
-                                                <input id="status-input"
+                                                <input v-model="answer.optionText"
                                                     class="form-input w-full bg-slate-100 border-transparent focus:bg-white focus:border-slate-300 placeholder-slate-500"
                                                     type="text" placeholder="What's the posible response?">
                                             </div>
-                                            <svg class="w-7 h-7 fill-green-600 stroke-slate-600" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="#2c3e50" fill="none">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                    d="M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3" />
-                                            </svg>
-                                            <svg class="w-7 h-7" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50"
-                                                fill="none">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                    d="M7 13v-8a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v7a1 1 0 0 0 1 1h3a4 4 0 0 1 4 4v1a2 2 0 0 0 4 0v-5h3a2 2 0 0 0 2 -2l-1 -5a2 3 0 0 0 -2 -2h-7a3 3 0 0 0 -3 3" />
+                                            <svg class="w-7 h-7 cursor-pointer" version="1.1" id="Layer_1 " @click="selectCorrectOption(i,index)"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"
+                                                xml:space="preserve" fill="#000000">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                    stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path style="fill:#D7EBFF;"
+                                                        d="M256,512C114.837,512,0,397.157,0,256S114.837,0,256,0s256,114.843,256,256S397.163,512,256,512z">
+                                                    </path>
+                                                    <path style="fill:#C4E2FF;"
+                                                        d="M512,256C512,114.843,397.163,0,256,0v512C397.163,512,512,397.157,512,256z">
+                                                    </path>
+                                                    <path
+                                                        :style="answer.optionIsCorrect == 1 ? 'fill:#88CC2A' : 'fill:#787878'"
+                                                        d="M256,478.609c-122.75,0-222.609-99.864-222.609-222.609S133.25,33.391,256,33.391 S478.609,133.256,478.609,256S378.75,478.609,256,478.609z">
+                                                    </path>
+                                                    <path
+                                                        :style="answer.optionIsCorrect == 1 ? 'fill:#88CC2A' : 'fill:#787878'"
+                                                        d="M478.609,256c0-122.744-99.859-222.609-222.609-222.609v445.217 C378.75,478.609,478.609,378.744,478.609,256z">
+                                                    </path>
+                                                    <path style="fill:#FFFFFF;"
+                                                        d="M233.739,356.174c-8.544,0-17.087-3.261-23.609-9.783l-68.804-68.804 c-13.044-13.038-13.044-34.179,0-47.218c13.044-13.044,34.174-13.044,47.218,0l45.195,45.19l95.282-95.278 c13.044-13.044,34.174-13.044,47.218,0c13.044,13.038,13.044,34.179,0,47.218L257.348,346.391 C250.827,352.913,242.283,356.174,233.739,356.174z">
+                                                    </path>
+                                                    <path style="fill:#EDF0F2;"
+                                                        d="M329.021,180.283L256,253.3v94.192c0.435-0.393,0.928-0.681,1.348-1.101l118.891-118.891 c13.044-13.038,13.044-34.179,0-47.218C363.196,167.239,342.065,167.239,329.021,180.283z">
+                                                    </path>
+                                                </g>
                                             </svg>
 
                                         </div>
                                     </div>
-                                    <div class="flex justify-end pt-5">
-                                        <button type="submit"
+                                    <div class="flex justify-end pt-5" v-if="question.answerOptionList.length > 0">
+                                        <button @click="sendOptiosns(i,question.questionId)"
                                             class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white whitespace-nowrap">Send
+                                            options
                                             -&gt;
                                         </button>
                                     </div>
@@ -169,7 +189,7 @@ export default {
     setup() {
         // Crear una referencia reactiva para el índice
         const index = ref(1);
-        const { getQuestionsByExam, objQuestions, addAnwserToQuestion, addQuestionToExam } = useQuestion()
+        const { getQuestionsByExam, objQuestions, addAnwserToQuestion, addQuestionToExam, addQuestionRequest, sendOptiosns,selectCorrectOption } = useQuestion()
         // Función reactiva para obtener la letra
         const getLetter = (index) => {
             return String.fromCharCode(65 + index - 1);
@@ -182,6 +202,9 @@ export default {
             objQuestions,
             addAnwserToQuestion,
             addQuestionToExam,
+            addQuestionRequest,
+            selectCorrectOption,
+            sendOptiosns,
         };
     },
 }
