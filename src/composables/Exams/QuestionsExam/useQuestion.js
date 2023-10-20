@@ -13,7 +13,7 @@ export const useQuestion = () => {
             const resp = await axios.get(`${API_URL}/exams/byExam/${examId}`);
 
             console.log(resp);
-            objQuestions.value = resp.data; 
+            objQuestions.value = resp.data;
         } catch (error) {
             handleError(error);
         }
@@ -37,7 +37,7 @@ export const useQuestion = () => {
                 examId: examId,
                 questionText: questionText,
             });
-
+            //TODO: Cuando termine de agregar la nueva pregunta setear los nuevos valores como el ID de pregunta al objeto creado
             console.log(resp);
         } catch (error) {
             handleError(error);
@@ -120,6 +120,23 @@ export const useQuestion = () => {
         selectedOption.optionIsCorrect = 1;
     };
 
+    const deleteQuestionById = async (questionIndex, optionIndex) => {
+        const currentQuestion = objQuestions.value[questionIndex];
+        const selectedOption = currentQuestion.answerOptionList[optionIndex];
+
+        /*  currentQuestion.answerOptionList.forEach((option) => {
+             option.optionIsCorrect = 0;
+         });
+         selectedOption.optionIsCorrect = 1; */
+
+        try {
+            const resp = await axios.delete(`${API_URL}/answersOptions/${selectedOption.optionId}`);
+            console.log(resp);
+        } catch (error) {
+            handleError(error);
+        }
+    }
+
     return {
         getQuestionsByExam,
         sendOptiosns,
@@ -130,5 +147,6 @@ export const useQuestion = () => {
         selectCorrectOption,
         createOptionRequest,
         updateOptionRequest,
+        deleteQuestionById,
     };
 };

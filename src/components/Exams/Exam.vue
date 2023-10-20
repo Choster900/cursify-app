@@ -45,15 +45,19 @@
                                 </g>
                             </g>
                         </svg>
-                    </div><!-- Content -->
+                    </div>
+                    <!-- Content -->
                     <div class="relative">
-                        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-1">Examen numero 1. 👋</h1>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt assumenda ipsum omnis impedit:
+                        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-1">
+                            Examen numero 1. 👋
+                        </h1>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt
+                            assumenda ipsum omnis impedit:
                         </p>
                     </div>
                 </div>
                 <main>
-
                     <div class="flex-1 md:ml-8 xl:mx-4 2xl:mx-8">
                         <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white" @click="addQuestionToExam">
                             <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
@@ -72,7 +76,7 @@
                                             <label for="status-input" class="sr-only">What's the question?</label>
                                             <input id="status-input" v-model="question.questionText"
                                                 class="form-input w-full bg-slate-100 border-transparent focus:bg-white focus:border-slate-300 placeholder-slate-500"
-                                                type="text" placeholder="What's the question?">
+                                                type="text" placeholder="What's the question?" />
 
                                             <svg class="w-6 h-6 text-black cursor-pointer font-bold" viewBox="0 0 24 24"
                                                 v-if="!question.questionId" @click="addQuestionRequest(i)" fill="none"
@@ -84,7 +88,6 @@
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                     d="M23 4C23 2.34315 21.6569 1 20 1H4C2.34315 1 1 2.34315 1 4V20C1 21.6569 2.34315 23 4 23H20C21.6569 23 23 21.6569 23 20V4ZM21 4C21 3.44772 20.5523 3 20 3H4C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4Z"
                                                     fill="#0F0F0F"></path>
-
                                             </svg>
 
                                             <svg class="w-6 h-6 text-black cursor-pointer font-bold" viewBox="0 0 24 24"
@@ -93,7 +96,6 @@
                                                 <path d="M7 3V21M7 3L11 7M7 3L3 7M14 3H21M14 9H19M14 15H17M14 21H15"
                                                     stroke="#000000" stroke-width="2" stroke-linecap="round"
                                                     stroke-linejoin="round"></path>
-
                                             </svg>
 
                                             <svg class="w-6 h-6 text-black cursor-pointer font-bold"
@@ -110,16 +112,16 @@
                                                     d="M8 6H19C19.5523 6 20 6.44772 20 7V17C20 17.5523 19.5523 18 19 18H8L2 12L5 9M16 9L13.0001 11.9999M13.0001 11.9999L10 15M13.0001 11.9999L10.0002 9M13.0001 11.9999L16.0002 15"
                                                     stroke="#000000" stroke-width="1.152" stroke-linecap="round"
                                                     stroke-linejoin="round"></path>
-
                                             </svg>
                                         </div>
                                     </div>
                                     <div class="flex justify-between items-center gap-2 ml-10 py-1"
-                                        v-for="(answer, index )  in question.answerOptionList" :key="index">
+                                        v-for="(answer, index) in question.answerOptionList" :key="index">
                                         <div class="grow flex space-x-5">
                                             <button
                                                 class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-slate-700">
-                                                <span> <span>{{ getLetter(index + 1) }}</span>
+                                                <span>
+                                                    <span>{{ getLetter(index + 1) }}</span>
                                                 </span>
                                             </button>
                                             <div class="grow">
@@ -127,55 +129,62 @@
                                                     response?</label>
                                                 <input v-model="answer.optionText"
                                                     class="form-input w-full bg-slate-100 border-transparent focus:bg-white focus:border-slate-300 placeholder-slate-500"
-                                                    type="text" placeholder="What's the posible response?">
+                                                    type="text" placeholder="What's the posible response?" />
                                             </div>
-                                            <svg class="w-7 h-7 cursor-pointer" version="1.1" id="Layer_1 " @click="selectCorrectOption(i,index)"
-                                                xmlns="http://www.w3.org/2000/svg"
+                                            <svg class="w-7 h-7 cursor-pointer" version="1.1" id="Layer_1 "
+                                                @click="selectCorrectOption(i, index)" xmlns="http://www.w3.org/2000/svg"
                                                 xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"
                                                 xml:space="preserve" fill="#000000">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
                                                     stroke-linejoin="round"></g>
                                                 <g id="SVGRepo_iconCarrier">
-                                                    <path style="fill:#D7EBFF;"
+                                                    <path style="fill: #d7ebff"
                                                         d="M256,512C114.837,512,0,397.157,0,256S114.837,0,256,0s256,114.843,256,256S397.163,512,256,512z">
                                                     </path>
-                                                    <path style="fill:#C4E2FF;"
+                                                    <path style="fill: #c4e2ff"
                                                         d="M512,256C512,114.843,397.163,0,256,0v512C397.163,512,512,397.157,512,256z">
                                                     </path>
-                                                    <path
-                                                        :style="answer.optionIsCorrect == 1 ? 'fill:#88CC2A' : 'fill:#787878'"
+                                                    <path :style="answer.optionIsCorrect == 1
+                                                        ? 'fill:#88CC2A'
+                                                        : 'fill:#787878'
+                                                        "
                                                         d="M256,478.609c-122.75,0-222.609-99.864-222.609-222.609S133.25,33.391,256,33.391 S478.609,133.256,478.609,256S378.75,478.609,256,478.609z">
                                                     </path>
-                                                    <path
-                                                        :style="answer.optionIsCorrect == 1 ? 'fill:#88CC2A' : 'fill:#787878'"
+                                                    <path :style="answer.optionIsCorrect == 1
+                                                        ? 'fill:#88CC2A'
+                                                        : 'fill:#787878'
+                                                        "
                                                         d="M478.609,256c0-122.744-99.859-222.609-222.609-222.609v445.217 C378.75,478.609,478.609,378.744,478.609,256z">
                                                     </path>
-                                                    <path style="fill:#FFFFFF;"
+                                                    <path style="fill: #ffffff"
                                                         d="M233.739,356.174c-8.544,0-17.087-3.261-23.609-9.783l-68.804-68.804 c-13.044-13.038-13.044-34.179,0-47.218c13.044-13.044,34.174-13.044,47.218,0l45.195,45.19l95.282-95.278 c13.044-13.044,34.174-13.044,47.218,0c13.044,13.038,13.044,34.179,0,47.218L257.348,346.391 C250.827,352.913,242.283,356.174,233.739,356.174z">
                                                     </path>
-                                                    <path style="fill:#EDF0F2;"
+                                                    <path style="fill: #edf0f2"
                                                         d="M329.021,180.283L256,253.3v94.192c0.435-0.393,0.928-0.681,1.348-1.101l118.891-118.891 c13.044-13.038,13.044-34.179,0-47.218C363.196,167.239,342.065,167.239,329.021,180.283z">
                                                     </path>
                                                 </g>
                                             </svg>
-
+                                            <svg  class="w-8 h-8 cursor-pointer" viewBox="0 0 24 24" fill="#000000" @click="deleteQuestionById(i,index)">
+                                                <path
+                                                    d="M8.3,15.7C8.5,15.9,8.7,16,9,16s0.5-0.1,0.7-0.3l2.3-2.3l2.3,2.3c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3 c0.4-0.4,0.4-1,0-1.4L13.4,12l2.3-2.3c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0L12,10.6L9.7,8.3c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4 l2.3,2.3l-2.3,2.3C7.9,14.7,7.9,15.3,8.3,15.7z">
+                                                </path>
+                                                <path
+                                                    d="M12,21c5,0,9-4,9-9s-4-9-9-9s-9,4-9,9S7,21,12,21z M12,5c3.9,0,7,3.1,7,7s-3.1,7-7,7s-7-3.1-7-7S8.1,5,12,5z">
+                                                </path>
+                                            </svg>
                                         </div>
                                     </div>
                                     <div class="flex justify-end pt-5" v-if="question.answerOptionList.length > 0">
-                                        <button @click="sendOptiosns(i,question.questionId)"
-                                            class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white whitespace-nowrap">Send
-                                            options
-                                            -&gt;
+                                        <button @click="sendOptiosns(i, question.questionId)"
+                                            class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white whitespace-nowrap">
+                                            Send options -&gt;
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
                 </main>
             </div>
         </div>
@@ -183,13 +192,22 @@
 </template>
 
 <script>
-import { onActivated, onMounted, ref } from 'vue';
-import { useQuestion } from '../../composables/Exams/QuestionsExam/useQuestion'
+import { onActivated, onMounted, ref } from "vue";
+import { useQuestion } from "../../composables/Exams/QuestionsExam/useQuestion";
 export default {
     setup() {
         // Crear una referencia reactiva para el índice
         const index = ref(1);
-        const { getQuestionsByExam, objQuestions, addAnwserToQuestion, addQuestionToExam, addQuestionRequest, sendOptiosns,selectCorrectOption } = useQuestion()
+        const {
+            getQuestionsByExam,
+            objQuestions,
+            addAnwserToQuestion,
+            addQuestionToExam,
+            addQuestionRequest,
+            sendOptiosns,
+            selectCorrectOption,
+            deleteQuestionById,
+        } = useQuestion();
         // Función reactiva para obtener la letra
         const getLetter = (index) => {
             return String.fromCharCode(65 + index - 1);
@@ -205,9 +223,10 @@ export default {
             addQuestionRequest,
             selectCorrectOption,
             sendOptiosns,
+            deleteQuestionById,
         };
     },
-}
+};
 </script>
 
 <style></style>
