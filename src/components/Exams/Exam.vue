@@ -48,8 +48,8 @@
                     </div>
                     <!-- Content -->
                     <div class="relative">
-                        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-1">
-                            Examen numero 1. 👋
+                        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-1 uppercase">
+                            {{ generalInformation ? generalInformation["examTitle"] : '' }} 👋
                         </h1>
                         <p>
                             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt
@@ -99,7 +99,8 @@
                                             </svg>
 
                                             <svg class="w-6 h-6 text-black cursor-pointer font-bold"
-                                                v-if="question.questionId" viewBox="0 0 24.00 24.00" fill="none">
+                                                @click="updateQuestionRequest(i)" v-if="question.questionId"
+                                                viewBox="0 0 24.00 24.00" fill="none">
                                                 <path
                                                     d="M12 3.99997H6C4.89543 3.99997 4 4.8954 4 5.99997V18C4 19.1045 4.89543 20 6 20H18C19.1046 20 20 19.1045 20 18V12M18.4142 8.41417L19.5 7.32842C20.281 6.54737 20.281 5.28104 19.5 4.5C18.7189 3.71895 17.4526 3.71895 16.6715 4.50001L15.5858 5.58575M18.4142 8.41417L12.3779 14.4505C12.0987 14.7297 11.7431 14.9201 11.356 14.9975L8.41422 15.5858L9.00257 12.6441C9.08001 12.2569 9.27032 11.9013 9.54951 11.6221L15.5858 5.58575M18.4142 8.41417L15.5858 5.58575"
                                                     stroke="#000000" stroke-width="1.128" stroke-linecap="round"
@@ -107,11 +108,14 @@
                                             </svg>
 
                                             <svg class="w-6 h-6 text-black cursor-pointer font-bold" viewBox="0 0 24 24"
-                                                v-if="question.questionId" fill="none">
+                                                @click="deleteQuestionById(i)" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M15 12H9" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round"></path>
                                                 <path
-                                                    d="M8 6H19C19.5523 6 20 6.44772 20 7V17C20 17.5523 19.5523 18 19 18H8L2 12L5 9M16 9L13.0001 11.9999M13.0001 11.9999L10 15M13.0001 11.9999L10.0002 9M13.0001 11.9999L16.0002 15"
-                                                    stroke="#000000" stroke-width="1.152" stroke-linecap="round"
-                                                    stroke-linejoin="round"></path>
+                                                    d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+
                                             </svg>
                                         </div>
                                     </div>
@@ -165,7 +169,8 @@
                                                     </path>
                                                 </g>
                                             </svg>
-                                            <svg  class="w-8 h-8 cursor-pointer" viewBox="0 0 24 24" fill="#000000" @click="deleteQuestionById(i,index)">
+                                            <svg class="w-8 h-8 cursor-pointer" viewBox="0 0 24 24" fill="#000000"
+                                                @click="deleteAnswersById(i, index)">
                                                 <path
                                                     d="M8.3,15.7C8.5,15.9,8.7,16,9,16s0.5-0.1,0.7-0.3l2.3-2.3l2.3,2.3c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3 c0.4-0.4,0.4-1,0-1.4L13.4,12l2.3-2.3c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0L12,10.6L9.7,8.3c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4 l2.3,2.3l-2.3,2.3C7.9,14.7,7.9,15.3,8.3,15.7z">
                                                 </path>
@@ -200,12 +205,15 @@ export default {
         const index = ref(1);
         const {
             getQuestionsByExam,
+            generalInformation,
             objQuestions,
             addAnwserToQuestion,
             addQuestionToExam,
             addQuestionRequest,
             sendOptiosns,
             selectCorrectOption,
+            deleteAnswersById,
+            updateQuestionRequest,
             deleteQuestionById,
         } = useQuestion();
         // Función reactiva para obtener la letra
@@ -217,12 +225,15 @@ export default {
             index,
             getLetter,
             getQuestionsByExam,
+            generalInformation,
             objQuestions,
             addAnwserToQuestion,
             addQuestionToExam,
             addQuestionRequest,
             selectCorrectOption,
             sendOptiosns,
+            deleteAnswersById,
+            updateQuestionRequest,
             deleteQuestionById,
         };
     },

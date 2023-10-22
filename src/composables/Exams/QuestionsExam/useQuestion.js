@@ -6,7 +6,7 @@ import { useRoute } from "vue-router";
 export const useQuestion = () => {
     const route = useRoute();
     const objQuestions = ref(null);
-
+    const generalInformation = ref(null);
     const getQuestionsByExam = async () => {
         try {
             const examId = route.params.examId;
@@ -14,6 +14,18 @@ export const useQuestion = () => {
 
             console.log(resp);
             objQuestions.value = resp.data;
+        } catch (error) {
+            handleError(error);
+        }
+    };
+
+    const getInformacionFromExam = async () => {
+        try {
+            const examId = route.params.examId;
+            const resp = await axios.get(`${API_URL}/exams/getInformationExamByExamId/${examId}`);
+
+            console.log(resp);
+            generalInformation.value = resp.data;
         } catch (error) {
             handleError(error);
         }
@@ -37,8 +49,9 @@ export const useQuestion = () => {
                 examId: examId,
                 questionText: questionText,
             });
-            //TODO: Cuando termine de agregar la nueva pregunta setear los nuevos valores como el ID de pregunta al objeto creado
+
             console.log(resp);
+            objQuestions.value[index].questionId = resp.data.questionId;
         } catch (error) {
             handleError(error);
         }
@@ -47,51 +60,56 @@ export const useQuestion = () => {
         objQuestions.value[index].answerOptionList.push({
             questionId: objQuestions.value[index].questionId,
             optionId: null,
-            optionsText: "PRUEBA",
+            optionText: "PRUEBA",
             optionIsCorrect: 0,
         });
     };
 
     const sendOptiosns = async (index, questionId) => {
-
         objQuestions.value[index].answerOptionList.forEach((option) => {
             if (option.optionId) {
-                updateOptionRequest(option, questionId)
+                updateOptionRequest(option, questionId);
             } else {
-                createOptionRequest(option, questionId)
+                createOptionRequest(option, questionId);
             }
         });
-
-
     };
 
     const createOptionRequest = async (objectOption, questionId) => {
         try {
-
             const resp = await axios.post(`${API_URL}/answersOptions/`, {
                 optionIsCorrect: objectOption.optionIsCorrect,
                 optionText: objectOption.optionText,
-                questionId: questionId
+                questionId: questionId,
             });
 
-            console.log(resp);
+            const question = objQuestions.value.find(q => q.questionId === questionId);
+            if (question) {
+                const optionIndex = question.answerOptionList.findIndex(option => option === objectOption);
+                if (optionIndex !== -1) {
+                    question.answerOptionList[optionIndex].optionId = resp.data.optionId;
+                }
+            }
         } catch (error) {
             handleError(error);
         }
-    }
+    };
+
     const updateOptionRequest = async (objectOption, questionId) => {
         try {
-            const resp = await axios.put(`${API_URL}/answersOptions/${objectOption.optionId}`, {
-                optionIsCorrect: objectOption.optionIsCorrect,
-                optionText: objectOption.optionText,
-                questionId: questionId
-            });
+            const resp = await axios.put(
+                `${API_URL}/answersOptions/${objectOption.optionId}`,
+                {
+                    optionIsCorrect: objectOption.optionIsCorrect,
+                    optionText: objectOption.optionText,
+                    questionId: questionId,
+                }
+            );
             console.log(resp);
         } catch (error) {
             handleError(error);
         }
-
-    }
+    };
     onDeactivated(() => { });
 
     const handleError = (error) => {
@@ -105,6 +123,7 @@ export const useQuestion = () => {
     };
     onActivated(async () => {
         try {
+            await getInformacionFromExam();
             await getQuestionsByExam();
         } catch (error) {
             handleError(error);
@@ -120,25 +139,74 @@ export const useQuestion = () => {
         selectedOption.optionIsCorrect = 1;
     };
 
-    const deleteQuestionById = async (questionIndex, optionIndex) => {
+    const deleteAnswersById = async (questionIndex, optionIndex) => {
         const currentQuestion = objQuestions.value[questionIndex];
         const selectedOption = currentQuestion.answerOptionList[optionIndex];
 
-        /*  currentQuestion.answerOptionList.forEach((option) => {
-             option.optionIsCorrect = 0;
-         });
-         selectedOption.optionIsCorrect = 1; */
+        const optionIndexToDelete = currentQuestion.answerOptionList.findIndex(
+            (option) => option === selectedOption
+        );
+
+        if (optionIndexToDelete !== -1) {
+            currentQuestion.answerOptionList.splice(optionIndexToDelete, 1);
+
+            if (selectedOption.optionId) {
+                try {
+                    const resp = await axios.delete(
+                        `${API_URL}/answersOptions/${selectedOption.optionId}`
+                    );
+                    console.log(resp);
+                } catch (error) {
+                    handleError(error);
+                }
+            }
+        }
+    };
+
+    const deleteQuestionById = async (questionIndex) => {
+        const currentQuestion = objQuestions.value[questionIndex];
+
+        const questionIndexToDelete = objQuestions.value.findIndex(
+            (option) => option === currentQuestion
+        );
+        if (questionIndexToDelete !== -1) {
+            if (currentQuestion.answerOptionList.length == 0) {
+                try {
+                    const resp = await axios.delete(`${API_URL}/questions/${currentQuestion.questionId}`);
+                    console.log(resp);
+                } catch (error) {
+                    handleError(error);
+                }
+                objQuestions.value.splice(questionIndexToDelete, 1);
+            } else {
+                alert("tiene preguntas no puede eliminar");
+            }
+        }
+    };
+
+    const updateQuestionRequest = async (questionIndex) => {
+        const currentQuestion = objQuestions.value[questionIndex];
+        console.log(currentQuestion);
 
         try {
-            const resp = await axios.delete(`${API_URL}/answersOptions/${selectedOption.optionId}`);
+            const examId = route.params.examId;
+
+            const resp = await axios.put(
+                `${API_URL}/questions/${currentQuestion.questionId}`,
+                {
+                    examId: examId,
+                    questionText: currentQuestion.questionText,
+                }
+            );
             console.log(resp);
         } catch (error) {
             handleError(error);
         }
-    }
+    };
 
     return {
         getQuestionsByExam,
+        generalInformation,
         sendOptiosns,
         objQuestions,
         addAnwserToQuestion,
@@ -147,6 +215,8 @@ export const useQuestion = () => {
         selectCorrectOption,
         createOptionRequest,
         updateOptionRequest,
+        deleteAnswersById,
+        updateQuestionRequest,
         deleteQuestionById,
     };
 };
