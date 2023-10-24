@@ -38,7 +38,7 @@ const routes = [
     // It allows users to view and enroll in the course.
     // The content for this route is lazy-loaded for better performance.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/CourseIndex"),
+      import(/* webpackChunkName: "about" */ "../views/PreviewCourse"),
   },
   {
     path: "/courses/create/:step",
