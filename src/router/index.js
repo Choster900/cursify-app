@@ -58,6 +58,7 @@ const routes = [
       import(
         /* webpackChunkName: "about" */ "../views/CourseConfiguration.vue"
       ),
+
   },
   {
     path: "/courses/config-exam/:examId",

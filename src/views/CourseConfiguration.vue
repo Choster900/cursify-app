@@ -13,7 +13,8 @@
                                         </div>
                                         <ul class="flex flex-nowrap md:block mr-3 md:mr-0">
                                             <li class="mr-0.5 md:mr-0 md:mb-0.5">
-                                                <butto class="cursor-pointer flex items-center px-2.5 py-2 rounded whitespace-nowrap"
+                                                <butto
+                                                    class="cursor-pointer flex items-center px-2.5 py-2 rounded whitespace-nowrap"
                                                     :class="activeMenu == 'general' ? 'bg-indigo-50' : ''"
                                                     @click="activeMenu = 'general'" href="">
                                                     <svg class="w-4 h-4 shrink-0 fill-current mr-2 "
@@ -28,7 +29,8 @@
                                                 </butto>
                                             </li>
                                             <li class="mr-0.5 md:mr-0 md:mb-0.5">
-                                                <butto class="cursor-pointer flex items-center px-2.5 py-2 rounded whitespace-nowrap"
+                                                <butto
+                                                    class="cursor-pointer flex items-center px-2.5 py-2 rounded whitespace-nowrap"
                                                     :class="activeMenu == 'content' ? 'bg-indigo-50' : ''"
                                                     @click="activeMenu = 'content'" href="">
                                                     <svg class="w-4 h-4 shrink-0 fill-current  mr-2"
@@ -44,12 +46,16 @@
                                             </li>
                                         </ul>
                                     </div>
+                                    <pre>
+                                    {{ courseDetails ? courseDetails.user : '' }}
+                                    </pre>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-400 uppercase mb-3">Exams and Settings
                                         </div>
                                         <ul class="flex flex-nowrap md:block mr-3 md:mr-0">
                                             <li class="mr-0.5 md:mr-0 md:mb-0.5">
-                                                <butto class="cursor-pointer flex items-center px-2.5 py-2 rounded whitespace-nowrap"
+                                                <butto
+                                                    class="cursor-pointer flex items-center px-2.5 py-2 rounded whitespace-nowrap"
                                                     href="" @click="activeMenu = 'exam'">
                                                     <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 mr-2"
                                                         viewBox="0 0 16 16">
@@ -96,18 +102,40 @@
 import ContentCourseSettings from '@/components/Courses/SecctionsCourseSetting.vue';
 import GeneralCourseSettings from '@/components/Courses/GeneralCourseSettings.vue';
 import Exam from '@/components/Exams/ExamList.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useCourseSettings } from '../composables/Courses/useCourseSettings.js'
-import { reactive, toRefs, onActivated, onMounted } from 'vue';
+import { reactive, toRefs, onActivated, onMounted, computed, watch } from 'vue';
 import useCategory from '@/composables/Category.vue/useCategory';
+import { useStore } from 'vuex';
 
 export default {
     components: { ContentCourseSettings, GeneralCourseSettings, Exam },
     setup() {
         const route = useRoute()
+        const store = useStore()
+        const router = useRouter()
+
+        const userStore = computed(() => store.state.user)
         const courseId = route.params.courseId
         const { categoriesObject } = useCategory()
         const { activeMenu, courseDetails, getCourseWithDetails } = useCourseSettings(courseId);
+
+        onActivated(courseDetails, () => {
+            if (courseDetails.value && courseDetails.value.user) {
+                if (courseDetails.value.user.userId !== userStore.value.userId) {
+                    router.push('/');
+                }
+            }
+        })
+
+        /*  onActivated(() => {
+             if (courseDetails.value && courseDetails.value.user && courseDetails.value.user.userId !== userStore.userId) {
+                 // Redirigir o tomar acciones si el usuario no tiene acceso
+                 // Por ejemplo, puedes redirigir a una página de acceso no autorizado
+                 //router.push('/');
+             }
+         }); */
+
         return {
             activeMenu,
             courseDetails,

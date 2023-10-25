@@ -6,7 +6,7 @@
                     class="object-cover h-full w-full group-hover:scale-110 transition-all duration-500">
                 <div
                     class="icon w-7 h-7  text-white text-xl absolute top-4 right-4 rounded-full flex items-center justify-center">
-                    <GeneralMenu align="right" :courseId="course.courseId" />
+                    <GeneralMenu align="right" :courseId="course.courseId" v-if="course.user.userId === userStore.userId"/>
                 </div>
             </router-link>
         </div>
@@ -16,11 +16,11 @@
                     class="category bg-[#edebf5] capitalize rounded-md px-4 py-1.5 mr-2 hover:bg-primary hover:text-white">
                     {{ course.category.categoryName }}
                 </router-link>
-                <div class="author ml-4 md:ml-6">
+                <div class="author ml-4 md:ml-6 space-x-2">
                     <span class="text-[#9b9ea1]">By</span>
                     <router-link :to="`/author/`" class="hover:text-primary">
                         {{ course.user.userName }}
-                    </router-link>0
+                    </router-link>
                 </div>
             </div>
             <h5 class="md:font-semibold  pt-4 mb-0 hover:text-primary" :class="textVariant">
@@ -43,6 +43,8 @@
 <script>
 import { IMAGE_PATH } from '@/config/config';
 import GeneralMenu from '../Elements/MenuConfiguration.vue';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
     components: {
@@ -66,8 +68,11 @@ export default {
         }
     },
     setup(){
+        const store = useStore()
         return{
             IMAGE_PATH,
+            userStore: computed(() => store.state.user),
+
         }
     }
 };
