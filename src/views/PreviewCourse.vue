@@ -9,8 +9,7 @@
                                 <div
                                     class="flex flex-nowrap overflow-x-scroll no-scrollbar md:block md:overflow-auto px-3 py-6 border-b md:border-b-0 md:border-r border-slate-200 min-w-60 md:space-y-3">
                                     <div>
-                                        <div class="text-xs font-semibold text-slate-400 uppercase mb-3">Course 
-                                        </div>
+                                        <div class="text-xs font-semibold text-slate-400 uppercase mb-3 ">Course </div>
                                         <ul class="flex flex-nowrap md:block mr-3 md:mr-0">
                                             <li class="mr-0.5 md:mr-0 md:mb-0.5">
                                                 <butto

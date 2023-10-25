@@ -18,25 +18,13 @@
         </section>
         <section>
             <h3 class="text-2xl leading-snug text-slate-800 font-bold mb-1">{{ cursoObject.courseName }}</h3>
-            <div class="text-sm">With this name, your students will be able to find your course easily.</div>
+            <div class="text-sm">
+                {{ categories.find((cat, i) => cat.categoryId == categoryId) ? categories.find((cat, i) => cat.categoryId ==
+                    categoryId).categoryName : '' }}
+            </div>
             <div class="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5">
 
-                <!-- <div class="sm:w-1/3">
-                    <label class="block text-sm font-medium mb-1" for="business-id">Category</label>
-                    <select id="countries" v-model="categoryId"
-                        class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                        <option selected>Selec a category</option>
-                        <option v-for="(cat, i) in categories" :key="i" :value="cat.categoryId">{{ cat.categoryName }}
-                        </option>
-                    </select>
-                </div> -->
-                <!--  <pre>
-                    {{ categories }}
-                </pre> -->
-                <!--  <pre>
-                    {{ categories.filter((cat,i) => cat.categoryId == categoryId)[0].categoryName }}
-                    {{ categories[5].categoryName }}
-                </pre> -->
+
             </div>
         </section>
         <section>
