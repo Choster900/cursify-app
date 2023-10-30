@@ -13,7 +13,6 @@ export const useCourseSettings = (courseId) => {
     const getCourseWithDetails = async () => {
         try {
             const courseId = route.params.courseId; // Obtener el courseId de la ruta
-            console.log(courseId);
             const resp = await axios.get(
                 `${API_URL}/courses/findCourseByIdWithDetails/${courseId}`
             );

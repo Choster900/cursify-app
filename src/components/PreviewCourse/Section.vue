@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div v-show='i === activeIndex'>
-                <Content :contents="section.sectionContents" />
+                <Content :contents="section.sectionContents" :isEnroll="isEnroll"/>
             </div>
 
             <footer class="flex flex-wrap justify-end text-sm" v-show='i === activeIndex'>
@@ -67,6 +67,10 @@ export default {
     components: { Content },
     props: {
         sections: {
+            type: Object,
+            default: () => { },
+        },
+        isEnroll: {
             type: Object,
             default: () => { },
         },

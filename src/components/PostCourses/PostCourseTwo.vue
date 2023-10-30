@@ -6,7 +6,7 @@
                     class="object-cover h-full w-full group-hover:scale-110 transition-all duration-500">
                 <div
                     class="icon w-7 h-7  text-white text-xl absolute top-4 right-4 rounded-full flex items-center justify-center">
-                    <GeneralMenu align="right" :courseId="course.courseId" v-if="course.user.userId === userStore.userId"/>
+                    <GeneralMenu align="right" :courseId="course.courseId" v-if="authIsReady && course.user.userId === userStore.userId"/>
                 </div>
             </router-link>
         </div>
@@ -72,6 +72,7 @@ export default {
         return{
             IMAGE_PATH,
             userStore: computed(() => store.state.user),
+            authIsReady: computed(() => store.state.authIsReady),
 
         }
     }

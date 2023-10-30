@@ -2,11 +2,55 @@ import { API_URL } from "@/config/config";
 import axios from "axios";
 import { onActivated, onDeactivated, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 export const useQuestion = () => {
     const route = useRoute();
+    const store = useStore()
+    const user = store.state.user;
+
     const objQuestions = ref(null);
     const generalInformation = ref(null);
+    const storeAnswer = ref([]); // Variable que almacenara las respuestas seleccionadas para enviarlas
+    const saveSelectedQuestion = (object) => {
+        const answerIndex = storeAnswer.value.findIndex(answer => answer.quesionId === object.quesionId);
+        console.log(answerIndex);
+
+        if (answerIndex !== -1) {
+            // Si se encuentra un elemento con el mismo questionId, lo eliminamos
+            storeAnswer.value.splice(answerIndex, 1);
+        }
+
+        // Agregamos el nuevo objeto
+        storeAnswer.value.push(object);
+    }
+
+    const  endAttempt = async () => {
+        console.log(storeAnswer.value);
+
+        const totalCorrectAnswers = storeAnswer.value.reduce((sum, answer) => {
+            return sum + (answer.optionIsCorrect === 1 ? 1 : 0);
+        }, 0);
+
+        const totalQuestions = storeAnswer.value.length;
+
+        const averageGrade = (totalCorrectAnswers / totalQuestions) * 100; // Multiplicamos por 100 para obtener un porcentaje
+
+        console.log("Preguntas buenas: " + totalCorrectAnswers);
+        console.log("Nota total: " + averageGrade);
+
+        const examId = route.params.examId;
+
+        const resp = await axios.post(`${API_URL}/exam-result`, {
+            "examId": examId,
+            "resultGrade": averageGrade,
+            "resultScore": totalCorrectAnswers,
+            "userId": user.userId
+        });
+
+
+    }
+
     const getQuestionsByExam = async () => {
         try {
             const examId = route.params.examId;
@@ -210,6 +254,7 @@ export const useQuestion = () => {
         sendOptiosns,
         objQuestions,
         addAnwserToQuestion,
+        endAttempt,
         addQuestionToExam,
         addQuestionRequest,
         selectCorrectOption,
@@ -218,5 +263,6 @@ export const useQuestion = () => {
         deleteAnswersById,
         updateQuestionRequest,
         deleteQuestionById,
+        saveSelectedQuestion,
     };
 };

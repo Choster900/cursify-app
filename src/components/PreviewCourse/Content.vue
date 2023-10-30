@@ -10,22 +10,15 @@
                     </path>
                 </svg>
             </div>
-            <h3 class="text-base leading-snug  font-bold" :class="activeIndex === i ? 'text-slate-800' : 'text-slate-400'">
+            <h3 class="text-base leading-snug  font-bold"
+                :class="isEnroll ? activeIndex === i ? 'text-slate-800' : 'text-slate-400' : 'text-slate-400 cursor-not-allowed'">
                 {{ !content.isNew ? contents[i].contentName : content.contentName }}</h3>
         </header>
-        <div class="pl-7" v-show='i === activeIndex'>
+        <div class="pl-7" v-show='i === activeIndex' v-if="isEnroll">
             <div class=" flex justify-between">
                 <video width="490" height="232" :src="`${IMAGE_PATH}/media/${contents[i].contentFileName}`" controls
                     class="rounded-md object-cover"></video>
             </div>
-            <div class="w-1/2 pt-4">
-                <div>
-                    <div>
-                        <h1>{{ content.contentName }}</h1>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </article>
 </template>
@@ -39,6 +32,10 @@ import { IMAGE_PATH } from '@/config/config';
 export default {
     props: {
         contents: {
+            type: Object,
+            default: () => { },
+        },
+        isEnroll: {
             type: Object,
             default: () => { },
         },

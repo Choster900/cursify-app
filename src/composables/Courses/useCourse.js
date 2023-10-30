@@ -110,7 +110,6 @@ export const useCourse = () => {
         try {
             const resp = await axios.get(`${API_URL}/courses`);
             allCourses.value = resp.data; 
-            console.log(resp);
         } catch (error) {
             handleError(error);
         }

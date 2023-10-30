@@ -14,17 +14,13 @@
                     </div>
                 </div>
             </div>
-            <button>Enroll to this course</button>
+            <button v-if="!isEnroll && authIsReady" @click="$emit('enroll')">Enroll to this course</button>
         </section>
         <section>
             <h3 class="text-2xl leading-snug text-slate-800 font-bold mb-1">{{ cursoObject.courseName }}</h3>
             <div class="text-sm">
                 {{ categories.find((cat, i) => cat.categoryId == categoryId) ? categories.find((cat, i) => cat.categoryId ==
                     categoryId).categoryName : '' }}
-            </div>
-            <div class="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5">
-
-
             </div>
         </section>
         <section>
@@ -42,8 +38,9 @@
 <script>
 import { IMAGE_PATH } from '@/config/config';
 import { useCourse } from '@/composables/Courses/useCourse';
-import { onActivated, onDeactivated, onMounted, toRefs, watch } from 'vue';
+import { computed, onActivated, onDeactivated, onMounted, toRefs, watch } from 'vue';
 import { useFileHandling } from '@/composables/Courses/useFileHandling';
+import { useStore } from 'vuex';
 export default {
     props: {
         curso: {
@@ -54,9 +51,15 @@ export default {
             type: Object,
             default: () => { },
         },
+        isEnroll: {
+            type: Object,
+            default: () => { },
+        },
     },
     setup(props) {
         const { curso } = toRefs(props);
+        const store = useStore()
+
         const {
             courseName,
             categoryId,
@@ -152,6 +155,8 @@ export default {
 
             updateCourseRequest,
             handleFileChange_NOCOMPOSABLE,
+
+            authIsReady: computed(() => store.state.authIsReady),
         }
     }
 }

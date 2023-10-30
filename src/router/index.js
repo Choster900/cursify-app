@@ -71,6 +71,16 @@ const routes = [
       ),
   },
   {
+    path: "/courses/makeExam/:examId",
+    name: "makingExam",
+    // This route is responsible for configuring a course, allowing the addition of content and other settings.
+    // The route's content is lazy-loaded for better performance.
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/Exams/ExamToStudent.vue"
+      ),
+  },
+  {
     path: "/404",
     name: "not-found",
     component: NotFoundView, // You should create a view for the 404 page

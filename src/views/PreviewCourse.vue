@@ -24,7 +24,7 @@
                                                         </path>
                                                     </svg>
                                                     <span class="text-sm font-medium  "
-                                                        :class="activeMenu == 'general' ? 'text-indigo-500' : 'text-slate-600 hover:text-slate-700'">General</span>
+                                                        :class="activeMenu == 'general' ? 'text-indigo-500' : 'text-slate-600 hover:text-slate-700'">General Information</span>
                                                 </butto>
                                             </li>
                                             <li class="mr-0.5 md:mr-0 md:mb-0.5">
@@ -45,7 +45,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div>
+                                    <div v-if="isEnroll">
                                         <div class="text-xs font-semibold text-slate-400 uppercase mb-3">Exams 
                                         </div>
                                         <ul class="flex flex-nowrap md:block mr-3 md:mr-0">
@@ -69,17 +69,17 @@
                                 <div class="flex-1 md:ml-8 xl:mx-4 2xl:mx-8">
                                     <div class="md:py-8">
                                         <!-- Content course setting -->
-                                        <div v-if="courseDetails && categoriesObject">
+                                        <div v-if="courseDetails && categoriesObject ">
 
-                                            <GeneralCoursePreview :class="activeMenu === 'general' ? '' : 'hidden'"
-                                                :categories="categoriesObject" :curso="courseDetails" />
+                                            <GeneralCoursePreview :class="activeMenu === 'general' ? '' : 'hidden'" :isEnroll="isEnroll"
+                                                :categories="categoriesObject" :curso="courseDetails" @enroll="enrollInTheCourse" />
 
 
                                             <ContentSection :class="activeMenu === 'content' ? '' : 'hidden'"
-                                                :sections="courseDetails.sections" />
+                                                :sections="courseDetails.sections" :isEnroll="isEnroll"/>
 
-                                            <!--  <Exam :class="activeMenu === 'exam' ? '' : 'hidden'"
-                                                :exams="courseDetails.exams" /> -->
+                                             <ExamsPreview :class="activeMenu === 'exam' ? '' : 'hidden'"
+                                                :exams="courseDetails.exams" :isEnroll="isEnroll"/>
                                         </div>
                                     </div>
                                 </div>
@@ -102,18 +102,24 @@ import { useRoute } from 'vue-router'
 import useCategory from '@/composables/Category.vue/useCategory'
 import GeneralCoursePreview from '@/components/PreviewCourse/GeneralCoursePreview.vue'
 import ContentSection from '@/components/PreviewCourse/Section.vue'
+import { useEnrollment } from '@/composables/Enrollment/useEnrollment'
+import ExamsPreview from '@/components/PreviewCourse/ExamsPreview.vue'
 
 export default {
-    components: { GeneralCoursePreview, ContentSection },
+    components: { GeneralCoursePreview, ContentSection,ExamsPreview },
     setup() {
         const route = useRoute()
         const courseId = route.params.courseId
         const { categoriesObject } = useCategory()
         const { activeMenu, courseDetails, getCourseWithDetails } = useCourseSettings(courseId);
+        const { verifyEnrollment,isEnroll,enrollInTheCourse } = useEnrollment();
+
         return {
             activeMenu,
             courseDetails,
-            categoriesObject
+            categoriesObject,
+            isEnroll,
+            enrollInTheCourse,
         }
     }
 }
