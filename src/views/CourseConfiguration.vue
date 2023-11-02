@@ -46,9 +46,6 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <pre>
-                                    {{ courseDetails ? courseDetails.user : '' }}
-                                    </pre>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-400 uppercase mb-3">Exams and Settings
                                         </div>
