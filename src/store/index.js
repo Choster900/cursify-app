@@ -38,10 +38,10 @@ const store = createStore({
          * @param {Object} context - The Vuex action context
          * @param {Object} data - User data including email and password
          */
-        async signup(context, { email, password }) {
+        async signup(context, { email, password, userName, userLastName, userDescription }) {
             console.log("signup action");
 
-            const response = await createUser(email, password);
+            const response = await createUser(email, password, userName, userLastName, userDescription);
             console.log(response.response.data.userId);
 
             if (response) {
