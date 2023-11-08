@@ -6,8 +6,8 @@ import { useStore } from "vuex";
 
 export const useEnrollment = () => {
 
-    const store = useStore()
     const route = useRoute();
+    const store = useStore()
     const user = computed(() => store.state.user)
     const authIsReady = computed(() => store.state.authIsReady)
     const isEnroll = ref(null)

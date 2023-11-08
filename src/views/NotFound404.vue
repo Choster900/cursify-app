@@ -1,19 +1,31 @@
 <template>
-  <div class="flex items-center justify-center h-screen bg-gray-100">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold text-red-700 mb-4">Error 404</h1>
-      <p class="text-lg text-gray-800 mb-8">Page not found</p>
-      <router-link to="/" class="text-indigo-500 hover:text-indigo-700">Go to Home</router-link>
+    <div class="relative h-screen flex items-center">
+        <div class="container text-center">
+            <div class="error-image">
+                <img src="../static/image/banners/error-404.png" alt="Not Found Image">
+            </div>
+            <h4 class="text-xl mt-10">Oops! Page not found!</h4>
+            <h1 class=" text-2xl md:text-4xl !leading-[1.2] mb-7">We are sorry for this error.<br> Can't find this page.
+            </h1>
+            <button class="bg-primary text-white px-5 py-4 font-semibold rounded-lg transition-all hover:bg-primary-dark"
+                @click="$router.go(-1)">
+                <i class="icofont-long-arrow-left text-xl align-middle"></i>
+                Go back previous page
+            </button>
+        </div>
+        <div class="error-shape absolute left-24 bottom-0 hidden lg:block">
+            <img src="../static/image/shape/error-shap.png" alt="shape">
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 export default {
-  name: 'NotFoundView'
+    props: {
+        error: {
+            type: Object,
+            default: () => { },
+        },
+    }
 }
 </script>
-
-<style scoped>
-/* Add any custom styles you want */
-</style>

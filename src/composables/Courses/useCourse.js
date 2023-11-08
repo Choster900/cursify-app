@@ -2,7 +2,7 @@ import axios from "axios";
 import { computed, ref } from "vue";
 import { API_URL } from "@/config/config";
 import { useStore } from "vuex";
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import Swal from "sweetalert2";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
@@ -16,8 +16,13 @@ export const useCourse = () => {
     const courseDescription = ref(null);
     const user = store.state.user;
     const router = useRouter()
+    const route = useRoute(); // Obtener la ruta actual
     const courseByUserCreatorIdArray = ref([]);
+    const courseByCategoryIdArray = ref([]);
+    const RandomCoursesArray = ref([]);
+    const MainCoursesArray = ref([]);
     const allCourses = ref(null);
+    const isLoading = ref(false);
     const createCourseRequest = () => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -101,7 +106,37 @@ export const useCourse = () => {
     const getCourseByUserCreatorId = async () => {
         try {
             const resp = await axios.get(`${API_URL}/courses/findCourseByUserCreatorWithDetails/${user.userId}`);
-            courseByUserCreatorIdArray.value = resp.data; 
+            courseByUserCreatorIdArray.value = resp.data;
+        } catch (error) {
+            handleError(error);
+        }
+    };
+    const getCourseByCategory = async () => {
+        try {
+            isLoading.value = true;
+            const categoryId = route.params.categoryId; // Obtener el courseId de la ruta
+            const resp = await axios.get(`${API_URL}/courses/finByCategory/${categoryId}`);
+            console.log(resp);
+            courseByCategoryIdArray.value = resp.data;
+            isLoading.value = false;
+        } catch (error) {
+            handleError(error);
+        }
+    };
+    const getRandomCourses = async () => {
+        try {
+            const resp = await axios.get(`${API_URL}/courses/randomCourses`);
+            console.log(resp);
+            RandomCoursesArray.value = resp.data;
+        } catch (error) {
+            handleError(error);
+        }
+    };
+    const getTwoMainCourses = async () => {
+        try {
+            const resp = await axios.get(`${API_URL}/courses/trendingTwoCourses`);
+            console.log(resp);
+            MainCoursesArray.value = resp.data;
         } catch (error) {
             handleError(error);
         }
@@ -109,9 +144,19 @@ export const useCourse = () => {
     const getAllCourses = async () => {
         try {
             const resp = await axios.get(`${API_URL}/courses`);
-            allCourses.value = resp.data; 
+            allCourses.value = resp.data;
         } catch (error) {
             handleError(error);
+        }
+    };
+    const handleError = (error) => {
+        console.error(error);
+        if (
+            error.response &&
+            (error.response.status === 404 || error.response.status == 400)
+        ) {
+            console.log(error.response.status);
+            // Puedes mostrar un mensaje al usuario o redirigirlo a una página específica
         }
     };
 
@@ -128,6 +173,13 @@ export const useCourse = () => {
         getCourseByUserCreatorId,
         getAllCourses,
         allCourses,
-        courseByUserCreatorIdArray//Variable que devuelve los creador por usuarioId
+        courseByUserCreatorIdArray,//Variable que devuelve los creador por usuarioId
+        getCourseByCategory,
+        courseByCategoryIdArray,
+        isLoading,
+        getRandomCourses,
+        RandomCoursesArray,
+        getTwoMainCourses,
+        MainCoursesArray,
     };
 };

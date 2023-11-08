@@ -6,7 +6,7 @@
                     <CourseCategory />
                 </div>
                 <div class="lg:col-span-9 col-span-12 space-y-[30px]">
-                    <CourseOne v-for="(curso, index) in cursos" :key="index" :cursos="curso" />
+                    <CourseOne v-for="(curso, index) in MainCoursesArray" :key="index" :cursos="curso" />
                 </div>
             </div>
         </div>
@@ -14,11 +14,18 @@
 </template>
 
 <script>
+import { useCourse } from '@/composables/Courses/useCourse'
 import CourseCategory from '../Categories/CourseCategory.vue'
 import CourseOne from '../Courses/Course.vue'
+import { onActivated } from 'vue'
+
 export default {
     components: { CourseCategory, CourseOne },
     setup() {
+        const { getTwoMainCourses, MainCoursesArray } = useCourse()
+        onActivated( async() => {
+            getTwoMainCourses()
+        })
         const cursos = [
 
             {
@@ -75,6 +82,7 @@ export default {
 
         return {
             cursos,
+            MainCoursesArray,
         }
     }
 }

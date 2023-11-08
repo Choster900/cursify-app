@@ -3,10 +3,10 @@
         <div class="container">
             <h2 class="text-2xl font-semibold  mb-12 leading-6">Trending Courses</h2>
             <div class="grid lg:grid-cols-2 gap-9">
-                <article v-for="(course, i) in trendingCourses" :key="i" class="post md:flex items-center group">
+                <article v-for="(course, i) in RandomCoursesArray" :key="i" class="post md:flex items-center group">
                     <div class="post-image md:w-[250px] flex-shrink-0 flex-grow-0 rounded-[10px] overflow-hidden relative">
-                        <router-link :to="`/blog/`">
-                            <img :src="course.course_photo" alt="post.node.title"
+                        <router-link :to="`/courses/view/${course.courseId}`">
+                            <img :src="IMAGE_PATH + course.coursePhoto" alt="post.node.title"
                                 class="object-cover h-full w-full group-hover:scale-125 transition-all duration-500">
                             <div
                                 class="icon w-12 h-12 bg-primary border-2 border-white text-white text-xl absolute top-4 right-4 rounded-full flex items-center justify-center">
@@ -21,17 +21,18 @@
                     </div>
                     <div class="post-info md:pl-7 md:mt-0 mt-5">
                         <div class="flex items-center">
-                            <router-link :to="`/categories/`"
+                            <router-link :to="`categories/${course.category.categoryId}`"
                                 class="category bg-[#edebf5] capitalize rounded-md px-4 py-1.5 mr-2 hover:bg-primary hover:text-white">
-                                {{ course.category.category_name }}
+                                {{ course.category.categoryName }}
                             </router-link>
                             <div class="date flex items-center ml-4 md:ml-6">
                                 <i class="icofont-ui-calendar"></i>
-                                <p class="pl-2">{{ $moment(course.created_at_course).format('DD MMM, YYYY') }}</p>
+                                <p class="pl-2">{{ $moment(course.createdAtCategory).format('DD MMM, YYYY') }}</p>
                             </div>
                         </div>
                         <h2 class="mb-0 text-lg !leading-relaxed pt-2 md:pt-5">
-                            <router-link :to="`/blog/`" class="hover:text-primary">{{ course.course_name }}</router-link>
+                            <router-link :to="`/courses/view/${course.courseId}`" class="hover:text-primary">{{
+                                $options.filters.truncate(course.courseName, 45, '...') }}</router-link>
                         </h2>
                     </div>
                 </article>
@@ -41,10 +42,20 @@
 </template>
 
 <script>
-
+import { useCourse } from '@/composables/Courses/useCourse';
+import { onActivated } from 'vue';
+import { IMAGE_PATH } from '@/config/config';
+import { truncateString } from '@/mixins/truncateString';
 
 export default {
+    mixins: [truncateString],
     setup() {
+        const { getRandomCourses, RandomCoursesArray } = useCourse();
+
+        onActivated(async () => {
+            getRandomCourses();
+        })
+
         const trendingCourses = [
             {
                 "course_id": 1,
@@ -200,6 +211,8 @@ export default {
 
         return {
             trendingCourses,
+            RandomCoursesArray,
+            IMAGE_PATH,
         }
     }
 
