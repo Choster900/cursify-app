@@ -32,6 +32,15 @@ const routes = [
       import(/* webpackChunkName: "MyCourses" */ "../views/MyCourses"),
   },
   {
+    path: "/courses/my-enrollment",
+    name: "my-enrollment",
+    // This route represents the dashboard for courses.
+    // It displays all the courses created by the user acting as a tutor.
+    // The content for this route is lazy-loaded for better performance.
+    component: () =>
+      import(/* webpackChunkName: "MyCourses" */ "../views/MyCoursesEnrolled.vue"),
+  },
+  {
     path: "/courses/view/:courseId",
     name: "viewCourse",
     // This route is responsible for displaying the details of a specific course.

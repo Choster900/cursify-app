@@ -18,6 +18,7 @@ export const useCourse = () => {
     const router = useRouter()
     const route = useRoute(); // Obtener la ruta actual
     const courseByUserCreatorIdArray = ref([]);
+    const courseEnrolledIndArray = ref([]);
     const courseByCategoryIdArray = ref([]);
     const RandomCoursesArray = ref([]);
     const MainCoursesArray = ref([]);
@@ -111,6 +112,15 @@ export const useCourse = () => {
             handleError(error);
         }
     };
+
+    const getCoursesEnrolled = async () => {
+        try {
+            const resp = await axios.get(`${API_URL}/courses/findEnrolledCoursesWithDetails/${user.userId}`);
+            courseEnrolledIndArray.value = resp.data;
+        } catch (error) {
+            handleError(error);
+        }
+    };
     const getCourseByCategory = async () => {
         try {
             isLoading.value = true;
@@ -181,5 +191,7 @@ export const useCourse = () => {
         RandomCoursesArray,
         getTwoMainCourses,
         MainCoursesArray,
+        getCoursesEnrolled,
+        courseEnrolledIndArray,
     };
 };

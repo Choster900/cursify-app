@@ -31,7 +31,7 @@
                     <li>
                         <router-link
                             class="font-medium text-sm text-slate-700 hover:text-indigo-600 flex items-center py-1 px-3"
-                            to="/courses/my-courses" @click="dropdownOpen = false">Learning Dashboard</router-link>
+                            to="/courses/my-enrollment" @click="dropdownOpen = false">Learning Dashboard</router-link>
                     </li>
                     <li>
                         <button

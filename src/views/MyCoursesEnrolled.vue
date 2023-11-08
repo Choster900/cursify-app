@@ -2,13 +2,13 @@
     <div class="blog-posts">
         <!-- <Breadcrumb slug="All Post" /> -->
         <div class="py-section">
-            
+
             <div class="container">
                 <div class="sm:flex sm:justify-between sm:items-center mb-8"><!-- Left: Title -->
                     <div class="mb-4 sm:mb-0">
                         <h1 class="text-lg md:text-3xl text-slate-800 font-bold">My Created Courses</h1>
                     </div>
-                    
+
                     <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2"><!-- Search form -->
                         <form class="relative">
                             <label for="action-search" class="sr-only">Search</label>
@@ -26,23 +26,15 @@
                                 </svg>
                             </button>
                         </form>
-                        <!-- Add member button -->
-                        <router-link to="/courses/create/1" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                            <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                                <path
-                                    d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z">
-                                </path>
-                            </svg>
-                            <span class="hidden xs:block ml-2">Create course</span>
-                        </router-link>
                     </div>
                 </div>
                 <h1 class=" sr-only">All Posts XD</h1>
                 <div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-[30px] gap-y-[40px]" v-if="courseByUserCreatorIdArray">
-                        
-                        <PostCourseTwo v-for="curso in courseByUserCreatorIdArray" :key="curso.courseId" :course="curso" excerpt
-                            text-variant="lg:text-2xl" />
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-[30px] gap-y-[40px]"
+                        v-if="courseEnrolledIndArray">
+
+                        <PostCourseTwo v-for="curso in courseEnrolledIndArray" :key="curso.courseId" :course="curso"
+                            excerpt text-variant="lg:text-2xl" />
                     </div>
                 </div>
             </div>
@@ -63,15 +55,15 @@ export default {
     },
     setup() {
         //const course
-        const { getCourseByUserCreatorId,courseByUserCreatorIdArray } = useCourse();
+        const { getCoursesEnrolled,courseEnrolledIndArray, } = useCourse();
 
-        onActivated( async () => {
-            getCourseByUserCreatorId()
-            //console.log(courseByUserCreatorIdArray.value);
+        onActivated(async () => {
+            getCoursesEnrolled()
+            console.log(courseEnrolledIndArray.value);
         })
 
         return {
-            courseByUserCreatorIdArray,
+            courseEnrolledIndArray,
         }
     }
 }
