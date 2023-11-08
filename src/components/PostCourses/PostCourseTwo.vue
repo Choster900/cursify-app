@@ -32,7 +32,7 @@
             <div class="meta flex items-center mt-4">
                 <div class="flex items-center">
                     <i class="icofont-ui-calendar"></i>
-                    <p class="pl-2">{{ course.createdAtCourse }}</p>
+                    <p class="pl-2">{{ $moment(course.createdAtCourse).format('DD MMM, YYYY') }}</p>
                 </div>
                 <div class="flex items-center pl-5">
                     <i class="icofont-clock-time"></i>
@@ -49,6 +49,7 @@ import GeneralMenu from '../Elements/MenuConfiguration.vue';
 import { useStore } from 'vuex';
 import { computed } from 'vue';
 import { truncateString } from '@/mixins/truncateString';
+import moment from 'moment';
 
 export default {
     components: {
@@ -75,10 +76,10 @@ export default {
     setup() {
         const store = useStore()
         return {
+            moment,
             IMAGE_PATH,
             userStore: computed(() => store.state.user),
             authIsReady: computed(() => store.state.authIsReady),
-
         }
     }
 };

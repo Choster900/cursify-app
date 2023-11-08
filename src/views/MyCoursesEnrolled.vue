@@ -6,7 +6,7 @@
             <div class="container">
                 <div class="sm:flex sm:justify-between sm:items-center mb-8"><!-- Left: Title -->
                     <div class="mb-4 sm:mb-0">
-                        <h1 class="text-lg md:text-3xl text-slate-800 font-bold">My Created Courses</h1>
+                        <h1 class="text-lg md:text-3xl text-slate-800 font-bold">My Enrolled Courses</h1>
                     </div>
 
                     <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2"><!-- Search form -->
