@@ -23,6 +23,16 @@ const routes = [
       ),
   },
   {
+    path: "/categories",
+    name: "allCategories",
+    // This route is used for creating and maintaining categories.
+    // It allows users to manage and add new categories to the application.
+    component: () =>
+      import(
+        /* webpackChunkName: "CreateCategory" */ "../views/CategoriesPage.vue"
+      ),
+  },
+  {
     path: "/courses/my-courses",
     name: "my-courses",
     // This route represents the dashboard for courses.
