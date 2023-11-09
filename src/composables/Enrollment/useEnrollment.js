@@ -21,7 +21,7 @@ export const useEnrollment = () => {
         if (authIsReady) {
             try {
                 const courseId = route.params.courseId;
-                const resp = await axios.get(`${API_URL}/enrollments/isEnroll/${user.value.userId}/${courseId}`);
+                const resp = await axios.get(`${API_URL}/enrollments/isEnroll/${user.userId}/${courseId}`);
                 isEnroll.value = resp.data;
             } catch (error) {
                 handleError(error);
