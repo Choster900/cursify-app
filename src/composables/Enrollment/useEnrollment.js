@@ -8,8 +8,12 @@ export const useEnrollment = () => {
 
     const route = useRoute();
     const store = useStore()
-    const user = computed(() => store.state.user)
-    const authIsReady = computed(() => store.state.authIsReady)
+   // const user = computed(() => store.state.user)
+    const user = store.state.user;
+
+   // const authIsReady = computed(() => store.state.authIsReady)
+    const authIsReady = store.state.authIsReady;
+
     const isEnroll = ref(null)
 
     const verifyEnrollment = async () => {

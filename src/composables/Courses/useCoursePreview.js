@@ -5,14 +5,13 @@ import { API_URL } from "@/config/config";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
-export const useCourseSettings = (courseId) => {
+export const useCoursePreview = (courseId) => {
     const activeMenu = ref("general");
     const courseDetails = ref(null);
     const store = useStore()
     const router = useRouter()
     const route = useRoute(); // Obtener la ruta actual
-    const user = store.state.user;
-    const authIsReady = store.state.authIsReady;
+
 
     const getCourseWithDetails = async () => {
         try {
@@ -42,20 +41,13 @@ export const useCourseSettings = (courseId) => {
         courseDetails.value = null;
     });
     onActivated(async () => {
-        if (authIsReady) {
-            try {
-                await getCourseWithDetails();
-                if (user.userId != courseDetails.value.user.userId) {
-                    console.log("NO ES TU CURSO BODY");
-                    router.push(`/404`);
-                }
-            } catch (error) {
-                handleError(error);
-            }
-        } else {
-            console.log("NO ES TU CURSO BODY");
-            router.push(`/404`);
+        try {
+            await getCourseWithDetails();
+
+        } catch (error) {
+            handleError(error);
         }
+
     });
 
     onMounted(async () => {

@@ -96,7 +96,7 @@
 
 
 <script>
-import { useCourseSettings } from '@/composables/Courses/useCourseSettings'
+import { useCoursePreview } from '@/composables/Courses/useCoursePreview'
 
 import { useRoute } from 'vue-router'
 import useCategory from '@/composables/Category.vue/useCategory'
@@ -111,7 +111,7 @@ export default {
         const route = useRoute()
         const courseId = route.params.courseId
         const { categoriesObject } = useCategory()
-        const { activeMenu, courseDetails, getCourseWithDetails } = useCourseSettings(courseId);
+        const { activeMenu, courseDetails, getCourseWithDetails } = useCoursePreview(courseId);
         const { verifyEnrollment,isEnroll,enrollInTheCourse } = useEnrollment();
 
         return {

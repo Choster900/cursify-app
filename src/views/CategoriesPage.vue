@@ -20,6 +20,7 @@ export default {
     },
     setup() {
         const { categoriesObject } = useCategory();
+        
         return {
             categoriesObject
         }

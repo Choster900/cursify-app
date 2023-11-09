@@ -191,11 +191,21 @@ export default function useCategory() {
             // Puedes mostrar un mensaje al usuario o redirigirlo a una página específica
         }
     };
-
+    const categoriesMap = ref(null)
     onMounted(async () => {
         try {
             await getCategories();
             categoryInformation.value = categoriesObject.value[0];
+            //console.log(categoriesObject.value);
+
+            categoriesMap.value = categoriesObject.value.map(category => ({
+                module: {
+                    label: category.categoryName,
+                    path: `/categories/${category.categoryId}`
+                }
+            }));
+
+
         } catch (error) {
             handleError(error);
         }
@@ -240,6 +250,7 @@ export default function useCategory() {
         createCategory,
         preparingToEdit,
         categoriesObject,
+        categoriesMap,
         modifiedCategory,
         categoryInformation,
     };

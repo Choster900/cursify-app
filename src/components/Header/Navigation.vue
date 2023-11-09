@@ -1,8 +1,8 @@
 <template>
     <nav class="navigation-menu">
-        <ul class="flex">
+        <ul class="flex" v-if="menuItems">
             <li v-for="(nav, i) in menuItems" :key="i" class="relative mr-12 group">
-                <router-link :to="nav.module.path" class="block font-semibold group-hover:text-primary py-7" v-if="true" 
+                <router-link :to="nav.module.path" class="block font-semibold group-hover:text-primary py-7" v-if="true"
                     :class="colorVariant">
                     {{ nav.module.label }}
 
@@ -26,7 +26,9 @@
 </template>
 
 <script>
+import useCategory from '@/composables/Category.vue/useCategory'
 import { useStore } from 'vuex'
+import { computed, onActivated, onMounted, ref } from 'vue'
 export default {
     props: {
         colorVariant: {
@@ -35,52 +37,62 @@ export default {
         },
     },
     setup() {
+        const menuItems = ref([])
         const store = useStore()
-        const menuItems = [
-            {
-                "module": {
-                    "label": "Home",
-                    "path": "/"
-                }
-            },
-            {
-                "module": {
-                    "label": "About",
-                    "path": "/about",
-                    "childItems": {
-                        "edges": []
-                    }
-                }
-            },
-            {
-                "module": {
-                    "label": "Blog",
-                    "path": "/blog",
-                    "childItems": {
-                        "edges": []
-                    }
-                }
-            },
-            {
-                "module": {
-                    "label": "Administracion",
-                    "path": "",
-                    "childItems": {
-                        "edges": [{
-                            "module": {
-                                "label": "Categories dashboard",
-                                "path": "/category/create"
+        /* async function obtenerCategorias() { */
+        const obtenerCategorias = async () => {
+            try {
+                const { categoriesMap } = await useCategory();
+                // Ahora puedes trabajar con categoriesMap aquí
+                //console.log(categoriesMap);
+
+                menuItems.value = [
+                    {
+                        "module": {
+                            "label": "Home",
+                            "path": "/"
+                        }
+                    },
+                    {
+                        "module": {
+                            "label": "About",
+                            "path": "/about",
+                            "childItems": {
+                                "edges": []
                             }
-                        },]
-                    }
-                }
-            },
-            {
-                "module": {
-                    "label": "Categories",
-                    "path": "/categories",
-                    "childItems": {
-                        "edges": [
+                        }
+                    },
+                    {
+                        "module": {
+                            "label": "Blog",
+                            "path": "/blog",
+                            "childItems": {
+                                "edges": []
+                            }
+                        }
+                    },
+                    {
+                        "module": {
+                            "label": "Administracion",
+                            "path": "",
+                            "childItems": {
+                                "edges": [
+                                    {
+                                        "module": {
+                                            "label": "Categories dashboard",
+                                            "path": "/category/create"
+                                        }
+                                    },
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "module": {
+                            "label": "Categories",
+                            "path": "/categories",
+                            "childItems": {
+                                "edges": categoriesMap/* [
                             {
                                 "module": {
                                     "label": "Programming",
@@ -99,11 +111,20 @@ export default {
                                     "path": "/category-3"
                                 }
                             }
-                        ]
+                        ] */
+                            }
+                        }
                     }
-                }
+                ]
+
+
+            } catch (error) {
+                console.error('Error al obtener las categorías:', error);
             }
-        ]
+        }
+
+        obtenerCategorias();
+
         return {
             menuItems,
         }

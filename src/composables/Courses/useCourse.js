@@ -27,7 +27,6 @@ export const useCourse = () => {
     const createCourseRequest = () => {
         return new Promise(async (resolve, reject) => {
             try {
-                console.log(user);
                 const formData = new FormData();
                 formData.append("categoryId", categoryId.value);
                 formData.append("file", courseFile.value);
@@ -42,7 +41,6 @@ export const useCourse = () => {
                     },
                 });
 
-                console.log(resp);
                 resolve(resp);
                 router.push(`/courses/configuration/${resp.data.courseId}`);
             } catch (error) {
@@ -126,7 +124,6 @@ export const useCourse = () => {
             isLoading.value = true;
             const categoryId = route.params.categoryId; // Obtener el courseId de la ruta
             const resp = await axios.get(`${API_URL}/courses/finByCategory/${categoryId}`);
-            console.log(resp);
             courseByCategoryIdArray.value = resp.data;
             isLoading.value = false;
         } catch (error) {
@@ -136,7 +133,6 @@ export const useCourse = () => {
     const getRandomCourses = async () => {
         try {
             const resp = await axios.get(`${API_URL}/courses/randomCourses`);
-            console.log(resp);
             RandomCoursesArray.value = resp.data;
         } catch (error) {
             handleError(error);
@@ -145,7 +141,6 @@ export const useCourse = () => {
     const getTwoMainCourses = async () => {
         try {
             const resp = await axios.get(`${API_URL}/courses/trendingTwoCourses`);
-            console.log(resp);
             MainCoursesArray.value = resp.data;
         } catch (error) {
             handleError(error);
