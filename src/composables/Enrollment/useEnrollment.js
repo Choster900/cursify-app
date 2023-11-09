@@ -35,7 +35,7 @@ export const useEnrollment = () => {
 
             const resp = await axios.post(`${API_URL}/enrollments/`, {
                 "courseId": courseId,
-                "userId": user.value.userId
+                "userId": user.userId
             });
             isEnroll.value = resp.data;
         } catch (error) {
